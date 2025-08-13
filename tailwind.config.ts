@@ -18,7 +18,7 @@ export default {
     extend: {
       fontFamily: {
         body: ['Comfortaa', 'sans-serif'],
-        headline: ['Playfair Display', 'serif'],
+        headline: ['Comfortaa', 'serif'],
         code: ['monospace'],
       },
       colors: {
