@@ -37,37 +37,37 @@ const testimonials = [
         name: 'Mr. Prashant Lukade & Mrs. Manisha Lukade',
         review: '“Choosing Shriram Interio was the best decision. Professionalism, design expertise, and commitment to delivering exceptional results were evident from day one.”',
         avatar: 'PL',
-        image: 'https://placehold.co/100x100.png',
+        image: '/avatar-1.png',
     },
     {
         name: 'Amit Purohit',
         review: '“I am very impressed with their service and quality. They customized my modular kitchen beautifully.”',
         avatar: 'AP',
-        image: 'https://placehold.co/100x100.png',
+        image: '/avatar-2.png',
     },
     {
         name: 'Anushka Sen',
         review: '“Innovative approach and flawless execution. Communication and transparency made the process enjoyable.”',
         avatar: 'AS',
-        image: 'https://placehold.co/100x100.png',
+        image: '/avatar-3.png',
     },
     {
         name: 'Anubhav Mittal',
         review: '“They designed the front of my house with great aesthetics and creativity.”',
         avatar: 'AM',
-        image: 'https://placehold.co/100x100.png',
+        image: '/avatar-4.png',
     },
     {
         name: 'Mr. Akshay Singh',
         review: '“They crafted a design perfectly suited to my needs. Attention to detail was outstanding.”',
         avatar: 'AS',
-        image: 'https://placehold.co/100x100.png',
+        image: '/avatar-5.png',
     },
     {
         name: 'Mr. Ashok Malge & Mrs. Shrisha Malge',
         review: '“They transformed my space into a breathtaking environment. Exceptional craftsmanship and design.”',
         avatar: 'AM',
-        image: 'https://placehold.co/100x100.png',
+        image: '/avatar-6.png',
     },
 ];
 
@@ -96,7 +96,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white">
         <Image
-          src="https://placehold.co/1920x1080.png"
+          src="/hero-image.jpeg"
           alt="Luxurious and comfortable hotel room interior"
           data-ai-hint="hotel room interior"
           layout="fill"

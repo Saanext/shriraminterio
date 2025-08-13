@@ -7,14 +7,14 @@ const products = [
   {
     name: 'Modular Kitchens',
     href: '/products/kitchen',
-    imageSrc: 'https://placehold.co/800x600.png',
+    imageSrc: '/product-kitchen.png',
     dataAiHint: 'modern kitchen',
     description: 'Explore our stunning range of modular kitchens, designed for style and efficiency.',
   },
   {
     name: 'Wardrobes',
     href: '/products/wardrobe',
-    imageSrc: 'https://placehold.co/800x600.png',
+    imageSrc: '/product-wardrobe.png',
     dataAiHint: 'modern wardrobe',
     description: 'Discover custom wardrobe solutions that maximize space and complement your decor.',
   },

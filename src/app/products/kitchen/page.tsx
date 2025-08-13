@@ -6,10 +6,10 @@ import { CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const kitchenImages = [
-  { src: 'https://placehold.co/1200x800.png', alt: 'Modern L-shaped kitchen', dataAiHint: 'l-shaped kitchen' },
-  { src: 'https://placehold.co/1200x800.png', alt: 'Minimalist island kitchen', dataAiHint: 'island kitchen' },
-  { src: 'https://placehold.co/1200x800.png', alt: 'U-shaped kitchen with wooden finish', dataAiHint: 'u-shaped kitchen' },
-  { src: 'https://placehold.co/1200x800.png', alt: 'Parallel kitchen layout', dataAiHint: 'parallel kitchen' },
+  { src: '/kitchen-1.png', alt: 'Modern L-shaped kitchen', dataAiHint: 'l-shaped kitchen' },
+  { src: '/kitchen-2.png', alt: 'Minimalist island kitchen', dataAiHint: 'island kitchen' },
+  { src: '/kitchen-3.png', alt: 'U-shaped kitchen with wooden finish', dataAiHint: 'u-shaped kitchen' },
+  { src: '/kitchen-4.png', alt: 'Parallel kitchen layout', dataAiHint: 'parallel kitchen' },
 ];
 
 const features = [

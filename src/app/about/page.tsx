@@ -8,21 +8,21 @@ const teamMembers = [
         name: 'Shriram P.',
         role: 'Founder & Principal Designer',
         avatar: 'SP',
-        image: 'https://placehold.co/100x100.png',
+        image: '/team-member-1.png',
         bio: 'With a passion for creating beautiful and functional spaces, Shriram leads the creative vision of the company.'
     },
     {
         name: 'Sunita K.',
         role: 'Head of Operations',
         avatar: 'SK',
-        image: 'https://placehold.co/100x100.png',
+        image: '/team-member-2.png',
         bio: 'Sunita ensures that every project is executed flawlessly from concept to completion, managing all operational aspects.'
     },
     {
         name: 'Rahul Desai',
         role: 'Lead Interior Designer',
         avatar: 'RD',
-        image: 'https://placehold.co/100x100.png',
+        image: '/team-member-3.png',
         bio: 'Rahul specializes in residential design, bringing a wealth of creativity and technical skill to every home he transforms.'
     },
 ];
@@ -33,7 +33,7 @@ export default function AboutUsPage() {
             {/* Hero Section */}
             <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
                 <Image
-                  src="https://placehold.co/1920x1080.png"
+                  src="/about-hero.png"
                   alt="A modern, well-lit office interior"
                   data-ai-hint="modern office interior"
                   layout="fill"
@@ -68,7 +68,7 @@ export default function AboutUsPage() {
                         </div>
                         <div>
                             <Image
-                                src="https://placehold.co/600x450.png"
+                                src="/about-collaboration.png"
                                 alt="Our design team collaborating"
                                 data-ai-hint="team collaboration"
                                 width={600}
@@ -86,7 +86,7 @@ export default function AboutUsPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                          <div>
                             <Image
-                                src="https://placehold.co/600x450.png"
+                                src="/about-mood-board.png"
                                 alt="A mood board with design samples"
                                 data-ai-hint="design mood board"
                                 width={600}

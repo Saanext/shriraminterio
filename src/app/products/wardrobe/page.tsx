@@ -6,10 +6,10 @@ import { CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const wardrobeImages = [
-  { src: 'https://placehold.co/1200x800.png', alt: 'Sliding door wardrobe', dataAiHint: 'sliding wardrobe' },
-  { src: 'https://placehold.co/1200x800.png', alt: 'Walk-in closet', dataAiHint: 'walk-in closet' },
-  { src: 'https://placehold.co/1200x800.png', alt: 'Hinged door wardrobe with mirror', dataAiHint: 'hinged wardrobe' },
-  { src: 'https://placehold.co/1200x800.png', alt: 'Free standing wardrobe unit', dataAiHint: 'freestanding wardrobe' },
+  { src: '/wardrobe-1.png', alt: 'Sliding door wardrobe', dataAiHint: 'sliding wardrobe' },
+  { src: '/wardrobe-2.png', alt: 'Walk-in closet', dataAiHint: 'walk-in closet' },
+  { src: '/wardrobe-3.png', alt: 'Hinged door wardrobe with mirror', dataAiHint: 'hinged wardrobe' },
+  { src: '/wardrobe-4.png', alt: 'Free standing wardrobe unit', dataAiHint: 'freestanding wardrobe' },
 ];
 
 const features = [

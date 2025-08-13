@@ -45,37 +45,37 @@ const services: Service[] = [
 
 const detailedServices = [
     {
-        imageSrc: 'https://placehold.co/800x600.png',
+        imageSrc: '/service-1.png',
         dataAiHint: 'modern house exterior',
         title: 'Exterior Design Services',
         href: '#',
     },
     {
-        imageSrc: 'https://placehold.co/800x600.png',
+        imageSrc: '/service-2.png',
         dataAiHint: 'commercial office interior',
         title: 'Commercial and Residential Interior Design Services',
         href: '#',
     },
     {
-        imageSrc: 'https://placehold.co/800x600.png',
+        imageSrc: '/service-3.png',
         dataAiHint: 'living room fireplace',
         title: 'Design Concept Services',
         href: '#',
     },
     {
-        imageSrc: 'https://placehold.co/800x600.png',
+        imageSrc: '/service-4.png',
         dataAiHint: 'modern kitchen interior',
         title: 'Modular Kitchen Interior Design',
         href: '#',
     },
     {
-        imageSrc: 'https://placehold.co/800x600.png',
+        imageSrc: '/service-5.png',
         dataAiHint: 'spacious living room',
         title: 'Room Space Planning Services',
         href: '#',
     },
     {
-        imageSrc: 'https://placehold.co/800x600.png',
+        imageSrc: '/service-6.png',
         dataAiHint: 'modern apartment interior',
         title: 'Turnkey Services',
         href: '#',

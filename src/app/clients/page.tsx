@@ -7,37 +7,37 @@ const testimonials = [
     name: 'Anjali P. (Kothrud)',
     review: 'Shriram Interio transformed our home! The kitchen is a dream to work in, and the team was professional from start to finish. The 3D designs helped us visualize everything perfectly. Highly recommended!',
     avatar: 'AP',
-    image: 'https://placehold.co/100x100.png',
+    image: '/avatar-1.png',
   },
   {
     name: 'Rohan & Priya S. (Hinjewadi)',
     review: 'The design process was so transparent and collaborative. They listened to our needs and delivered beyond our expectations. Our living room is now our favorite spot for family time. Thank you for the wonderful work.',
     avatar: 'RS',
-    image: 'https://placehold.co/100x100.png',
+    image: '/avatar-2.png',
   },
   {
     name: 'Meera K. (Baner)',
     review: 'Excellent service and stunning wardrobe design. The quality of materials is top-notch, and the installation was seamless and clean. The team was very respectful of our home during the process.',
     avatar: 'MK',
-    image: 'https://placehold.co/100x100.png',
+    image: '/avatar-3.png',
   },
   {
     name: 'Sameer Joshi (Wakad)',
     review: 'We opted for the full home interior service and it was the best decision. The team managed everything, and the final result is a cohesive, beautiful home. Their attention to detail is commendable.',
     avatar: 'SJ',
-    image: 'https://placehold.co/100x100.png',
+    image: '/avatar-4.png',
   },
   {
     name: 'Divya Sharma (Kharadi)',
     review: 'I was impressed with their professionalism and the contactless design process. The live 3D sessions were amazing. The final exterior design has completely uplifted the look of our house.',
     avatar: 'DS',
-    image: 'https://placehold.co/100x100.png',
+    image: '/avatar-5.png',
   },
   {
     name: 'Amit Patel (Viman Nagar)',
     review: 'The one-year warranty gave us great peace of mind. The team delivered on time and within budget, which is rare. We are extremely happy with our new modular kitchen.',
     avatar: 'AP',
-    image: 'https://placehold.co/100x100.png',
+    image: '/avatar-6.png',
   },
 ];
 
