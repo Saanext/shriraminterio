@@ -31,7 +31,7 @@ const processSteps = [
 export default function HowItWorksPage() {
   return (
     <div className="bg-background">
-      <div className="container mx-auto px-4 py-16">
+      <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-5xl font-bold">Our Process</h1>
           <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
@@ -39,17 +39,19 @@ export default function HowItWorksPage() {
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block"></div>
+          <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block" aria-hidden="true"></div>
 
           <div className="space-y-16">
             {processSteps.map((step, index) => (
               <div key={index} className="flex flex-col md:flex-row items-center w-full">
-                {/* Content Left */}
-                <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1' : 'md:order-3 md:text-right'}`}>
+                {/* Content */}
+                <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 pr-8' : 'md:order-3 pl-8 md:text-left'}`}>
                   <div className="p-6 border rounded-lg shadow-md bg-card">
                     <div className="flex items-center mb-2 md:hidden">
-                      {step.icon}
-                      <h2 className="text-2xl font-bold ml-4">{step.title}</h2>
+                      <div className="bg-primary/10 p-2 rounded-full mr-4">
+                        {step.icon}
+                      </div>
+                      <h2 className="text-xl font-bold">{step.title}</h2>
                     </div>
                     <h2 className="text-2xl font-bold hidden md:block">{step.title}</h2>
                     <p className="mt-2 text-muted-foreground">{step.description}</p>
@@ -57,14 +59,15 @@ export default function HowItWorksPage() {
                 </div>
 
                 {/* Icon Middle */}
-                <div className="md:w-2/12 md:order-2 flex justify-center">
-                  <div className="z-10 bg-background p-2 rounded-full border-2 border-primary my-4 md:my-0">
+                <div className="w-full md:w-2/12 order-2 flex justify-center">
+                   <div className="md:absolute z-10 bg-background p-3 rounded-full border-2 border-primary my-4 md:my-0">
                     {step.icon}
                   </div>
                 </div>
 
-                {/* Spacer Right */}
-                <div className="md:w-5/12 md:order-3"></div>
+                {/* Spacer */}
+                 <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-3' : 'md:order-1'}`}></div>
+
               </div>
             ))}
           </div>
