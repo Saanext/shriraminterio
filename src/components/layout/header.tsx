@@ -41,7 +41,10 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex flex-1 items-center justify-end">
+        <div className="flex flex-1 items-center justify-end gap-4">
+           <Button asChild>
+            <Link href="/get-a-quote">Get a Quote</Link>
+          </Button>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="md:hidden">
@@ -78,6 +81,9 @@ export function Header() {
                       </div>
                     </Link>
                   ))}
+                   <Button asChild className="mt-4">
+                    <Link href="/get-a-quote" onClick={() => setIsMobileMenuOpen(false)}>Get a Quote</Link>
+                  </Button>
                 </nav>
               </div>
             </SheetContent>

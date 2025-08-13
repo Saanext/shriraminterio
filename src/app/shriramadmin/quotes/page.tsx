@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -10,6 +11,9 @@ const sampleSubmissions = [
         phone: '+91 9876543210',
         service: 'Full Home Interiors',
         date: '2024-06-10',
+        floorplan: '2 BHK',
+        items: 'Kitchen, Wardrobe',
+        purpose: 'New Home'
     },
     {
         name: 'Priya Mehta',
@@ -17,6 +21,9 @@ const sampleSubmissions = [
         phone: '+91 9876543211',
         service: 'Modular Kitchen',
         date: '2024-06-11',
+        floorplan: '3 BHK',
+        items: 'Kitchen',
+        purpose: 'Renovation'
     },
 ];
 
@@ -48,8 +55,10 @@ export default function QuoteManagementPage() {
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Phone</TableHead>
-                                <TableHead>Service of Interest</TableHead>
-                                <TableHead>Submission Date</TableHead>
+                                <TableHead>Floorplan</TableHead>
+                                <TableHead>Items</TableHead>
+                                <TableHead>Purpose</TableHead>
+                                <TableHead>Date</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -59,7 +68,9 @@ export default function QuoteManagementPage() {
                                     <TableCell className="font-medium">{submission.name}</TableCell>
                                     <TableCell>{submission.email}</TableCell>
                                     <TableCell>{submission.phone}</TableCell>
-                                    <TableCell>{submission.service}</TableCell>
+                                    <TableCell>{submission.floorplan}</TableCell>
+                                    <TableCell>{submission.items}</TableCell>
+                                    <TableCell>{submission.purpose}</TableCell>
                                     <TableCell>{submission.date}</TableCell>
                                     <TableCell className="text-right">
                                         <Button variant="ghost" size="icon">
