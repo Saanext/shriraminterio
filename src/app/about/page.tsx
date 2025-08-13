@@ -31,10 +31,18 @@ export default function AboutUsPage() {
     return (
         <div className="bg-background">
             {/* Hero Section */}
-            <section className="relative w-full h-60 flex items-center justify-center text-center text-white bg-primary">
+            <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
+                <Image
+                  src="https://placehold.co/1920x1080.png"
+                  alt="A modern, well-lit office interior"
+                  data-ai-hint="modern office interior"
+                  layout="fill"
+                  objectFit="cover"
+                  className="absolute inset-0 z-0 brightness-50"
+                />
                 <div className="relative z-10 p-4">
-                    <h1 className="text-4xl md:text-5xl font-bold">About Shriram Interio</h1>
-                    <p className="mt-2 text-lg text-primary-foreground/90">Your vision, our passion.</p>
+                    <h1 className="text-4xl md:text-6xl font-bold text-shadow-lg">About Shriram Interio</h1>
+                    <p className="mt-2 text-lg md:text-xl text-primary-foreground/90">Your vision, our passion.</p>
                 </div>
             </section>
 
