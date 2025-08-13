@@ -96,7 +96,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white">
         <Image
-          src="/hero-image.jpeg"
+          src="/b1.jpg"
           alt="Luxurious and comfortable hotel room interior"
           data-ai-hint="hotel room interior"
           layout="fill"

@@ -33,7 +33,7 @@ export default function AboutUsPage() {
             {/* Hero Section */}
             <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
                 <Image
-                  src="/about-hero.png"
+                  src="/b1.jpg"
                   alt="A modern, well-lit office interior"
                   data-ai-hint="modern office interior"
                   layout="fill"
@@ -68,7 +68,7 @@ export default function AboutUsPage() {
                         </div>
                         <div>
                             <Image
-                                src="/about-collaboration.png"
+                                src="/r1.jpg"
                                 alt="Our design team collaborating"
                                 data-ai-hint="team collaboration"
                                 width={600}
@@ -86,7 +86,7 @@ export default function AboutUsPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                          <div>
                             <Image
-                                src="/about-mood-board.png"
+                                src="/SlidingWardrobe.jpg"
                                 alt="A mood board with design samples"
                                 data-ai-hint="design mood board"
                                 width={600}

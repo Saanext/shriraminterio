@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CookingPot, Sofa, Paintbrush, Bed, Tv, Home, ArrowRight, Lamp, Building, Draftsman } from 'lucide-react';
+import { CookingPot, Sofa, Paintbrush, Bed, Tv, Home, ArrowRight, Lamp, Building } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -45,37 +45,37 @@ const services: Service[] = [
 
 const detailedServices = [
     {
-        imageSrc: '/service-1.png',
+        imageSrc: '/SlidingWardrobe.jpg',
         dataAiHint: 'modern house exterior',
         title: 'Exterior Design Services',
         href: '#',
     },
     {
-        imageSrc: '/service-2.png',
+        imageSrc: '/kitchen2.jpg',
         dataAiHint: 'commercial office interior',
         title: 'Commercial and Residential Interior Design Services',
         href: '#',
     },
     {
-        imageSrc: '/service-3.png',
+        imageSrc: '/r1.jpg',
         dataAiHint: 'living room fireplace',
         title: 'Design Concept Services',
         href: '#',
     },
     {
-        imageSrc: '/service-4.png',
+        imageSrc: '/trending1.jpg',
         dataAiHint: 'modern kitchen interior',
         title: 'Modular Kitchen Interior Design',
         href: '#',
     },
     {
-        imageSrc: '/service-5.png',
+        imageSrc: '/kitchn1.jpg',
         dataAiHint: 'spacious living room',
         title: 'Room Space Planning Services',
         href: '#',
     },
     {
-        imageSrc: '/service-6.png',
+        imageSrc: '/b2.jpg',
         dataAiHint: 'modern apartment interior',
         title: 'Turnkey Services',
         href: '#',

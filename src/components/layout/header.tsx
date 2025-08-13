@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
@@ -22,11 +22,11 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center">
-        <Link href="/" className="mr-6 flex items-center space-x-2">
+        <Link href="/" className="mr-4 flex items-center space-x-2 lg:mr-6">
           <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
+        <nav className="hidden xl:flex items-center space-x-4 text-sm font-medium">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
@@ -55,7 +55,7 @@ export function Header() {
           </Sheet>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" className="md:hidden">
+              <Button variant="ghost" className="xl:hidden">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open Menu</span>
               </Button>
@@ -88,9 +88,11 @@ export function Header() {
                   ))}
                 </nav>
                  <div className="p-4 mt-auto">
-                   <Button asChild className="w-full">
-                    <Link href="/get-a-quote" onClick={() => setIsMobileMenuOpen(false)}>Get a Quote</Link>
-                  </Button>
+                   <SheetClose asChild>
+                      <Button asChild className="w-full">
+                        <Link href="/get-a-quote">Get a Quote</Link>
+                      </Button>
+                   </SheetClose>
                  </div>
               </div>
             </SheetContent>
