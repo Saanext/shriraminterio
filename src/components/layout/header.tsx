@@ -23,7 +23,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={50} className="object-contain" data-ai-hint="company logo" />
+          <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
@@ -60,30 +60,24 @@ export function Header() {
                 <span className="sr-only">Open Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left">
-              <SheetHeader>
-                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                <SheetDescription className="sr-only">Main navigation links for the site.</SheetDescription>
-              </SheetHeader>
-              <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between border-b pb-4">
-                  <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Image src="/shriram.png" alt="Shriram Interio Logo" width={150} height={50} className="object-contain" data-ai-hint="company logo" />
+            <SheetContent side="left" className="p-0">
+               <div className="flex flex-col h-full">
+                <SheetHeader className="p-4 border-b">
+                   <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
                   </Link>
-                  <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
-                    <X className="h-6 w-6" />
-                    <span className="sr-only">Close Menu</span>
-                  </Button>
-                </div>
-                <nav className="flex flex-col space-y-4 mt-6">
+                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                  <SheetDescription className="sr-only">Main navigation links for the site.</SheetDescription>
+                </SheetHeader>
+                <nav className="flex flex-col space-y-1 p-4">
                   {NAV_ITEMS.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        'text-lg transition-colors hover:text-primary',
-                        pathname === item.href ? 'text-primary font-semibold' : 'text-foreground/80'
+                        'text-lg rounded-md p-3 transition-colors hover:bg-muted',
+                        pathname === item.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                       )}
                     >
                       <div className="flex items-center gap-4">
@@ -92,10 +86,12 @@ export function Header() {
                       </div>
                     </Link>
                   ))}
-                   <Button asChild className="mt-4">
+                </nav>
+                 <div className="p-4 mt-auto">
+                   <Button asChild className="w-full">
                     <Link href="/get-a-quote" onClick={() => setIsMobileMenuOpen(false)}>Get a Quote</Link>
                   </Button>
-                </nav>
+                 </div>
               </div>
             </SheetContent>
           </Sheet>
