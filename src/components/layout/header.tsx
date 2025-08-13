@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
-import { Footer } from './footer';
+import { GetAQuoteForm } from '../get-a-quote-form';
 
 export function Header() {
   const pathname = usePathname();
@@ -42,9 +42,17 @@ export function Header() {
         </nav>
 
         <div className="flex flex-1 items-center justify-end gap-4">
-           <Button asChild>
-            <Link href="/get-a-quote">Get a Quote</Link>
-          </Button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button>Get a Quote</Button>
+            </SheetTrigger>
+            <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+              <SheetHeader>
+                <SheetTitle className="text-2xl">Get a Free Quote</SheetTitle>
+              </SheetHeader>
+              <GetAQuoteForm />
+            </SheetContent>
+          </Sheet>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="md:hidden">
@@ -93,22 +101,3 @@ export function Header() {
     </header>
   );
 }
-
-function MainLayout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-    const isAdminPage = pathname.startsWith('/shriramadmin');
-
-    if (isAdminPage) {
-        return <>{children}</>;
-    }
-
-    return (
-        <div className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <Footer />
-        </div>
-    )
-}
-
-export { MainLayout };
