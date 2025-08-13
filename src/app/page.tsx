@@ -1,3 +1,5 @@
+
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -5,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, CircleDollarSign, Tv } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const expertise = [
   {
@@ -49,6 +52,26 @@ const testimonials = [
     image: 'https://placehold.co/100x100.png',
   },
 ];
+
+const trendingItems = [
+  { name: 'Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'modern wardrobe' },
+  { name: 'Kitchen', image: 'https://placehold.co/600x800.png', hint: 'modern kitchen' },
+  { name: 'King Size Bed', image: 'https://placehold.co/600x800.png', hint: 'king size bed' },
+];
+
+const bestSellingKitchens = [
+    { name: 'L-Shaped Kitchen', image: 'https://placehold.co/600x800.png', hint: 'l-shaped kitchen' },
+    { name: 'U-Shaped Kitchen', image: 'https://placehold.co/600x800.png', hint: 'u-shaped kitchen' },
+    { name: 'Island Kitchen', image: 'https://placehold.co/600x800.png', hint: 'island kitchen' },
+    { name: 'Small Kitchen Spaces', image: 'https://placehold.co/600x800.png', hint: 'small kitchen' },
+];
+
+const bestSellingWardrobes = [
+    { name: 'Sliding Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'sliding wardrobe' },
+    { name: 'Free Standing Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'freestanding wardrobe' },
+    { name: 'Modular Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'modular wardrobe' },
+];
+
 
 export default function Home() {
   return (
@@ -127,8 +150,86 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Trending Section */}
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold">What We Do</h2>
+              <p className="text-lg text-muted-foreground mt-2">End-to-end interior solutions.</p>
+          </div>
+          <Tabs defaultValue="trending" className="w-full">
+            <TabsList className="grid w-full grid-cols-3 md:w-1/2 mx-auto">
+              <TabsTrigger value="trending">Trending</TabsTrigger>
+              <TabsTrigger value="kitchens">Best Selling Kitchens</TabsTrigger>
+              <TabsTrigger value="wardrobes">Best Selling Wardrobes</TabsTrigger>
+            </TabsList>
+            <TabsContent value="trending">
+              <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
+                <CarouselContent>
+                  {trendingItems.map((item, index) => (
+                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                      <Card className="overflow-hidden">
+                        <div className="relative aspect-[3/4]">
+                           <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint}/>
+                        </div>
+                        <CardContent className="p-4">
+                           <h3 className="text-lg font-bold">{item.name}</h3>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </TabsContent>
+            <TabsContent value="kitchens">
+              <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
+                <CarouselContent>
+                  {bestSellingKitchens.map((item, index) => (
+                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
+                       <Card className="overflow-hidden">
+                        <div className="relative aspect-[3/4]">
+                           <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
+                        </div>
+                        <CardContent className="p-4">
+                           <h3 className="text-lg font-bold">{item.name}</h3>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </TabsContent>
+            <TabsContent value="wardrobes">
+               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
+                <CarouselContent>
+                  {bestSellingWardrobes.map((item, index) => (
+                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                       <Card className="overflow-hidden">
+                        <div className="relative aspect-[3/4]">
+                           <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
+                        </div>
+                        <CardContent className="p-4">
+                           <h3 className="text-lg font-bold">{item.name}</h3>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+              </Carousel>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
+
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-16 md:py-24 bg-background">
+      <section id="testimonials" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">What Our Clients Say</h2>
@@ -142,7 +243,7 @@ export default function Home() {
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
-                    <Card className="flex flex-col justify-between h-full p-6 text-center">
+                    <Card className="flex flex-col justify-between h-full p-6 text-center bg-background">
                       <CardContent className="p-0">
                         <p className="text-muted-foreground italic">"{testimonial.review}"</p>
                       </CardContent>
