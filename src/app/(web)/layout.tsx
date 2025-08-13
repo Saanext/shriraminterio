@@ -1,6 +1,7 @@
 'use client';
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { PageTransition } from "@/components/page-transition";
 import { usePathname } from "next/navigation";
 
 export default function WebLayout({
@@ -18,7 +19,11 @@ export default function WebLayout({
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-grow">{children}</main>
+            <main className="flex-grow">
+                <PageTransition>
+                    {children}
+                </PageTransition>
+            </main>
             <Footer />
         </div>
     );
