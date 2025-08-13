@@ -145,8 +145,19 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Company Section */}
+      <section id="about-company" className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">About Company</h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            SHRIRAM INTERIO — Where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we combine creativity, functionality, and personalization in every project.
+          </p>
+        </div>
+      </section>
+
+
       {/* Design at Your Comfort Section */}
-      <section id="comfort-design" className="py-16 md:py-24 bg-secondary">
+      <section id="comfort-design" className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
            <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Design at Your Comfort – Our Expertise</h2>
@@ -154,7 +165,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {expertise.map((item) => (
-              <Card key={item.title} className="text-center p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-background">
+              <Card key={item.title} className="text-center p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-secondary">
                  <CardHeader className="flex items-center justify-center">
                   {item.icon}
                   <CardTitle className="mt-4 text-xl">{item.title}</CardTitle>
@@ -169,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold">What We Do</h2>
@@ -247,7 +258,7 @@ export default function Home() {
 
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-16 md:py-24 bg-secondary">
+      <section id="testimonials" className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Client Reviews</h2>
@@ -261,7 +272,7 @@ export default function Home() {
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
-                    <Card className="flex flex-col justify-between h-full p-6 text-center bg-background">
+                    <Card className="flex flex-col justify-between h-full p-6 text-center bg-secondary">
                       <CardContent className="p-0 flex-grow">
                         <p className="text-muted-foreground italic">{testimonial.review}</p>
                       </CardContent>
