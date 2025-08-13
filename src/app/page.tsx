@@ -72,22 +72,22 @@ const testimonials = [
 ];
 
 const trendingItems = [
-  { name: 'Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'modern wardrobe' },
-  { name: 'Kitchen', image: 'https://placehold.co/600x800.png', hint: 'modern kitchen' },
-  { name: 'King Size Bed', image: 'https://placehold.co/600x800.png', hint: 'king size bed' },
+  { name: 'Wardrobe', image: '/trending1.jpg', hint: 'modern wardrobe' },
+  { name: 'Kitchen', image: '/kitchen.jpg', hint: 'modern kitchen' },
+  { name: 'King Size Bed', image: '/r1.jpg', hint: 'king size bed' },
 ];
 
 const bestSellingKitchens = [
-    { name: 'L-Shaped Kitchen', image: 'https://placehold.co/600x800.png', hint: 'l-shaped kitchen' },
-    { name: 'U-Shaped Kitchen', image: 'https://placehold.co/600x800.png', hint: 'u-shaped kitchen' },
-    { name: 'Island Kitchen', image: 'https://placehold.co/600x800.png', hint: 'island kitchen' },
-    { name: 'Small Kitchen Spaces', image: 'https://placehold.co/600x800.png', hint: 'small kitchen' },
+    { name: 'L-Shaped Kitchen', image: '/kitchn1.jpg', hint: 'l-shaped kitchen' },
+    { name: 'U-Shaped Kitchen', image: '/kitchen2.jpg', hint: 'u-shaped kitchen' },
+    { name: 'Island Kitchen', image: '/kitchn1.jpg', hint: 'island kitchen' },
+    { name: 'Small Kitchen Spaces', image: '/kitchen2.jpg', hint: 'small kitchen' },
 ];
 
 const bestSellingWardrobes = [
-    { name: 'Sliding Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'sliding wardrobe' },
-    { name: 'Free Standing Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'freestanding wardrobe' },
-    { name: 'Modular Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'modular wardrobe' },
+    { name: 'Sliding Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'sliding wardrobe' },
+    { name: 'Free Standing Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'freestanding wardrobe' },
+    { name: 'Modular Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'modular wardrobe' },
 ];
 
 export default function Home() {
@@ -97,8 +97,8 @@ export default function Home() {
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white">
         <Image
           src="https://placehold.co/1920x1080.png"
-          alt="Shelf with vinyl records collection"
-          data-ai-hint="vinyl records collection"
+          alt="Luxurious and comfortable hotel room interior"
+          data-ai-hint="hotel room interior"
           layout="fill"
           objectFit="cover"
           className="absolute inset-0 z-0 brightness-50"
@@ -132,7 +132,7 @@ export default function Home() {
             </div>
              <div className="order-1 lg:order-2">
               <Image
-                src="https://placehold.co/600x450.png"
+                src="/b2.jpg"
                 alt="Interior design sketch"
                 data-ai-hint="interior design sketch"
                 width={600}
