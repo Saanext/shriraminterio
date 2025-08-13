@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { LayoutDashboard, Newspaper, Shield } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Shield, Video, Quote } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -12,10 +12,11 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         </div>
         <nav>
           <ul>
-            <li><Link href="/shriramadmin" className="block py-2 px-4 rounded hover:bg-muted">Dashboard</Link></li>
-            <li><Link href="/shriramadmin/pages" className="block py-2 px-4 rounded hover:bg-muted flex items-center gap-2"><Newspaper className="w-5 h-5" /> Pages</Link></li>
-            <li><Link href="/shriramadmin/projects" className="block py-2 px-4 rounded hover:bg-muted flex items-center gap-2"><LayoutDashboard className="w-5 h-5" /> Projects</Link></li>
-            {/* Future admin links will go here */}
+            <li><Link href="/shriramadmin" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><LayoutDashboard className="w-5 h-5" /> Dashboard</Link></li>
+            <li><Link href="/shriramadmin/pages" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Newspaper className="w-5 h-5" /> Pages</Link></li>
+            <li><Link href="/shriramadmin/projects" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><LayoutDashboard className="w-5 h-5" /> Projects</Link></li>
+            <li><Link href="/shriramadmin/videos" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Video className="w-5 h-5" /> Videos</Link></li>
+            <li><Link href="/shriramadmin/quotes" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Quote className="w-5 h-5" /> Quotes</Link></li>
           </ul>
         </nav>
       </aside>
