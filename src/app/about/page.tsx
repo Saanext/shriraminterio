@@ -51,12 +51,19 @@ export default function AboutUsPage() {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Story</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Welcome to Shriram Interio</h2>
+                             <p className="text-sm text-muted-foreground mb-2">Since we started work in 2016</p>
                             <p className="text-muted-foreground mb-4">
-                                Since our establishment in 2016, Shriram Interio has been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our journey began with a simple mission: to transform houses into homes that reflect the unique personalities and lifestyles of their owners.
+                                Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team consists of the most passionate and best interior designers in Pune who love what they do and are committed to creating beautiful and functional spaces that reflect our client's unique styles and needs.
                             </p>
-                            <p className="text-muted-foreground">
-                                Our team of passionate and skilled interior designers specializes in designing and decorating residential spaces — focusing on space planning, color theory, furniture selection, and lighting design. We believe that well-designed interiors have the power to transform lives. By truly understanding our client’s aspirations, we create personalized plans that fit their style, and their budget.
+                            <p className="text-muted-foreground mb-4">
+                                We specialize in designing and decorating residential spaces. With years of experience in the industry, we have honed our skills in space planning, color theory, furniture selection, and lighting design.
+                            </p>
+                             <p className="text-muted-foreground mb-4">
+                                We strongly believe that a well-designed interior can have a profound impact on people's lives. That's why we take the time to truly understand our client's aspirations and preferences for their space. By working closely with them, we develop a personalized design plan that perfectly fits their aesthetic preferences, lifestyle, and budget.
+                            </p>
+                             <p className="text-muted-foreground">
+                                Whether you want to give your living room a makeover, update your kitchen, or transform your entire home, our team is here to turn your dreams into reality. Feel Free to Contact us for a consultation and take the first step toward creating your dream space !!
                             </p>
                         </div>
                         <div>
