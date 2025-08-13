@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -9,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescri
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
+import Image from 'next/image';
 
 export function Header() {
   const pathname = usePathname();
@@ -22,8 +24,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-           <Home className="h-6 w-6 text-primary" />
-          <span className="font-bold font-headline text-lg">Shriram Interio</span>
+          <Image src="https://placehold.co/150x50.png" alt="Shriram Interio Logo" width={150} height={50} data-ai-hint="company logo" />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
@@ -68,8 +69,7 @@ export function Header() {
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between border-b pb-4">
                   <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                     <Home className="h-6 w-6 text-primary" />
-                    <span className="font-bold font-headline text-lg">Shriram Interio</span>
+                    <Image src="https://placehold.co/150x50.png" alt="Shriram Interio Logo" width={150} height={50} data-ai-hint="company logo" />
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
                     <X className="h-6 w-6" />
