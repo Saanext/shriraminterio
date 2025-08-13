@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Newspaper, Shield } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Shield } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -14,6 +14,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <ul>
             <li><Link href="/shriramadmin" className="block py-2 px-4 rounded hover:bg-muted">Dashboard</Link></li>
             <li><Link href="/shriramadmin/pages" className="block py-2 px-4 rounded hover:bg-muted flex items-center gap-2"><Newspaper className="w-5 h-5" /> Pages</Link></li>
+            <li><Link href="/shriramadmin/projects" className="block py-2 px-4 rounded hover:bg-muted flex items-center gap-2"><LayoutDashboard className="w-5 h-5" /> Projects</Link></li>
             {/* Future admin links will go here */}
           </ul>
         </nav>
