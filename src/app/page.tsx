@@ -97,8 +97,8 @@ export default function Home() {
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white">
         <Image
           src="https://placehold.co/1920x1080.png"
-          alt="Vintage styled room with a shelf of vinyl records"
-          data-ai-hint="vintage living room"
+          alt="Shelf with vinyl records collection"
+          data-ai-hint="vinyl records collection"
           layout="fill"
           objectFit="cover"
           className="absolute inset-0 z-0 brightness-50"
