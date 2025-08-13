@@ -3,6 +3,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const kitchenImages = [
   { src: 'https://placehold.co/1200x800.png', alt: 'Modern L-shaped kitchen', dataAiHint: 'l-shaped kitchen' },
@@ -69,7 +70,7 @@ export default function KitchenPage() {
             </div>
             <div className="mt-10">
               <Button asChild size="lg">
-                <Link href="/design-inspiration">Get a Free Design Quote</Link>
+                <Link href="/portfolio">View Our Work</Link>
               </Button>
             </div>
           </div>
@@ -78,4 +79,3 @@ export default function KitchenPage() {
     </div>
   );
 }
-import { Card, CardContent } from '@/components/ui/card';

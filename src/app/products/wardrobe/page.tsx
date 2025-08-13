@@ -44,7 +44,7 @@ export default function WardrobePage() {
             </div>
             <div className="mt-10">
               <Button asChild size="lg">
-                <Link href="/design-inspiration">Design Your Wardrobe</Link>
+                <Link href="/portfolio">Design Your Wardrobe</Link>
               </Button>
             </div>
           </div>
