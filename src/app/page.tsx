@@ -33,24 +33,42 @@ const expertise = [
 ];
 
 const testimonials = [
-  {
-    name: 'Anjali P.',
-    review: 'Shriram Interio transformed our home! The kitchen is a dream to work in, and the team was professional from start to finish. Highly recommended!',
-    avatar: 'AP',
-    image: 'https://placehold.co/100x100.png',
-  },
-  {
-    name: 'Rohan S.',
-    review: 'The design process was so transparent and collaborative. They listened to our needs and delivered beyond our expectations. Our living room is now our favorite spot.',
-    avatar: 'RS',
-    image: 'https://placehold.co/100x100.png',
-  },
-  {
-    name: 'Meera K.',
-    review: 'Excellent service and stunning wardrobe design. The quality is top-notch, and the installation was seamless. Thank you, Shriram Interio!',
-    avatar: 'MK',
-    image: 'https://placehold.co/100x100.png',
-  },
+    {
+        name: 'Mr. Prashant Lukade & Mrs. Manisha Lukade',
+        review: '“Choosing Shriram Interio was the best decision. Professionalism, design expertise, and commitment to delivering exceptional results were evident from day one.”',
+        avatar: 'PL',
+        image: 'https://placehold.co/100x100.png',
+    },
+    {
+        name: 'Amit Purohit',
+        review: '“I am very impressed with their service and quality. They customized my modular kitchen beautifully.”',
+        avatar: 'AP',
+        image: 'https://placehold.co/100x100.png',
+    },
+    {
+        name: 'Anushka Sen',
+        review: '“Innovative approach and flawless execution. Communication and transparency made the process enjoyable.”',
+        avatar: 'AS',
+        image: 'https://placehold.co/100x100.png',
+    },
+    {
+        name: 'Anubhav Mittal',
+        review: '“They designed the front of my house with great aesthetics and creativity.”',
+        avatar: 'AM',
+        image: 'https://placehold.co/100x100.png',
+    },
+    {
+        name: 'Mr. Akshay Singh',
+        review: '“They crafted a design perfectly suited to my needs. Attention to detail was outstanding.”',
+        avatar: 'AS',
+        image: 'https://placehold.co/100x100.png',
+    },
+    {
+        name: 'Mr. Ashok Malge & Mrs. Shrisha Malge',
+        review: '“They transformed my space into a breathtaking environment. Exceptional craftsmanship and design.”',
+        avatar: 'AM',
+        image: 'https://placehold.co/100x100.png',
+    },
 ];
 
 const trendingItems = [
@@ -232,22 +250,22 @@ export default function Home() {
       <section id="testimonials" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">What Our Clients Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Client Reviews</h2>
             <p className="text-lg text-muted-foreground mt-2">We are proud of the homes we have transformed and the relationships we have built.</p>
           </div>
           <Carousel
             opts={{ align: 'start', loop: true }}
-            className="w-full max-w-4xl mx-auto"
+            className="w-full max-w-6xl mx-auto"
           >
             <CarouselContent>
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
                     <Card className="flex flex-col justify-between h-full p-6 text-center bg-background">
-                      <CardContent className="p-0">
-                        <p className="text-muted-foreground italic">"{testimonial.review}"</p>
+                      <CardContent className="p-0 flex-grow">
+                        <p className="text-muted-foreground italic">{testimonial.review}</p>
                       </CardContent>
-                      <div className="mt-6">
+                      <div className="mt-6 pt-4 border-t">
                         <Avatar className="mx-auto mb-2">
                           <AvatarImage src={testimonial.image} alt={testimonial.name} data-ai-hint="person portrait" />
                           <AvatarFallback>{testimonial.avatar}</AvatarFallback>
