@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Menu, X, Home } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -24,7 +24,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <Image src="https://placehold.co/150x50.png" alt="Shriram Interio Logo" width={150} height={50} data-ai-hint="company logo" />
+          <Image src="/shriram.png" alt="Shriram Interio Logo" width={150} height={50} className="object-contain" data-ai-hint="company logo" />
         </Link>
 
         <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
@@ -69,7 +69,7 @@ export function Header() {
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between border-b pb-4">
                   <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Image src="https://placehold.co/150x50.png" alt="Shriram Interio Logo" width={150} height={50} data-ai-hint="company logo" />
+                    <Image src="/shriram.png" alt="Shriram Interio Logo" width={150} height={50} className="object-contain" data-ai-hint="company logo" />
                   </Link>
                   <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
                     <X className="h-6 w-6" />
