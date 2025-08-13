@@ -21,7 +21,7 @@ export function Header() {
           <span className="font-bold font-headline text-lg">Shriram Interio</span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+        <nav className="hidden md:flex items-center space-x-4 text-sm font-medium">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
