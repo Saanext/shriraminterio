@@ -8,10 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
+import { Footer } from './footer';
 
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  if (pathname.startsWith('/shriramadmin')) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -82,3 +87,22 @@ export function Header() {
     </header>
   );
 }
+
+function MainLayout({ children }: { children: React.ReactNode }) {
+    const pathname = usePathname();
+    const isAdminPage = pathname.startsWith('/shriramadmin');
+
+    if (isAdminPage) {
+        return <>{children}</>;
+    }
+
+    return (
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+        </div>
+    )
+}
+
+export { MainLayout };

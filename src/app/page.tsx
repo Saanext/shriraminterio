@@ -90,10 +90,9 @@ const bestSellingWardrobes = [
     { name: 'Modular Wardrobe', image: 'https://placehold.co/600x800.png', hint: 'modular wardrobe' },
 ];
 
-
 export default function Home() {
   return (
-    <div className="flex flex-col">
+    <>
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white">
         <Image
@@ -298,6 +297,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 }
