@@ -79,9 +79,42 @@ export default function AboutUsPage() {
                     </div>
                 </div>
             </section>
+            
+            {/* Our Journey Section */}
+            <section className="py-16 md:py-24 bg-secondary">
+                <div className="container mx-auto px-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                         <div>
+                            <Image
+                                src="https://placehold.co/600x450.png"
+                                alt="A mood board with design samples"
+                                data-ai-hint="design mood board"
+                                width={600}
+                                height={450}
+                                className="rounded-lg shadow-2xl object-cover w-full h-full"
+                            />
+                        </div>
+                        <div>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Journey</h2>
+                            <p className="text-muted-foreground mb-4">
+                                We have a deep love for Interior Design and a strong vision of creating spaces that are both beautiful and functional for our clients. This passion led us to start our own interior design company in Pune, where we are dedicated to delivering exceptional designs and personalized services to every client.
+                            </p>
+                            <p className="text-muted-foreground mb-4">
+                                As we embarked on this journey, we worked hard to establish a strong brand identity and build a portfolio of our best work. With the growth of our brand, our client base also expanded. We now work with clients from diverse backgrounds, including families who want to update their homes and create warm and functional spaces.
+                            </p>
+                             <p className="text-muted-foreground mb-4">
+                               With every new project, Shriram Interiors' interior design team approaches the design process with a fresh perspective. Our goal is not only to create stunning designs but also to ensure that the spaces we design are practical and serve their intended purpose.
+                            </p>
+                             <p className="text-muted-foreground">
+                                Over time, Shriram Interio has experienced tremendous growth and expansion. We have welcomed more talented designers and staff members to our team, further enhancing our capabilities to serve our clients. We are excited to continue our journey of creating beautiful and functional spaces, and we look forward to the opportunity to work with you.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* Mission and Vision Section */}
-            <section className="py-16 md:py-24 bg-secondary">
+            <section className="py-16 md:py-24 bg-background">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                         <div className="p-6">
@@ -99,7 +132,7 @@ export default function AboutUsPage() {
             </section>
 
             {/* Meet the Team Section */}
-            <section className="py-16 md:py-24">
+            <section className="py-16 md:py-24 bg-secondary">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Meet Our Team</h2>
@@ -107,7 +140,7 @@ export default function AboutUsPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {teamMembers.map((member) => (
-                            <Card key={member.name} className="text-center">
+                            <Card key={member.name} className="text-center bg-background">
                                 <CardHeader className="items-center">
                                     <Avatar className="h-24 w-24 mb-4">
                                         <AvatarImage src={member.image} alt={member.name} data-ai-hint="person portrait" />
