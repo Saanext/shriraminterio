@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { GalleryHorizontal, GanttChartSquare, Home, Info, Layers, Users, Wrench } from 'lucide-react';
+import { GalleryHorizontal, GanttChartSquare, Home, Info, Layers, Users, Wrench, Phone } from 'lucide-react';
 
 export type NavItem = {
   label: string;
@@ -15,4 +15,5 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Services', href: '/services', icon: Wrench },
   { label: 'Portfolio', href: '/portfolio', icon: GalleryHorizontal },
   { label: 'Clients', href: '/clients', icon: Users },
+  { label: 'Contact', href: '/contact', icon: Phone },
 ];
