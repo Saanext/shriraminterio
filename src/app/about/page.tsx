@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Users, Target, Eye } from 'lucide-react';
+import { Users, Target, Eye, Layers, CircleDollarSign, CalendarCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
@@ -113,8 +113,56 @@ export default function AboutUsPage() {
                 </div>
             </section>
 
-            {/* Mission and Vision Section */}
+             {/* Our Values Section */}
             <section className="py-16 md:py-24 bg-background">
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold">What we do</h2>
+                        <p className="text-lg text-muted-foreground mt-2">Our Values</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <Card className="p-6 text-center">
+                            <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+                            <CardHeader>
+                                <CardTitle>Expert Design Team</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project. Our designers combine their diverse backgrounds and unique perspectives to curate interiors that captivate and inspire.</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="p-6 text-center">
+                            <Layers className="h-12 w-12 text-primary mx-auto mb-4" />
+                            <CardHeader>
+                                <CardTitle>Variety of Design Choices</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">Enjoy multiple Interior design alternatives until they match your expectations & requirement. We pride ourselves on our ability to offer an array of design,let us guide you on a journey to discover the perfect style that speaks to your soul</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="p-6 text-center">
+                            <CircleDollarSign className="h-12 w-12 text-primary mx-auto mb-4" />
+                             <CardHeader>
+                                <CardTitle>Affordable Design Fees</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">We believe in making high-quality design services accessible to everyone. We offer competitive and transparent design fees tailored to suit various budgets.Affordable design solutions can transform your space as per your vision.</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="p-6 text-center">
+                             <CalendarCheck className="h-12 w-12 text-primary mx-auto mb-4" />
+                             <CardHeader>
+                                <CardTitle>On-Time Project Delivery</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">We understand the importance of time and deadlines. Our commitment to excellence extends to ensuring on-time project delivery allowing you to experience the joy of your newly transformed space exactly when expected</p>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </section>
+
+            {/* Mission and Vision Section */}
+            <section className="py-16 md:py-24 bg-secondary">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                         <div className="p-6">
@@ -132,7 +180,7 @@ export default function AboutUsPage() {
             </section>
 
             {/* Meet the Team Section */}
-            <section className="py-16 md:py-24 bg-secondary">
+            <section className="py-16 md:py-24 bg-background">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold">Meet Our Team</h2>
@@ -140,7 +188,7 @@ export default function AboutUsPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {teamMembers.map((member) => (
-                            <Card key={member.name} className="text-center bg-background">
+                            <Card key={member.name} className="text-center bg-secondary">
                                 <CardHeader className="items-center">
                                     <Avatar className="h-24 w-24 mb-4">
                                         <AvatarImage src={member.image} alt={member.name} data-ai-hint="person portrait" />
