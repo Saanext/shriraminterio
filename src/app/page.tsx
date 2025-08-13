@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { CookingPot, Sofa, Paintbrush, Award, Users, CheckCircle } from 'lucide-react';
+import { CookingPot, Sofa, Paintbrush, Video, Smartphone, CircleDollarSign } from 'lucide-react';
 
 const services = [
   {
@@ -26,19 +26,19 @@ const services = [
 
 const expertise = [
   {
-    icon: <Award className="w-8 h-8 text-primary" />,
-    title: 'Years of Expertise',
-    description: 'Our team brings extensive experience in creating stunning and practical home interiors.',
+    icon: <Video className="w-8 h-8 text-primary" />,
+    title: 'Live 3D Designs',
+    description: 'Experience the future of design with our 3D Interior Design Services tailored to your floor plan.',
   },
   {
-    icon: <Users className="w-8 h-8 text-primary" />,
-    title: 'Professional Designers',
-    description: 'Work with our certified designers to bring your vision to life with precision and creativity.',
+    icon: <Smartphone className="w-8 h-8 text-primary" />,
+    title: 'Contactless Experience',
+    description: 'No stepping out. Design your home interiors at the comfort of your home.',
   },
   {
-    icon: <CheckCircle className="w-8 h-8 text-primary" />,
-    title: 'Quality Commitment',
-    description: 'We use only the highest quality materials and offer a one-year warranty on our work.',
+    icon: <CircleDollarSign className="w-8 h-8 text-primary" />,
+    title: 'Instant Pricing',
+    description: 'Complete price transparency and budget-friendly solutions.',
   },
 ];
 
@@ -123,9 +123,9 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose Shriram Interio?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Design at Your Comfort – Our Expertise</h2>
               <p className="text-lg text-muted-foreground mb-8">
-                We blend artistry with functionality to create spaces that are not only beautiful but also a true reflection of you. Our commitment to quality and customer satisfaction is at the heart of everything we do.
+                We bring a wealth of expertise and passion for creating interiors at your comfort.
               </p>
               <div className="space-y-6">
                 {expertise.map((item) => (
