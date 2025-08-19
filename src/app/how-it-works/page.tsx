@@ -54,6 +54,16 @@ const benefits = [
     },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, x: -100 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
+
+const cardVariantsRight = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
+};
+
 export default function HowItWorksPage() {
   return (
     <div className="bg-background">
@@ -76,28 +86,44 @@ export default function HowItWorksPage() {
       {/* Our Process Section */}
       <section className="bg-secondary">
         <div className="container mx-auto px-4 py-16 md:py-24">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
-            <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={index}
-                className="flex flex-col items-center text-center"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.5 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className="bg-primary/10 p-4 rounded-full mb-4">
-                  {step.icon}
-                </div>
-                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
+            <div className="text-center mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
+                <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
+            </div>
+            <div className="relative">
+                {/* Central Timeline */}
+                <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block"></div>
+                
+                {processSteps.map((step, index) => (
+                    <motion.div
+                        key={index}
+                        initial="hidden"
+                        whileInView="visible"
+                        viewport={{ once: true, amount: 0.5 }}
+                        className="mb-12 md:mb-20"
+                    >
+                        <div className="flex md:items-center flex-col md:flex-row">
+                            {/* Card Content */}
+                            <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12 md:order-2'}`}>
+                                <motion.div variants={index % 2 === 0 ? cardVariants : cardVariantsRight}>
+                                    <Card className="p-6 shadow-lg">
+                                        <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                                        <p className="text-muted-foreground">{step.description}</p>
+                                    </Card>
+                                </motion.div>
+                            </div>
+                            
+                            {/* Timeline Icon */}
+                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-background border-4 border-primary flex items-center justify-center my-4 md:my-0 md:order-1 relative z-10">
+                               {step.icon}
+                            </div>
+                            
+                            {/* Spacer for alternating layout */}
+                            <div className="flex-1 hidden md:block"></div>
+                        </div>
+                    </motion.div>
+                ))}
+            </div>
         </div>
       </section>
 
