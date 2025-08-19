@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -65,6 +66,14 @@ const projects = [
   },
 ];
 
+const partners = [
+    { name: 'Ebco', logoSrc: '/ebco.png' },
+    { name: 'Hettich', logoSrc: '/hettich.png' },
+    { name: 'Royale Touche', logoSrc: '/royale-touche.png' },
+    { name: 'Hafele', logoSrc: '/hafele.png' },
+    { name: 'Godrej', logoSrc: '/godrej.png' },
+];
+
 const categories = ['All', 'Living Areas', 'Kitchens', 'Wardrobes'];
 
 export default function PortfolioPage() {
@@ -115,6 +124,32 @@ export default function PortfolioPage() {
           </div>
         </Tabs>
       </div>
+      <section className="py-16 md:py-24 bg-secondary">
+          <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                  <div className="flex justify-center items-center mb-2">
+                      <div className="border-t border-primary w-12"></div>
+                      <p className="text-sm text-primary font-bold tracking-widest mx-4">MEET OUR PARTNERS</p>
+                      <div className="border-t border-primary w-12"></div>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold">Our Partners</h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
+                  {partners.map((partner) => (
+                      <div key={partner.name} className="flex justify-center">
+                          <Image
+                              src={partner.logoSrc}
+                              alt={`${partner.name} Logo`}
+                              width={150}
+                              height={75}
+                              className="object-contain"
+                              data-ai-hint="partner logo"
+                          />
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
     </div>
   );
 }
