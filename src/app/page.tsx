@@ -8,8 +8,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import Autoplay from "embla-carousel-autoplay"
 import { PageTransition } from '@/components/page-transition';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const expertise = [
   {
@@ -36,117 +36,28 @@ const expertise = [
 
 const whyShriramInterio = [
     {
-        icon: (
-            <svg
-                className="w-16 h-16"
-                viewBox="0 0 64 64"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <g fill="none" fillRule="evenodd">
-                    <circle className="stroke-current text-primary" strokeWidth="2" cx="32" cy="32" r="31" />
-                    <g className="fill-current text-primary" transform="translate(18 18)">
-                        <path d="M15.3 8.3a3 3 0 01-2.6 1.6h-5a3 3 0 01-2.6-1.6L2.6 3.8a1 1 0 011-1.6l1.7.9a1 1 0 001.2 0l3-1.8a1 1 0 011.2 0l3 1.8a1 1 0 001.2 0l1.7-.9a1 1 0 011 1.6l-2.5 4.5z">
-                            <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.1s" fill="freeze" />
-                        </path>
-                        <circle cx="9" cy="20" r="4">
-                            <animate attributeName="r" from="0" to="4" dur="0.5s" begin="0.3s" fill="freeze" />
-                        </circle>
-                        <circle cx="21" cy="20" r="4">
-                            <animate attributeName="r" from="0" to="4" dur="0.5s" begin="0.5s" fill="freeze" />
-                        </circle>
-                        <circle cx="3" cy="12" r="3">
-                            <animate attributeName="r" from="0" to="3" dur="0.5s" begin="0.2s" fill="freeze" />
-                        </circle>
-                    </g>
-                </g>
-            </svg>
-        ),
         title: 'Expert Design Team',
         description: 'Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project. Our designers combine their diverse backgrounds and unique perspectives to curate interiors that captivate and inspire.',
+        imageSrc: '/team-meeting.png',
+        dataAiHint: 'design team meeting',
     },
     {
-        icon: (
-            <svg
-                className="w-16 h-16"
-                viewBox="0 0 64 64"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <g fill="none" fillRule="evenodd">
-                    <circle className="stroke-current text-primary" strokeWidth="2" cx="32" cy="32" r="31" />
-                    <g className="stroke-current text-primary" strokeWidth="2">
-                        <path d="M20 28l12-8 12 8" strokeLinecap="round" strokeLinejoin="round">
-                            <animate attributeName="stroke-dasharray" from="0 60" to="60 0" dur="0.7s" begin="0.1s" fill="freeze" />
-                        </path>
-                        <path d="M20 38l12-8 12 8" strokeLinecap="round" strokeLinejoin="round" opacity="0">
-                            <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="0.8s" fill="freeze" />
-                            <animate attributeName="stroke-dasharray" from="0 60" to="60 0" dur="0.7s" begin="0.8s" fill="freeze" />
-                        </path>
-                        <path d="M20 48l12-8 12 8" strokeLinecap="round" strokeLinejoin="round" opacity="0">
-                            <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.5s" fill="freeze" />
-                            <animate attributeName="stroke-dasharray" from="0 60" to="60 0" dur="0.7s" begin="1.5s" fill="freeze" />
-                        </path>
-                    </g>
-                </g>
-            </svg>
-        ),
         title: 'Variety of Design Choices',
         description: 'Enjoy multiple Interior design alternatives until they match your expectations & requirement. We pride ourselves on our ability to offer an array of design,let us guide you on a journey to discover the perfect style that speaks to your soul',
+        imageSrc: '/design-choices.png',
+        dataAiHint: 'interior design swatches',
     },
     {
-        icon: (
-             <svg
-                className="w-16 h-16"
-                viewBox="0 0 64 64"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <g fill="none" fillRule="evenodd">
-                    <circle className="stroke-current text-primary" strokeWidth="2" cx="32" cy="32" r="31" />
-                    <g className="fill-current text-primary" transform="translate(22 22)">
-                        <path d="M10 18h10v2H10z">
-                            <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.1s" fill="freeze" />
-                        </path>
-                        <path d="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8h6v-2h-6c-3.3 0-6-2.7-6-6s2.7-6 6-6h8v12h-2V6h-4z">
-                            <animate attributeName="d" from="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8h6v-2h-6c-3.3 0-6-2.7-6-6s2.7-6 6-6h8v12h-2V6h-4z" to="M12 4c-4.4 0-8 3.6-8 8s3.6 8 8 8h6v-2h-6c-3.3 0-6-2.7-6-6s2.7-6 6-6h8v12h2V6h-6z" dur="1s" begin="0.5s" fill="freeze" repeatCount="1"/>
-                        </path>
-                    </g>
-                </g>
-            </svg>
-        ),
         title: 'Affordable Design Fees',
         description: 'We believe in making high-quality design services accessible to everyone. We offer competitive and transparent design fees tailored to suit various budgets.Affordable design solutions can transform your space as per your vision.',
+        imageSrc: '/affordable-design.png',
+        dataAiHint: 'calculator budget design',
     },
     {
-        icon: (
-            <svg
-                className="w-16 h-16"
-                viewBox="0 0 64 64"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <g fill="none" fillRule="evenodd">
-                    <circle className="stroke-current text-primary" strokeWidth="2" cx="32" cy="32" r="31" />
-                    <g className="stroke-current text-primary" strokeWidth="2" strokeLinecap="round">
-                        <path d="M24 24h16v18H24z">
-                             <animate attributeName="stroke-dasharray" from="0 100" to="100 0" dur="0.8s" fill="freeze" />
-                        </path>
-                        <path d="M29 24v-4" >
-                             <animate attributeName="stroke-dasharray" from="0 10" to="10 0" dur="0.3s" begin="0.8s" fill="freeze" />
-                        </path>
-                        <path d="M35 24v-4" >
-                             <animate attributeName="stroke-dasharray" from="0 10" to="10 0" dur="0.3s" begin="1s" fill="freeze" />
-                        </path>
-                        <path d="M24 32h16" >
-                            <animate attributeName="stroke-dasharray" from="0 20" to="20 0" dur="0.4s" begin="1.2s" fill="freeze" />
-                        </path>
-                        <path d="M29 35l2 2 4-4" strokeLinejoin="round" opacity="0">
-                             <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.6s" fill="freeze" />
-                             <animate attributeName="stroke-dasharray" from="0 20" to="20 0" dur="0.5s" begin="1.6s" fill="freeze" />
-                        </path>
-                    </g>
-                </g>
-            </svg>
-        ),
         title: 'On-Time Project Delivery',
         description: 'We understand the importance of time and deadlines. Our commitment to excellence extends to ensuring on-time project delivery allowing you to experience the joy of your newly transformed space exactly when expected',
+        imageSrc: '/on-time-delivery.png',
+        dataAiHint: 'calendar deadline project',
     },
 ];
 
@@ -208,12 +119,6 @@ const bestSellingWardrobes = [
     { name: 'Modular Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'modular wardrobe' },
 ];
 
-const heroSlides = [
-    { src: '/b1.jpg', alt: 'Luxurious and comfortable hotel room interior', hint: 'hotel room interior' },
-    { src: '/b2.jpg', alt: 'Interior design sketch', hint: 'interior design sketch' },
-    { src: '/kitchen.jpg', alt: 'Modern kitchen', hint: 'modern kitchen' },
-    { src: '/r1.jpg', alt: 'King size bed', hint: 'king size bed' },
-]
 
 export default function Home() {
   return (
@@ -288,21 +193,32 @@ export default function Home() {
                     <h2 className="text-3xl md:text-4xl font-bold">Why Shriram Interio</h2>
                     <p className="text-lg text-muted-foreground mt-2">Our commitment to quality and customer satisfaction.</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {whyShriramInterio.map((value) => (
-                        <Card key={value.title} className="p-6 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 flex flex-col items-center">
-                           <div className="mb-4">
-                                {value.icon}
-                            </div>
-                            <CardHeader className="p-0">
-                                <CardTitle>{value.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent className="p-0 mt-4">
-                                <p className="text-muted-foreground text-sm">{value.description}</p>
-                            </CardContent>
-                        </Card>
+                <Accordion type="single" collapsible defaultValue="item-0" className="w-full max-w-4xl mx-auto">
+                    {whyShriramInterio.map((item, index) => (
+                        <AccordionItem key={index} value={`item-${index}`}>
+                            <AccordionTrigger className="text-xl font-headline hover:no-underline">
+                                {item.title}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                                    <div className="md:col-span-1">
+                                        <Image 
+                                            src={item.imageSrc}
+                                            alt={item.title}
+                                            width={400}
+                                            height={400}
+                                            className="rounded-lg object-cover w-full h-full"
+                                            data-ai-hint={item.dataAiHint}
+                                        />
+                                    </div>
+                                    <div className="md:col-span-2">
+                                        <p className="text-muted-foreground">{item.description}</p>
+                                    </div>
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
                     ))}
-                </div>
+                </Accordion>
             </div>
         </section>
 
@@ -452,5 +368,3 @@ export default function Home() {
     </PageTransition>
   );
 }
-
-    
