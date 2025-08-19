@@ -103,34 +103,15 @@ export default function Home() {
     <>
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh]">
-        <Carousel
-            opts={{ loop: true }}
-            plugins={[
-                Autoplay({
-                  delay: 4000,
-                  stopOnInteraction: false,
-                }),
-              ]}
-            className="w-full h-full"
-        >
-            <CarouselContent className="h-full">
-                {heroSlides.map((slide, index) => (
-                    <CarouselItem key={index} className="h-full">
-                         <div className="relative w-full h-full">
-                            <Image
-                                src={slide.src}
-                                alt={slide.alt}
-                                data-ai-hint={slide.hint}
-                                layout="fill"
-                                objectFit="cover"
-                                className="absolute inset-0 z-0 brightness-50"
-                                priority={index === 0}
-                            />
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-        </Carousel>
+        <Image
+            src="/b1.jpg"
+            alt="Luxurious and comfortable hotel room interior"
+            data-ai-hint="hotel room interior"
+            layout="fill"
+            objectFit="cover"
+            className="absolute inset-0 z-0 brightness-50"
+            priority
+        />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg">
