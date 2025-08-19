@@ -57,7 +57,7 @@ export default function HowItWorksPage() {
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
         <Image
-          src="/how-it-works-hero.jpg"
+          src="https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080"
           alt="A team of interior designers collaborating on a project"
           data-ai-hint="design team collaboration"
           layout="fill"
