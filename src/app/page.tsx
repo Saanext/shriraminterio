@@ -6,10 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck } from 'lucide-react';
+import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PageTransition } from '@/components/page-transition';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const expertise = [
   {
@@ -36,28 +35,24 @@ const expertise = [
 
 const whyShriramInterio = [
     {
+        icon: <Users className="w-10 h-10 text-primary" />,
         title: 'Expert Design Team',
-        description: 'Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project. Our designers combine their diverse backgrounds and unique perspectives to curate interiors that captivate and inspire.',
-        imageSrc: '/team-meeting.png',
-        dataAiHint: 'design team meeting',
+        description: 'Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project, curating interiors that captivate and inspire.',
     },
     {
+        icon: <Layers className="w-10 h-10 text-primary" />,
         title: 'Variety of Design Choices',
-        description: 'Enjoy multiple Interior design alternatives until they match your expectations & requirement. We pride ourselves on our ability to offer an array of design,let us guide you on a journey to discover the perfect style that speaks to your soul',
-        imageSrc: '/design-choices.png',
-        dataAiHint: 'interior design swatches',
+        description: 'Enjoy multiple interior design alternatives until they match your expectations. We offer an array of designs to help you discover the perfect style.',
     },
     {
+        icon: <CircleDollarSign className="w-10 h-10 text-primary" />,
         title: 'Affordable Design Fees',
-        description: 'We believe in making high-quality design services accessible to everyone. We offer competitive and transparent design fees tailored to suit various budgets.Affordable design solutions can transform your space as per your vision.',
-        imageSrc: '/affordable-design.png',
-        dataAiHint: 'calculator budget design',
+        description: 'We believe in making high-quality design services accessible to everyone, offering competitive and transparent fees tailored to suit various budgets.',
     },
     {
+        icon: <CalendarCheck className="w-10 h-10 text-primary" />,
         title: 'On-Time Project Delivery',
-        description: 'We understand the importance of time and deadlines. Our commitment to excellence extends to ensuring on-time project delivery allowing you to experience the joy of your newly transformed space exactly when expected',
-        imageSrc: '/on-time-delivery.png',
-        dataAiHint: 'calendar deadline project',
+        description: 'We understand the importance of time. Our commitment to excellence ensures on-time project delivery, letting you enjoy your new space when expected.',
     },
 ];
 
@@ -187,38 +182,25 @@ export default function Home() {
       </section>
 
        {/* Why Shriram Interio Section */}
-       <section className="py-16 md:py-24 bg-background">
+        <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold">Why Shriram Interio</h2>
                     <p className="text-lg text-muted-foreground mt-2">Our commitment to quality and customer satisfaction.</p>
                 </div>
-                <Accordion type="single" collapsible defaultValue="item-0" className="w-full max-w-4xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {whyShriramInterio.map((item, index) => (
-                        <AccordionItem key={index} value={`item-${index}`}>
-                            <AccordionTrigger className="text-xl font-headline hover:no-underline">
-                                {item.title}
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-                                    <div className="md:col-span-1">
-                                        <Image 
-                                            src={item.imageSrc}
-                                            alt={item.title}
-                                            width={400}
-                                            height={400}
-                                            className="rounded-lg object-cover w-full h-full"
-                                            data-ai-hint={item.dataAiHint}
-                                        />
-                                    </div>
-                                    <div className="md:col-span-2">
-                                        <p className="text-muted-foreground">{item.description}</p>
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
+                        <Card key={index} className="text-center p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-card">
+                            <CardHeader className="items-center">
+                                {item.icon}
+                                <CardTitle className="mt-4 text-xl">{item.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{item.description}</p>
+                            </CardContent>
+                        </Card>
                     ))}
-                </Accordion>
+                </div>
             </div>
         </section>
 
