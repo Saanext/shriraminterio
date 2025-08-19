@@ -1,6 +1,8 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star } from 'lucide-react';
+import { Star, PlayCircle } from 'lucide-react';
+import Image from 'next/image';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const testimonials = [
   {
@@ -41,6 +43,33 @@ const testimonials = [
   },
 ];
 
+const clientVideos = [
+  {
+    name: 'Rohan & Priya S. on their Living Room',
+    imageSrc: '/portfolio-1.png',
+    dataAiHint: 'living room',
+    videoUrl: 'https://www.youtube.com/watch?v=your_video_id_1'
+  },
+  {
+    name: 'Anjali P. loving her new Kitchen',
+    imageSrc: '/portfolio-2.png',
+    dataAiHint: 'modern kitchen',
+    videoUrl: 'https://www.youtube.com/watch?v=your_video_id_2'
+  },
+  {
+    name: 'Sameer J. reviews his Full Home Interior',
+    imageSrc: '/portfolio-3.png',
+    dataAiHint: 'home interior',
+    videoUrl: 'https://www.youtube.com/watch?v=your_video_id_3'
+  },
+  {
+    name: 'Meera K. showcases her Wardrobe',
+    imageSrc: '/portfolio-4.png',
+    dataAiHint: 'modern wardrobe',
+    videoUrl: 'https://www.youtube.com/watch?v=your_video_id_4'
+  }
+];
+
 const StarRating = ({ rating = 5 }: { rating?: number }) => (
   <div className="flex text-primary">
     {[...Array(rating)].map((_, i) => (
@@ -75,6 +104,50 @@ export default function ClientsPage() {
           ))}
         </div>
       </div>
+
+       {/* Client Videos Section */}
+      <section className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold">Client Video Testimonials</h2>
+            <p className="text-lg text-muted-foreground mt-2">See our happy clients in action.</p>
+          </div>
+          <Carousel
+            opts={{ align: 'start', loop: true }}
+            className="w-full max-w-6xl mx-auto"
+          >
+            <CarouselContent>
+              {clientVideos.map((video, index) => (
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                  <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="group block">
+                    <Card className="overflow-hidden">
+                       <div className="relative aspect-video">
+                        <Image
+                          src={video.imageSrc}
+                          alt={video.name}
+                          layout="fill"
+                          objectFit="cover"
+                          className="transition-transform duration-500 group-hover:scale-105"
+                          data-ai-hint={video.dataAiHint}
+                        />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/60">
+                          <PlayCircle className="h-16 w-16 text-white/80 transition-transform duration-300 group-hover:scale-110" />
+                        </div>
+                      </div>
+                      <CardContent className="p-4 bg-card">
+                        <h3 className="text-lg font-bold truncate">{video.name}</h3>
+                      </CardContent>
+                    </Card>
+                  </a>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
+      </section>
+
     </div>
   );
 }
