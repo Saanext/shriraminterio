@@ -21,12 +21,12 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
-      <div className="container flex h-16 items-center">
-        <Link href="/" className="mr-4 flex items-center space-x-2 lg:mr-6">
+      <div className="container flex h-16 items-center justify-between">
+        <Link href="/" className="flex items-center space-x-2">
           <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
         </Link>
 
-        <nav className="hidden xl:flex items-center space-x-4 text-sm font-medium">
+        <nav className="hidden xl:flex items-center space-x-6 text-sm font-medium">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
@@ -41,14 +41,17 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex flex-1 items-center justify-end gap-4">
+        <div className="flex items-center gap-4">
           <Sheet>
             <SheetTrigger asChild>
               <Button>Get a Quote</Button>
             </SheetTrigger>
             <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
               <SheetHeader>
-                <SheetTitle className="text-2xl">Get a Free Quote</SheetTitle>
+                <SheetTitle>Get a Free Quote</SheetTitle>
+                 <SheetDescription>
+                  Fill out the form below and we'll get back to you with a personalized quote.
+                </SheetDescription>
               </SheetHeader>
               <GetAQuoteForm />
             </SheetContent>
@@ -62,12 +65,16 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="left" className="p-0">
                <div className="flex flex-col h-full">
-                <SheetHeader className="p-4 border-b">
+                <SheetHeader className="p-4 border-b flex flex-row items-center justify-between">
                    <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
                     <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
                   </Link>
-                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                  <SheetDescription className="sr-only">Main navigation links for the site.</SheetDescription>
+                  <SheetClose asChild>
+                    <Button variant="ghost" size="icon">
+                      <X className="h-6 w-6" />
+                      <span className="sr-only">Close Menu</span>
+                    </Button>
+                  </SheetClose>
                 </SheetHeader>
                 <nav className="flex flex-col space-y-1 p-4">
                   {NAV_ITEMS.map((item) => (
@@ -88,11 +95,20 @@ export function Header() {
                   ))}
                 </nav>
                  <div className="p-4 mt-auto">
-                   <SheetClose asChild>
-                      <Button asChild className="w-full">
-                        <Link href="/get-a-quote">Get a Quote</Link>
-                      </Button>
-                   </SheetClose>
+                    <Sheet>
+                      <SheetTrigger asChild>
+                         <Button className="w-full">Get a Quote</Button>
+                      </SheetTrigger>
+                       <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+                        <SheetHeader>
+                          <SheetTitle>Get a Free Quote</SheetTitle>
+                           <SheetDescription>
+                            Fill out the form below and we'll get back to you with a personalized quote.
+                          </SheetDescription>
+                        </SheetHeader>
+                        <GetAQuoteForm />
+                      </SheetContent>
+                    </Sheet>
                  </div>
               </div>
             </SheetContent>
