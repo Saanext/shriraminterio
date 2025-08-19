@@ -80,65 +80,23 @@ export default function HowItWorksPage() {
             <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
             <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
           </div>
-
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block" aria-hidden="true"></div>
-            
-            <motion.div 
-                className="absolute left-1/2 top-0 -translate-x-1/2 w-0.5 bg-primary hidden md:block"
-                style={{ originY: 0 }}
-                initial={{ scaleY: 0 }}
-                whileInView={{ scaleY: 1 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 2, ease: "easeInOut" }}
-            />
-
-
-            <div className="space-y-16">
-              {processSteps.map((step, index) => (
-                 <motion.div
-                  key={index}
-                  className="flex flex-col md:flex-row items-center w-full"
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  {/* Content */}
-                  <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 md:text-left' : 'md:order-3 md:text-right'}`}>
-                    <div className="p-6 border-2 rounded-lg shadow-lg bg-card hover:shadow-primary/20 hover:scale-105 transition-all duration-300">
-                      <div className="flex items-center mb-2 md:hidden">
-                        <div className="bg-primary/10 p-2 rounded-full mr-4">
-                          {step.icon}
-                        </div>
-                        <h3 className="text-xl font-bold">{step.title}</h3>
-                      </div>
-                       <h3 className={`text-2xl font-bold hidden md:block ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>{step.title}</h3>
-                      <p className={`mt-2 text-muted-foreground ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>{step.description}</p>
-                    </div>
-                  </div>
-
-                  {/* Icon Middle */}
-                  <div className="w-full md:w-2/12 order-2 flex justify-center">
-                    <motion.div 
-                      className="relative z-10"
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      viewport={{ once: true, amount: 0.8 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                        <div className="bg-secondary p-3 rounded-full border-2 border-primary my-4 md:my-0">
-                          {step.icon}
-                        </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Spacer */}
-                  <div className="md:w-5/12 order-1 md:order-none"></div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+            {processSteps.map((step, index) => (
+              <motion.div
+                key={index}
+                className="flex flex-col items-center text-center"
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="bg-primary/10 p-4 rounded-full mb-4">
+                  {step.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground">{step.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
