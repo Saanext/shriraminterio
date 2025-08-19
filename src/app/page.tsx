@@ -8,6 +8,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, CircleDollarSign, Tv } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import Autoplay from "embla-carousel-autoplay"
 
 const expertise = [
   {
@@ -90,30 +91,58 @@ const bestSellingWardrobes = [
     { name: 'Modular Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'modular wardrobe' },
 ];
 
+const heroSlides = [
+    { src: '/b1.jpg', alt: 'Luxurious and comfortable hotel room interior', hint: 'hotel room interior' },
+    { src: '/b2.jpg', alt: 'Interior design sketch', hint: 'interior design sketch' },
+    { src: '/kitchen.jpg', alt: 'Modern kitchen', hint: 'modern kitchen' },
+    { src: '/r1.jpg', alt: 'King size bed', hint: 'king size bed' },
+]
+
 export default function Home() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center text-center text-white">
-        <Image
-          src="/b1.jpg"
-          alt="Luxurious and comfortable hotel room interior"
-          data-ai-hint="hotel room interior"
-          layout="fill"
-          objectFit="cover"
-          className="absolute inset-0 z-0 brightness-50"
-          priority
-        />
-        <div className="relative z-10 p-4">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg">
-            Crafting Dreams, Designing Reality
-          </h1>
-          <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
-            Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
-          </p>
-          <Button asChild size="lg" className="mt-8 transition-transform transform hover:scale-105">
-            <Link href="/services">Explore Our Services</Link>
-          </Button>
+      <section className="relative w-full h-[60vh] md:h-[80vh]">
+        <Carousel
+            opts={{ loop: true }}
+            plugins={[
+                Autoplay({
+                  delay: 4000,
+                  stopOnInteraction: false,
+                }),
+              ]}
+            className="w-full h-full"
+        >
+            <CarouselContent className="h-full">
+                {heroSlides.map((slide, index) => (
+                    <CarouselItem key={index} className="h-full">
+                         <div className="relative w-full h-full">
+                            <Image
+                                src={slide.src}
+                                alt={slide.alt}
+                                data-ai-hint={slide.hint}
+                                layout="fill"
+                                objectFit="cover"
+                                className="absolute inset-0 z-0 brightness-50"
+                                priority={index === 0}
+                            />
+                        </div>
+                    </CarouselItem>
+                ))}
+            </CarouselContent>
+        </Carousel>
+        <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
+             <div>
+                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg">
+                    Crafting Dreams, Designing Reality
+                </h1>
+                <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
+                    Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
+                </p>
+                <Button asChild size="lg" className="mt-8 transition-transform transform hover:scale-105">
+                    <Link href="/services">Explore Our Services</Link>
+                </Button>
+            </div>
         </div>
       </section>
 
