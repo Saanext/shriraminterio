@@ -9,7 +9,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PageTransition } from '@/components/page-transition';
-import Autoplay from "embla-carousel-autoplay";
 
 
 const expertise = [
@@ -116,47 +115,19 @@ const bestSellingWardrobes = [
     { name: 'Modular Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'modular wardrobe' },
 ];
 
-
-const heroImages = [
-    { src: '/b1.jpg', alt: 'Luxurious and comfortable hotel room interior', hint: 'hotel room interior' },
-    { src: '/b2.jpg', alt: 'Interior design sketch', hint: 'interior design sketch' }
-];
-
 export default function Home() {
   return (
     <PageTransition>
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-[80vh]">
-         <Carousel
-            className="w-full h-full"
-            plugins={[
-                Autoplay({
-                    delay: 5000,
-                    stopOnInteraction: true,
-                }),
-            ]}
-            opts={{
-                loop: true,
-            }}
-        >
-            <CarouselContent>
-                {heroImages.map((image, index) => (
-                    <CarouselItem key={index}>
-                        <div className="w-full h-full relative">
-                            <Image
-                                src={image.src}
-                                alt={image.alt}
-                                data-ai-hint={image.hint}
-                                layout="fill"
-                                objectFit="cover"
-                                className="brightness-50"
-                                priority={index === 0}
-                            />
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-        </Carousel>
+      <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover brightness-50"
+          src="https://videos.pexels.com/video-files/8310138/8310138-hd_1920_1080_30fps.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg font-headline">
