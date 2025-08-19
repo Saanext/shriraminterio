@@ -86,7 +86,7 @@ export default function HowItWorksPage() {
               {processSteps.map((step, index) => (
                 <div key={index} className="flex flex-col md:flex-row items-center w-full">
                   {/* Content */}
-                  <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 pr-8' : 'md:order-3 md:pl-8'}`}>
+                  <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 md:text-right pr-8' : 'md:order-3 text-left md:pl-8'}`}>
                     <div className="p-6 border rounded-lg shadow-md bg-card">
                       <div className="flex items-center mb-2 md:hidden">
                         <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -94,7 +94,7 @@ export default function HowItWorksPage() {
                         </div>
                         <h3 className="text-xl font-bold">{step.title}</h3>
                       </div>
-                      <h3 className="text-2xl font-bold hidden md:block">{step.title}</h3>
+                       <h3 className="text-2xl font-bold hidden md:block">{step.title}</h3>
                       <p className="mt-2 text-muted-foreground">{step.description}</p>
                     </div>
                   </div>
