@@ -120,13 +120,13 @@ export default function Home() {
     <PageTransition>
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
-        <video
+        <Image
+          src="/hero-image.jpg"
+          alt="Beautifully designed modern interior"
+          layout="fill"
+          objectFit="cover"
           className="absolute top-0 left-0 w-full h-full object-cover brightness-50"
-          src="https://videos.pexels.com/video-files/8310138/8310138-hd_1920_1080_30fps.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
+          data-ai-hint="modern interior"
         />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
