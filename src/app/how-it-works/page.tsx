@@ -84,6 +84,16 @@ export default function HowItWorksPage() {
           <div className="relative">
             {/* Timeline line - The visible part */}
             <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-border hidden md:block" aria-hidden="true"></div>
+            
+            <motion.div 
+                className="absolute left-1/2 -translate-x-1/2 w-1 bg-primary hidden md:block"
+                style={{ originY: 0 }}
+                initial={{ scaleY: 0 }}
+                whileInView={{ scaleY: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+            />
+
 
             <div className="space-y-16">
               {processSteps.map((step, index) => (
@@ -111,19 +121,17 @@ export default function HowItWorksPage() {
 
                   {/* Icon Middle */}
                   <div className="w-full md:w-2/12 order-2 flex justify-center">
-                    <div className="relative z-10">
+                    <motion.div 
+                      className="relative z-10"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={{ once: true, amount: 0.8 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                    >
                         <div className="bg-background p-3 rounded-full border-2 border-primary my-4 md:my-0">
                           {step.icon}
                         </div>
-                         <motion.div
-                          className="absolute top-full left-1/2 -translate-x-1/2 w-1 bg-primary hidden md:block"
-                          initial={{ height: 0 }}
-                          whileInView={{ height: '4rem' }} // space-y-16 is 4rem
-                          viewport={{ once: true, amount: 'all' }}
-                          transition={{ duration: 0.3, delay: 0.4 }}
-                          style={{ originY: 0 }}
-                        />
-                    </div>
+                    </motion.div>
                   </div>
 
                   {/* Spacer */}
