@@ -131,7 +131,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
-                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg">
+                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg font-headline">
                     Crafting Dreams, Designing Reality
                 </h1>
                 <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
@@ -149,7 +149,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="order-2 lg:order-1">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Welcome to Shriram Interio</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Welcome to <span className="font-headline text-shadow-sm">Shriram Interio</span></h2>
               <p className="text-muted-foreground mb-4">
                 Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team of passionate and skilled interior designers specializes in designing and decorating residential spaces — focusing on space planning, color theory, furniture selection, and lighting design.
               </p>
@@ -176,7 +176,7 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">About Company</h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            SHRIRAM INTERIO — Where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we combine creativity, functionality, and personalization in every project.
+            <span className="font-headline text-shadow-sm">SHRIRAM INTERIO</span> — Where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we combine creativity, functionality, and personalization in every project.
           </p>
         </div>
       </section>
@@ -185,7 +185,7 @@ export default function Home() {
         <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold">Why Shriram Interio</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold">Why <span className="font-headline text-shadow-sm">Shriram Interio</span></h2>
                     <p className="text-lg text-muted-foreground mt-2">Our commitment to quality and customer satisfaction.</p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -243,7 +243,7 @@ export default function Home() {
             </TabsList>
             <TabsContent value="trending">
               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent>
+                <CarouselContent className="flex">
                   {trendingItems.map((item, index) => (
                     <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                       <Card className="overflow-hidden">
@@ -263,7 +263,7 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="kitchens">
               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent>
+                <CarouselContent className="flex">
                   {bestSellingKitchens.map((item, index) => (
                     <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
                        <Card className="overflow-hidden">
@@ -283,7 +283,7 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="wardrobes">
                <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent>
+                <CarouselContent className="flex">
                   {bestSellingWardrobes.map((item, index) => (
                     <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                        <Card className="overflow-hidden">
