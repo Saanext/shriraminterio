@@ -132,7 +132,7 @@ export default function Home() {
             plugins={[
                 Autoplay({
                     delay: 5000,
-                    stopOnInteraction: false,
+                    stopOnInteraction: true,
                 }),
             ]}
             opts={{
@@ -142,15 +142,17 @@ export default function Home() {
             <CarouselContent>
                 {heroImages.map((image, index) => (
                     <CarouselItem key={index}>
-                        <Image
-                            src={image.src}
-                            alt={image.alt}
-                            data-ai-hint={image.hint}
-                            layout="fill"
-                            objectFit="cover"
-                            className="absolute inset-0 z-0 brightness-50"
-                            priority={index === 0}
-                        />
+                        <div className="w-full h-full relative">
+                            <Image
+                                src={image.src}
+                                alt={image.alt}
+                                data-ai-hint={image.hint}
+                                layout="fill"
+                                objectFit="cover"
+                                className="brightness-50"
+                                priority={index === 0}
+                            />
+                        </div>
                     </CarouselItem>
                 ))}
             </CarouselContent>
@@ -376,3 +378,5 @@ export default function Home() {
     </PageTransition>
   );
 }
+
+    
