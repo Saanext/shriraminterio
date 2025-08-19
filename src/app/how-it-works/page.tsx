@@ -82,11 +82,11 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="relative">
-            {/* Timeline line - The visible part */}
-            <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-border hidden md:block" aria-hidden="true"></div>
+            {/* Timeline line */}
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block" aria-hidden="true"></div>
             
             <motion.div 
-                className="absolute left-1/2 -translate-x-1/2 w-1 bg-primary hidden md:block"
+                className="absolute left-1/2 top-0 -translate-x-1/2 w-0.5 bg-primary hidden md:block"
                 style={{ originY: 0 }}
                 initial={{ scaleY: 0 }}
                 whileInView={{ scaleY: 1 }}
@@ -100,13 +100,13 @@ export default function HowItWorksPage() {
                  <motion.div
                   key={index}
                   className="flex flex-col md:flex-row items-center w-full"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.5 }}
-                  transition={{ duration: 0.5 }}
+                  transition={{ duration: 0.6 }}
                 >
                   {/* Content */}
-                  <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 md:text-right pr-8' : 'md:order-3 text-left md:pl-8'}`}>
+                  <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 md:text-left' : 'md:order-3 md:text-right'}`}>
                     <div className="p-6 border-2 rounded-lg shadow-lg bg-card hover:shadow-primary/20 hover:scale-105 transition-all duration-300">
                       <div className="flex items-center mb-2 md:hidden">
                         <div className="bg-primary/10 p-2 rounded-full mr-4">
@@ -114,8 +114,8 @@ export default function HowItWorksPage() {
                         </div>
                         <h3 className="text-xl font-bold">{step.title}</h3>
                       </div>
-                       <h3 className="text-2xl font-bold hidden md:block">{step.title}</h3>
-                      <p className="mt-2 text-muted-foreground">{step.description}</p>
+                       <h3 className={`text-2xl font-bold hidden md:block ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>{step.title}</h3>
+                      <p className={`mt-2 text-muted-foreground ${index % 2 === 0 ? 'text-left' : 'text-right'}`}>{step.description}</p>
                     </div>
                   </div>
 
@@ -128,14 +128,14 @@ export default function HowItWorksPage() {
                       viewport={{ once: true, amount: 0.8 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
                     >
-                        <div className="bg-background p-3 rounded-full border-2 border-primary my-4 md:my-0">
+                        <div className="bg-secondary p-3 rounded-full border-2 border-primary my-4 md:my-0">
                           {step.icon}
                         </div>
                     </motion.div>
                   </div>
 
                   {/* Spacer */}
-                  <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-3' : 'md:order-1'}`}></div>
+                  <div className="md:w-5/12 order-1 md:order-none"></div>
                 </motion.div>
               ))}
             </div>
