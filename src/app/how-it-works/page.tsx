@@ -56,25 +56,10 @@ const benefits = [
     },
 ];
 
-const cardVariantsLeft = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-};
-
-const cardVariantsRight = {
-    hidden: { opacity: 0, x: 50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
-};
-
-const iconVariantsLeft = {
-    hidden: { opacity: 0, scale: 0.5 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.2 } },
-};
-
-const iconVariantsRight = {
-    hidden: { opacity: 0, scale: 0.5 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, delay: 0.2 } },
-};
+const cardVariants = (isLeft: boolean) => ({
+    hidden: { opacity: 0, x: isLeft ? -100 : 100 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+});
 
 export default function HowItWorksPage() {
   return (
@@ -103,43 +88,36 @@ export default function HowItWorksPage() {
             <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
           </div>
           <div className="relative">
-            {/* Central Timeline for medium and up screens */}
-            <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block" />
-
-            {processSteps.map((step, index) => (
-              <motion.div
-                key={index}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.5 }}
-                className="mb-8 md:mb-16"
-              >
-                <div className="flex md:items-center flex-col md:flex-row">
-                  {/* Card Content */}
-                  <div className={`w-full md:w-5/12 p-4 ${index % 2 === 0 ? 'md:order-2 md:text-left' : 'md:order-1 md:text-right'}`}>
-                      <motion.div variants={index % 2 === 0 ? cardVariantsRight : cardVariantsLeft}>
-                          <Card className="p-6 shadow-lg bg-card">
-                              <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                              <p className="text-muted-foreground">{step.description}</p>
-                          </Card>
-                      </motion.div>
+            <div className="absolute left-1/2 top-0 h-full w-1 bg-border -translate-x-1/2" />
+            {processSteps.map((step, index) => {
+              const isLeft = index % 2 === 0;
+              return (
+                <motion.div
+                  key={index}
+                  className="relative mb-12"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.5 }}
+                >
+                  <div className="flex items-center">
+                    <div className={`w-1/2 ${isLeft ? 'pr-8' : 'pl-8'}`}>
+                       <motion.div variants={cardVariants(isLeft)}>
+                        <Card className={`p-6 shadow-lg ${isLeft ? 'text-right' : 'text-left'}`}>
+                          <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                          <p className="text-muted-foreground">{step.description}</p>
+                        </Card>
+                       </motion.div>
+                    </div>
                   </div>
-                  
-                  {/* Icon */}
-                  <motion.div 
-                    variants={index % 2 === 0 ? iconVariantsLeft : iconVariantsRight}
-                    className={`w-full md:w-2/12 flex justify-center ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}
-                  >
-                      <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center border-4 border-secondary shadow-md z-10">
-                          {step.icon}
-                      </div>
-                  </motion.div>
-                  
-                  {/* Spacer for alignment on desktop */}
-                  <div className="w-full md:w-5/12 hidden md:block"></div>
-                </div>
-              </motion.div>
-            ))}
+                  <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+                    <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center border-4 border-secondary shadow-md z-10">
+                      {step.icon}
+                    </div>
+                  </div>
+                  <div className={`w-1/2 absolute top-1/2 ${isLeft ? 'left-1/2' : 'right-1/2'}`}></div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
