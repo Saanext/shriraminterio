@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 const processSteps = [
   {
@@ -56,23 +57,28 @@ const benefits = [
 ];
 
 const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) => {
+    const isEven = index % 2 === 0;
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
         offset: ["start end", "end start"]
     });
-    
-    const x = useTransform(scrollYProgress, [0, 1], [index % 2 === 0 ? -100 : 100, 0]);
+
+    const x = useTransform(scrollYProgress, [0, 0.5], [isEven ? -100 : 100, 0]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
 
     return (
-         <motion.div
+        <motion.div
             ref={ref}
-            style={{ x, opacity }}
-            className="relative flex items-center"
+            style={{ opacity }}
+            className="relative grid grid-cols-2 md:grid-cols-5 gap-8 items-center"
         >
-             <div className={`w-1/2 flex ${index % 2 === 0 ? 'justify-end pr-8' : 'justify-start pl-8'} `}>
-                 <Card className="shadow-xl w-full max-w-sm">
+            {/* Card Content */}
+            <motion.div
+                style={{ x }}
+                className={cn("md:col-span-2", isEven ? 'order-1 md:order-1' : 'order-1 md:order-3')}
+            >
+                <Card className="shadow-xl">
                     <CardContent className="p-6">
                         <div className="flex items-center gap-4 mb-4">
                             <div className="flex-shrink-0 bg-primary/10 p-3 rounded-full">{step.icon}</div>
@@ -81,23 +87,29 @@ const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) 
                         <p className="text-muted-foreground">{step.description}</p>
                     </CardContent>
                 </Card>
-             </div>
-             <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+            </motion.div>
+
+            {/* Timeline Connector */}
+            <div className={cn("md:col-span-1 flex justify-center items-center", isEven ? 'order-2 md:order-2' : 'order-2 md:order-2')}>
                  <div className="z-10 flex h-16 w-16 items-center justify-center rounded-full bg-secondary shadow-lg border-2 border-primary">
                     <span className="text-2xl font-bold text-primary">{index + 1}</span>
                  </div>
-             </div>
-             <div className="w-1/2"></div>
+            </div>
+
+             {/* Spacer */}
+            <div className="hidden md:block md:col-span-2 order-3"></div>
         </motion.div>
-    )
+    );
 }
 
 export default function HowItWorksPage() {
-  const ref = useRef(null);
+  const timelineRef = useRef(null);
   const { scrollYProgress } = useScroll({
-      target: ref,
-      offset: ["start center", "end center"]
+    target: timelineRef,
+    offset: ["start center", "end end"]
   });
+
+  const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
     <div className="bg-background">
@@ -124,28 +136,17 @@ export default function HowItWorksPage() {
             <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
             <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
           </div>
-
-          <div ref={ref} className="relative flex flex-col gap-16">
-            <motion.div
-                style={{ scaleY: scrollYProgress }}
-                className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-primary/20 origin-top"
-            />
-             <motion.div
-                style={{ scaleY: scrollYProgress }}
-                className="absolute left-1/2 -translate-x-1/2 top-0 w-1 bg-primary origin-top"
-            >
-                <motion.div
-                    className="absolute -top-1 -left-1.5 h-4 w-4 rounded-full bg-primary shadow-md"
-                    style={{
-                        boxShadow: '0 0 12px 6px hsl(var(--primary) / 0.5)',
-                        opacity: useTransform(scrollYProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0])
-                    }}
-                 />
-            </motion.div>
-
-            {processSteps.map((step, index) => (
-              <Step key={index} step={step} index={index} />
-            ))}
+          
+          <div ref={timelineRef} className="relative">
+              <motion.div
+                  style={{ scaleY }}
+                  className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-primary/20 origin-top"
+              />
+              <div className="flex flex-col gap-16">
+                  {processSteps.map((step, index) => (
+                    <Step key={index} step={step} index={index} />
+                  ))}
+              </div>
           </div>
         </div>
       </section>
@@ -188,3 +189,5 @@ export default function HowItWorksPage() {
     </div>
   );
 }
+
+    
