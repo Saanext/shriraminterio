@@ -9,6 +9,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PageTransition } from '@/components/page-transition';
+import Autoplay from "embla-carousel-autoplay";
+
 
 const expertise = [
   {
@@ -115,20 +117,44 @@ const bestSellingWardrobes = [
 ];
 
 
+const heroImages = [
+    { src: '/b1.jpg', alt: 'Luxurious and comfortable hotel room interior', hint: 'hotel room interior' },
+    { src: '/b2.jpg', alt: 'Interior design sketch', hint: 'interior design sketch' }
+];
+
 export default function Home() {
   return (
     <PageTransition>
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh]">
-        <Image
-            src="/b1.jpg"
-            alt="Luxurious and comfortable hotel room interior"
-            data-ai-hint="hotel room interior"
-            layout="fill"
-            objectFit="cover"
-            className="absolute inset-0 z-0 brightness-50"
-            priority
-        />
+         <Carousel
+            className="w-full h-full"
+            plugins={[
+                Autoplay({
+                    delay: 5000,
+                    stopOnInteraction: false,
+                }),
+            ]}
+            opts={{
+                loop: true,
+            }}
+        >
+            <CarouselContent>
+                {heroImages.map((image, index) => (
+                    <CarouselItem key={index}>
+                        <Image
+                            src={image.src}
+                            alt={image.alt}
+                            data-ai-hint={image.hint}
+                            layout="fill"
+                            objectFit="cover"
+                            className="absolute inset-0 z-0 brightness-50"
+                            priority={index === 0}
+                        />
+                    </CarouselItem>
+                ))}
+            </CarouselContent>
+        </Carousel>
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg font-headline">
