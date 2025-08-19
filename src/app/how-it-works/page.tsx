@@ -1,36 +1,37 @@
 
 'use client';
 
-import { Handshake, PencilRuler, Truck, ShieldCheck, Star, ThumbsUp, Wallet, Smile, ArrowRight } from 'lucide-react';
+import { Handshake, PencilRuler, Truck, ShieldCheck, Star } from 'lucide-react';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
+import { ThumbsUp, Wallet, Smile, ArrowRight } from 'lucide-react';
 
 const processSteps = [
   {
-    icon: <Handshake className="h-10 w-10 text-primary" />,
+    icon: <Handshake className="h-8 w-8 text-primary" />,
     title: '1. Consultation & Requirement Gathering',
     description: "We start by understanding your vision, needs, and budget. Our experts will visit your site or connect with you virtually to discuss your requirements in detail.",
   },
   {
-    icon: <PencilRuler className="h-10 w-10 text-primary" />,
+    icon: <PencilRuler className="h-8 w-8 text-primary" />,
     title: '2. Design & 3D Visualization',
     description: "Our designers create personalized 2D and 3D designs, allowing you to visualize your space before it's built. We offer live 3D sessions for a truly contactless experience.",
   },
   {
-    icon: <Truck className="h-10 w-10 text-primary" />,
+    icon: <Truck className="h-8 w-8 text-primary" />,
     title: '3. Manufacturing & Delivery',
     description: "Once the design is finalized, our state-of-the-art manufacturing unit gets to work. We ensure timely and safe delivery of all components to your doorstep.",
   },
   {
-    icon: <ShieldCheck className="h-10 w-10 text-primary" />,
+    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
     title: '4. Installation & Handover',
     description: "Our professional installation team assembles everything with precision. We conduct a final quality check before handing over your brand new, dream interior.",
   },
   {
-    icon: <Star className="h-10 w-10 text-primary" />,
+    icon: <Star className="h-8 w-8 text-primary" />,
     title: '5. Warranty & Support',
     description: "Your satisfaction is our priority. We provide a one-year warranty on our work and are always available for any post-installation support you may need.",
   },
@@ -55,12 +56,12 @@ const benefits = [
 ];
 
 const cardVariants = {
-  hidden: { opacity: 0, x: -100 },
+  hidden: { opacity: 0, x: -50 },
   visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
 };
 
 const cardVariantsRight = {
-    hidden: { opacity: 0, x: 100 },
+    hidden: { opacity: 0, x: 50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.5 } },
 };
 
@@ -92,7 +93,7 @@ export default function HowItWorksPage() {
             </div>
             <div className="relative">
                 {/* Central Timeline */}
-                <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block"></div>
+                <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block" />
                 
                 {processSteps.map((step, index) => (
                     <motion.div
@@ -100,26 +101,40 @@ export default function HowItWorksPage() {
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true, amount: 0.5 }}
-                        className="mb-12 md:mb-20"
+                        className="mb-8 md:mb-0"
                     >
-                        <div className="flex md:items-center flex-col md:flex-row">
-                            {/* Card Content */}
-                            <div className={`flex-1 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12 md:order-2'}`}>
-                                <motion.div variants={index % 2 === 0 ? cardVariants : cardVariantsRight}>
-                                    <Card className="p-6 shadow-lg">
-                                        <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                                        <p className="text-muted-foreground">{step.description}</p>
-                                    </Card>
-                                </motion.div>
+                        <div className="flex md:items-center justify-center md:justify-start">
+                           <div className="w-full md:w-1/2 flex justify-end">
+                                <div className={`p-8 w-full ${index % 2 === 0 ? 'md:mr-4 lg:mr-8' : 'md:ml-4 lg:ml-8 order-2'}`}>
+                                    { index % 2 === 0 &&
+                                    <motion.div variants={cardVariants}>
+                                        <Card className="p-6 shadow-md bg-card">
+                                            <h3 className="text-xl font-bold mb-2 text-left">{step.title}</h3>
+                                            <p className="text-muted-foreground text-left">{step.description}</p>
+                                        </Card>
+                                    </motion.div>
+                                    }
+                                </div>
                             </div>
-                            
+
                             {/* Timeline Icon */}
-                            <div className="flex-shrink-0 w-12 h-12 rounded-full bg-background border-4 border-primary flex items-center justify-center my-4 md:my-0 md:order-1 relative z-10">
+                            <div className="flex-shrink-0 bg-secondary flex items-center justify-center my-4 md:my-0 md:order-1 relative z-10 p-2 rounded-full">
                                {step.icon}
                             </div>
                             
-                            {/* Spacer for alternating layout */}
-                            <div className="flex-1 hidden md:block"></div>
+                           <div className="w-full md:w-1/2 flex justify-start">
+                                <div className={`p-8 w-full ${index % 2 !== 0 ? 'md:ml-4 lg:ml-8' : 'md:mr-4 lg:mr-8 order-2'}`}>
+                                    { index % 2 !== 0 &&
+                                    <motion.div variants={cardVariantsRight}>
+                                        <Card className="p-6 shadow-md bg-card">
+                                            <h3 className="text-xl font-bold mb-2 text-left">{step.title}</h3>
+                                            <p className="text-muted-foreground text-left">{step.description}</p>
+                                        </Card>
+                                    </motion.div>
+                                    }
+                                </div>
+                            </div>
+
                         </div>
                     </motion.div>
                 ))}
@@ -137,12 +152,10 @@ export default function HowItWorksPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {benefits.map((item, index) => (
                         <Card key={index} className="text-center p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-card">
-                            <CardHeader className="items-center">
+                             <CardContent className="flex flex-col items-center">
                                 {item.icon}
-                                <CardTitle className="mt-4 text-xl">{item.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground">{item.description}</p>
+                                <h3 className="mt-4 text-xl font-bold">{item.title}</h3>
+                                <p className="text-muted-foreground mt-2">{item.description}</p>
                             </CardContent>
                         </Card>
                     ))}
@@ -167,3 +180,5 @@ export default function HowItWorksPage() {
     </div>
   );
 }
+
+    
