@@ -97,7 +97,7 @@ const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) 
             </div>
 
              {/* Spacer */}
-            <div className="hidden md:block md:col-span-2 order-3"></div>
+            <div className={cn("hidden md:block md:col-span-2", isEven ? 'order-3' : 'order-1')}></div>
         </motion.div>
     );
 }
