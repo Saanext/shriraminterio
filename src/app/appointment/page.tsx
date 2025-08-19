@@ -10,7 +10,7 @@ export default function AppointmentPage() {
                 <CardHeader>
                     <CardTitle className="text-3xl text-center">Book an Appointment</CardTitle>
                     <CardDescription className="text-muted-foreground text-center">
-                        Schedule a free consultation with one of our design experts. Fill out the form below to get started.
+                        Schedule a free consultation with our design experts by following the steps below.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
