@@ -236,7 +236,7 @@ export default function Home() {
               <p className="text-lg text-muted-foreground mt-2">End-to-end interior solutions.</p>
           </div>
           <Tabs defaultValue="trending" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 md:w-1/2 mx-auto">
+            <TabsList className="flex flex-wrap h-auto justify-center">
               <TabsTrigger value="trending">Trending</TabsTrigger>
               <TabsTrigger value="kitchens">Best Selling Kitchens</TabsTrigger>
               <TabsTrigger value="wardrobes">Best Selling Wardrobes</TabsTrigger>
