@@ -81,31 +81,7 @@ const StarRating = ({ rating = 5 }: { rating?: number }) => (
 export default function ClientsPage() {
   return (
     <div className="bg-background">
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold">Client Testimonials</h1>
-          <p className="text-lg text-muted-foreground mt-2">Hear from our happy clients across Pune.</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial) => (
-            <Card key={testimonial.name} className="flex flex-col p-6">
-              <CardContent className="flex-grow p-0">
-                <StarRating />
-                <p className="mt-4 text-muted-foreground italic">"{testimonial.review}"</p>
-              </CardContent>
-              <div className="mt-6 pt-6 border-t flex items-center">
-                <Avatar>
-                  <AvatarImage src={testimonial.image} alt={testimonial.name} data-ai-hint="person portrait" />
-                  <AvatarFallback>{testimonial.avatar}</AvatarFallback>
-                </Avatar>
-                <p className="ml-4 font-bold font-headline">{testimonial.name}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-
-       {/* Client Videos Section */}
+      {/* Client Videos Section */}
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
@@ -148,6 +124,29 @@ export default function ClientsPage() {
         </div>
       </section>
 
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold">Client Testimonials</h1>
+          <p className="text-lg text-muted-foreground mt-2">Hear from our happy clients across Pune.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((testimonial) => (
+            <Card key={testimonial.name} className="flex flex-col p-6">
+              <CardContent className="flex-grow p-0">
+                <StarRating />
+                <p className="mt-4 text-muted-foreground italic">"{testimonial.review}"</p>
+              </CardContent>
+              <div className="mt-6 pt-6 border-t flex items-center">
+                <Avatar>
+                  <AvatarImage src={testimonial.image} alt={testimonial.name} data-ai-hint="person portrait" />
+                  <AvatarFallback>{testimonial.avatar}</AvatarFallback>
+                </Avatar>
+                <p className="ml-4 font-bold font-headline">{testimonial.name}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
