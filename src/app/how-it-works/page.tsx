@@ -1,4 +1,5 @@
 
+
 import { Handshake, PencilRuler, Truck, ShieldCheck, Star, ThumbsUp, Wallet, Smile, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -80,7 +81,7 @@ export default function HowItWorksPage() {
 
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-border hidden md:block" aria-hidden="true"></div>
+            <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-border hidden md:block" aria-hidden="true"></div>
 
             <div className="space-y-16">
               {processSteps.map((step, index) => (
