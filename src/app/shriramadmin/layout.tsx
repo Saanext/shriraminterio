@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { LayoutDashboard, Newspaper, Shield, Video, Quote } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Shield, Video, Quote, Palette } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <li><Link href="/shriramadmin/projects" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><LayoutDashboard className="w-5 h-5" /> Projects</Link></li>
             <li><Link href="/shriramadmin/videos" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Video className="w-5 h-5" /> Videos</Link></li>
             <li><Link href="/shriramadmin/quotes" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Quote className="w-5 h-5" /> Quotes</Link></li>
+            <li><Link href="/shriramadmin/appearance" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Palette className="w-5 h-5" /> Appearance</Link></li>
           </ul>
         </nav>
       </aside>
