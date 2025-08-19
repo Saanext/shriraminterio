@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Video, Smartphone, CircleDollarSign, Tv } from 'lucide-react';
+import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Autoplay from "embla-carousel-autoplay"
+import { PageTransition } from '@/components/page-transition';
 
 const expertise = [
   {
@@ -31,6 +32,29 @@ const expertise = [
     title: 'Expertise & Passion',
     description: 'We bring a wealth of expertise and passion for creating interiors at your comfort.',
   }
+];
+
+const whyShriramInterio = [
+    {
+        icon: <Users className="h-12 w-12 text-primary mx-auto mb-4" />,
+        title: 'Expert Design Team',
+        description: 'Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project. Our designers combine their diverse backgrounds and unique perspectives to curate interiors that captivate and inspire.',
+    },
+    {
+        icon: <Layers className="h-12 w-12 text-primary mx-auto mb-4" />,
+        title: 'Variety of Design Choices',
+        description: 'Enjoy multiple Interior design alternatives until they match your expectations & requirement. We pride ourselves on our ability to offer an array of design,let us guide you on a journey to discover the perfect style that speaks to your soul',
+    },
+    {
+        icon: <CircleDollarSign className="h-12 w-12 text-primary mx-auto mb-4" />,
+        title: 'Affordable Design Fees',
+        description: 'We believe in making high-quality design services accessible to everyone. We offer competitive and transparent design fees tailored to suit various budgets.Affordable design solutions can transform your space as per your vision.',
+    },
+    {
+        icon: <CalendarCheck className="h-12 w-12 text-primary mx-auto mb-4" />,
+        title: 'On-Time Project Delivery',
+        description: 'We understand the importance of time and deadlines. Our commitment to excellence extends to ensuring on-time project delivery allowing you to experience the joy of your newly transformed space exactly when expected',
+    },
 ];
 
 const testimonials = [
@@ -100,7 +124,7 @@ const heroSlides = [
 
 export default function Home() {
   return (
-    <>
+    <PageTransition>
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh]">
         <Image
@@ -164,9 +188,32 @@ export default function Home() {
         </div>
       </section>
 
+       {/* Why Shriram Interio Section */}
+       <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4">
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold">Why Shriram Interio</h2>
+                    <p className="text-lg text-muted-foreground mt-2">Our commitment to quality and customer satisfaction.</p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {whyShriramInterio.map((value) => (
+                        <Card key={value.title} className="p-6 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                           <CardHeader className="items-center">
+                                {value.icon}
+                                <CardTitle>{value.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground text-sm">{value.description}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+        </section>
+
 
       {/* Design at Your Comfort Section */}
-      <section id="comfort-design" className="py-16 md:py-24 bg-background">
+      <section id="comfort-design" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
            <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">Design at Your Comfort – Our Expertise</h2>
@@ -174,7 +221,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {expertise.map((item) => (
-              <Card key={item.title} className="text-center p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-secondary">
+              <Card key={item.title} className="text-center p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-background">
                  <CardHeader className="flex items-center justify-center">
                   {item.icon}
                   <CardTitle className="mt-4 text-xl">{item.title}</CardTitle>
@@ -189,7 +236,7 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="py-16 md:py-24 bg-secondary">
+      <section className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold">What We Do</h2>
@@ -307,6 +354,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 }
+
+    
