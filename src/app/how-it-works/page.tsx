@@ -1,10 +1,12 @@
 
+'use client';
 
 import { Handshake, PencilRuler, Truck, ShieldCheck, Star, ThumbsUp, Wallet, Smile, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 
 const processSteps = [
   {
@@ -80,12 +82,19 @@ export default function HowItWorksPage() {
           </div>
 
           <div className="relative">
-            {/* Timeline line */}
+            {/* Timeline line - The visible part */}
             <div className="absolute left-1/2 -translate-x-1/2 h-full w-1 bg-border hidden md:block" aria-hidden="true"></div>
 
             <div className="space-y-16">
               {processSteps.map((step, index) => (
-                <div key={index} className="flex flex-col md:flex-row items-center w-full">
+                 <motion.div
+                  key={index}
+                  className="flex flex-col md:flex-row items-center w-full"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                  transition={{ duration: 0.5 }}
+                >
                   {/* Content */}
                   <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-1 md:text-right pr-8' : 'md:order-3 text-left md:pl-8'}`}>
                     <div className="p-6 border-2 rounded-lg shadow-lg bg-card hover:shadow-primary/20 hover:scale-105 transition-all duration-300">
@@ -102,14 +111,24 @@ export default function HowItWorksPage() {
 
                   {/* Icon Middle */}
                   <div className="w-full md:w-2/12 order-2 flex justify-center">
-                    <div className="md:absolute z-10 bg-background p-3 rounded-full border-2 border-primary my-4 md:my-0">
-                      {step.icon}
+                    <div className="relative z-10">
+                        <div className="bg-background p-3 rounded-full border-2 border-primary my-4 md:my-0">
+                          {step.icon}
+                        </div>
+                         <motion.div
+                          className="absolute top-full left-1/2 -translate-x-1/2 w-1 bg-primary hidden md:block"
+                          initial={{ height: 0 }}
+                          whileInView={{ height: '4rem' }} // space-y-16 is 4rem
+                          viewport={{ once: true, amount: 'all' }}
+                          transition={{ duration: 0.3, delay: 0.4 }}
+                          style={{ originY: 0 }}
+                        />
                     </div>
                   </div>
 
                   {/* Spacer */}
                   <div className={`md:w-5/12 ${index % 2 === 0 ? 'md:order-3' : 'md:order-1'}`}></div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
