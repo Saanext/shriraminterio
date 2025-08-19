@@ -13,27 +13,27 @@ import { ThumbsUp, Wallet, Smile, ArrowRight } from 'lucide-react';
 const processSteps = [
   {
     icon: <Handshake className="h-8 w-8 text-primary" />,
-    title: '1. Consultation & Requirement Gathering',
+    title: 'Consultation & Requirement Gathering',
     description: "We start by understanding your vision, needs, and budget. Our experts will visit your site or connect with you virtually to discuss your requirements in detail.",
   },
   {
     icon: <PencilRuler className="h-8 w-8 text-primary" />,
-    title: '2. Design & 3D Visualization',
+    title: 'Design & 3D Visualization',
     description: "Our designers create personalized 2D and 3D designs, allowing you to visualize your space before it's built. We offer live 3D sessions for a truly contactless experience.",
   },
   {
     icon: <Truck className="h-8 w-8 text-primary" />,
-    title: '3. Manufacturing & Delivery',
+    title: 'Manufacturing & Delivery',
     description: "Once the design is finalized, our state-of-the-art manufacturing unit gets to work. We ensure timely and safe delivery of all components to your doorstep.",
   },
   {
     icon: <ShieldCheck className="h-8 w-8 text-primary" />,
-    title: '4. Installation & Handover',
+    title: 'Installation & Handover',
     description: "Our professional installation team assembles everything with precision. We conduct a final quality check before handing over your brand new, dream interior.",
   },
   {
     icon: <Star className="h-8 w-8 text-primary" />,
-    title: '5. Warranty & Support',
+    title: 'Warranty & Support',
     description: "Your satisfaction is our priority. We provide a one-year warranty on our work and are always available for any post-installation support you may need.",
   },
 ];
@@ -56,10 +56,18 @@ const benefits = [
     },
 ];
 
-const cardVariants = (isLeft: boolean) => ({
-    hidden: { opacity: 0, x: isLeft ? -100 : 100 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-});
+const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i: number) => ({
+        opacity: 1,
+        y: 0,
+        transition: {
+            delay: i * 0.2,
+            duration: 0.6,
+        },
+    }),
+};
+
 
 export default function HowItWorksPage() {
   return (
@@ -87,38 +95,31 @@ export default function HowItWorksPage() {
             <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
             <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
           </div>
-          <div className="relative">
-            <div className="absolute left-1/2 top-0 h-full w-1 bg-border -translate-x-1/2" />
-            {processSteps.map((step, index) => {
-              const isLeft = index % 2 === 0;
-              return (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {processSteps.map((step, index) => (
                 <motion.div
-                  key={index}
-                  className="relative mb-12"
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.5 }}
+                    key={index}
+                    className="flex"
+                    custom={index}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.3 }}
+                    variants={cardVariants}
                 >
-                  <div className="flex items-center">
-                    <div className={`w-1/2 ${isLeft ? 'pr-8' : 'pl-8'}`}>
-                       <motion.div variants={cardVariants(isLeft)}>
-                        <Card className={`p-6 shadow-lg ${isLeft ? 'text-right' : 'text-left'}`}>
-                          <h3 className="text-xl font-bold mb-2">{step.title}</h3>
-                          <p className="text-muted-foreground">{step.description}</p>
-                        </Card>
-                       </motion.div>
-                    </div>
-                  </div>
-                  <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-                    <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center border-4 border-secondary shadow-md z-10">
-                      {step.icon}
-                    </div>
-                  </div>
-                  <div className={`w-1/2 absolute top-1/2 ${isLeft ? 'left-1/2' : 'right-1/2'}`}></div>
+                    <Card className="p-6 shadow-lg flex-1 flex flex-col bg-card hover:shadow-2xl transition-shadow duration-300">
+                         <div className="flex items-start gap-4">
+                            <div className="text-5xl font-bold text-primary/30">
+                                0{index + 1}
+                            </div>
+                            <div className="flex-1">
+                                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                                <p className="text-muted-foreground">{step.description}</p>
+                            </div>
+                        </div>
+                    </Card>
                 </motion.div>
-              );
-            })}
-          </div>
+            ))}
+            </div>
         </div>
       </section>
 
