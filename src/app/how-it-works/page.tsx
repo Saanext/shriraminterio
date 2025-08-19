@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { Handshake, PencilRuler, Truck, ShieldCheck, Star } from 'lucide-react';
@@ -85,60 +86,46 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Our Process Section */}
-      <section className="bg-secondary">
-        <div className="container mx-auto px-4 py-16 md:py-24">
-            <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
-                <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
-            </div>
-            <div className="relative">
-                {/* Central Timeline */}
-                <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block" />
+      <section className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
+            <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
+          </div>
+          <div className="relative">
+            {/* Central Timeline */}
+            <div className="absolute left-1/2 top-0 h-full w-0.5 bg-border -translate-x-1/2 hidden md:block" />
+
+            {processSteps.map((step, index) => (
+              <motion.div
+                key={index}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.5 }}
+                className="relative md:flex md:items-center mb-16"
+              >
+                {/* Content Card */}
+                <div className={`w-full md:w-1/2 p-4 ${index % 2 === 0 ? 'md:pr-8 lg:pr-12 md:text-right' : 'md:pl-8 lg:pl-12 md:order-2'}`}>
+                  <motion.div variants={index % 2 === 0 ? cardVariants : cardVariantsRight}>
+                    <Card className="p-6 shadow-lg bg-card">
+                      <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                      <p className="text-muted-foreground">{step.description}</p>
+                    </Card>
+                  </motion.div>
+                </div>
                 
-                {processSteps.map((step, index) => (
-                    <motion.div
-                        key={index}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.5 }}
-                        className="mb-8 md:mb-0"
-                    >
-                        <div className="flex md:items-center justify-center md:justify-start">
-                           <div className="w-full md:w-1/2 flex justify-end">
-                                <div className={`p-8 w-full ${index % 2 === 0 ? 'md:mr-4 lg:mr-8' : 'md:ml-4 lg:ml-8 order-2'}`}>
-                                    { index % 2 === 0 &&
-                                    <motion.div variants={cardVariants}>
-                                        <Card className="p-6 shadow-md bg-card">
-                                            <h3 className="text-xl font-bold mb-2 text-left">{step.title}</h3>
-                                            <p className="text-muted-foreground text-left">{step.description}</p>
-                                        </Card>
-                                    </motion.div>
-                                    }
-                                </div>
-                            </div>
+                {/* Timeline Icon */}
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-secondary rounded-full flex items-center justify-center border-4 border-background md:relative md:top-auto md:left-auto md:translate-x-0 md:translate-y-0 md:order-1">
+                   <div className="w-12 h-12 bg-background rounded-full flex items-center justify-center">
+                    {step.icon}
+                   </div>
+                </div>
 
-                            {/* Timeline Icon */}
-                            <div className="flex-shrink-0 bg-secondary flex items-center justify-center my-4 md:my-0 md:order-1 relative z-10 p-2 rounded-full">
-                               {step.icon}
-                            </div>
-                            
-                           <div className="w-full md:w-1/2 flex justify-start">
-                                <div className={`p-8 w-full ${index % 2 !== 0 ? 'md:ml-4 lg:ml-8' : 'md:mr-4 lg:mr-8 order-2'}`}>
-                                    { index % 2 !== 0 &&
-                                    <motion.div variants={cardVariantsRight}>
-                                        <Card className="p-6 shadow-md bg-card">
-                                            <h3 className="text-xl font-bold mb-2 text-left">{step.title}</h3>
-                                            <p className="text-muted-foreground text-left">{step.description}</p>
-                                        </Card>
-                                    </motion.div>
-                                    }
-                                </div>
-                            </div>
-
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
+                {/* Spacer for mobile */}
+                <div className="md:hidden h-8"></div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
