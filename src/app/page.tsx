@@ -120,13 +120,13 @@ export default function Home() {
     <PageTransition>
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
-        <Image
-          src="/hero-image.jpg"
-          alt="Beautifully designed modern interior"
-          layout="fill"
-          objectFit="cover"
+        <video
+          src="https://firebasestorage.googleapis.com/v0/b/genkit-llm-78373.appspot.com/o/1211783-hd_1920_1080_30fps.mp4?alt=media&token=818f0f04-4696-48d6-a2a2-835d39366f08"
+          autoPlay
+          loop
+          muted
+          playsInline
           className="absolute top-0 left-0 w-full h-full object-cover brightness-50"
-          data-ai-hint="modern interior"
         />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
@@ -349,6 +349,8 @@ export default function Home() {
     </PageTransition>
   );
 }
+
+    
 
     
 
