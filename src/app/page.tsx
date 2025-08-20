@@ -101,6 +101,7 @@ const trendingItems = [
   { name: 'Wardrobe', image: '/trending1.jpg', hint: 'modern wardrobe' },
   { name: 'Kitchen', image: '/kitchen.jpg', hint: 'modern kitchen' },
   { name: 'King Size Bed', image: '/r1.jpg', hint: 'king size bed' },
+  { name: 'Living Room', image: '/living-room.jpg', hint: 'modern living room' },
 ];
 
 const bestSellingKitchens = [
@@ -114,6 +115,7 @@ const bestSellingWardrobes = [
     { name: 'Sliding Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'sliding wardrobe' },
     { name: 'Free Standing Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'freestanding wardrobe' },
     { name: 'Modular Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'modular wardrobe' },
+    { name: 'Walk-in Wardrobe', image: '/b1.jpg', hint: 'walk-in wardrobe' },
 ];
 
 export default function Home() {
@@ -245,7 +247,7 @@ export default function Home() {
               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
                 <CarouselContent>
                   {trendingItems.map((item, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
                       <Card className="overflow-hidden">
                         <div className="relative aspect-[3/4]">
                            <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint}/>
@@ -262,11 +264,9 @@ export default function Home() {
               </Carousel>
             </TabsContent>
             <TabsContent value="kitchens">
-              <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
                   {bestSellingKitchens.map((item, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
-                       <Card className="overflow-hidden">
+                       <Card key={index} className="overflow-hidden">
                         <div className="relative aspect-[3/4]">
                            <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
                         </div>
@@ -274,18 +274,14 @@ export default function Home() {
                            <h3 className="text-lg font-bold">{item.name}</h3>
                         </CardContent>
                       </Card>
-                    </CarouselItem>
                   ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
+              </div>
             </TabsContent>
             <TabsContent value="wardrobes">
                <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
                 <CarouselContent>
                   {bestSellingWardrobes.map((item, index) => (
-                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
                        <Card className="overflow-hidden">
                         <div className="relative aspect-[3/4]">
                            <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
