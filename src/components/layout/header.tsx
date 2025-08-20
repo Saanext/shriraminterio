@@ -23,17 +23,20 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center space-x-2">
-          <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
-        </Link>
+        <div className="flex-1 flex justify-start">
+          <Link href="/" className="flex items-center space-x-2">
+            <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
+          </Link>
+        </div>
 
-        <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium">
+
+        <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium absolute left-1/2 -translate-x-1/2">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'transition-colors hover:text-primary',
+                'transition-colors hover:text-primary whitespace-nowrap',
                 pathname === item.href ? 'text-primary' : 'text-foreground/60'
               )}
             >
@@ -42,7 +45,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex-1 flex justify-end items-center gap-4">
           <Sheet>
             <SheetTrigger asChild>
               <Button>Get a Quote</Button>
