@@ -36,11 +36,15 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                'transition-colors hover:text-primary whitespace-nowrap',
+                'relative transition-colors hover:text-primary whitespace-nowrap group',
                 pathname === item.href ? 'text-primary' : 'text-foreground/60'
               )}
             >
-              {item.label}
+              <span className="relative">
+                {item.label}
+                 <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                 <span className="absolute -top-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+              </span>
             </Link>
           ))}
         </nav>
