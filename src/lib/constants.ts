@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { GalleryHorizontal, GanttChartSquare, Home, Info, Layers, Users, Wrench, Phone, FileText, CalendarPlus } from 'lucide-react';
+import { GalleryHorizontal, GanttChartSquare, Home, Info, Layers, Users, Wrench, Phone, CalendarPlus } from 'lucide-react';
 
 export type NavItem = {
   label: string;
