@@ -38,7 +38,7 @@ const whyShriramInterio = [
     {
         icon: <Users className="w-10 h-10 text-primary" />,
         title: 'Expert Design Team',
-        description: 'Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project, curating interiors that captivate and inspire.',
+        description: 'Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project.',
     },
     {
         icon: <Layers className="w-10 h-10 text-primary" />,
@@ -48,12 +48,12 @@ const whyShriramInterio = [
     {
         icon: <CircleDollarSign className="w-10 h-10 text-primary" />,
         title: 'Affordable Design Fees',
-        description: 'We believe in making high-quality design services accessible to everyone, offering competitive and transparent fees tailored to suit various budgets.',
+        description: 'We believe in making high-quality design services accessible to everyone, offering competitive and transparent fees.',
     },
     {
         icon: <CalendarCheck className="w-10 h-10 text-primary" />,
         title: 'On-Time Project Delivery',
-        description: 'We understand the importance of time. Our commitment to excellence ensures on-time project delivery, letting you enjoy your new space when expected.',
+        description: 'We understand the importance of time. Our commitment to excellence ensures on-time project delivery.',
     },
 ];
 
