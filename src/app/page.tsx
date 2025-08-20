@@ -49,12 +49,12 @@ const whyShriramInterio = [
     {
         icon: <CircleDollarSign className="w-10 h-10 text-primary" />,
         title: 'Affordable Design Fees',
-        description: 'We believe in making high-quality design services accessible to everyone, offering competitive and transparent fees.',
+        description: 'We offer competitive and transparent design fees, making high-quality design accessible to everyone.',
     },
     {
         icon: <CalendarCheck className="w-10 h-10 text-primary" />,
         title: 'On-Time Project Delivery',
-        description: 'We understand the importance of time. Our commitment to excellence ensures on-time project delivery.',
+        description: 'Our commitment to excellence ensures your project is delivered on time, allowing you to enjoy your new space sooner.',
     },
 ];
 
@@ -119,7 +119,7 @@ const bestSellingWardrobes = [
 export default function Home() {
   return (
     <PageTransition>
-      {/* Hero Section */}
+      {/* Hero Section - Responsive Video Background */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
         <video
           src="https://videos.pexels.com/video-files/3769951/3769951-hd_1920_1080_25fps.mp4"
@@ -129,12 +129,12 @@ export default function Home() {
           playsInline
           className="absolute top-0 left-0 w-full h-full object-cover brightness-50"
         />
-        <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
+        <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
              <div>
-                 <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
+                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
                     Crafting Dreams, Designing Reality
                 </h1>
-                <p className="mt-4 max-w-2xl mx-auto text-base md:text-xl font-body">
+                <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
                     Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
                 </p>
                 <Button asChild size="lg" className="mt-8 transition-transform transform hover:scale-105">
@@ -243,7 +243,7 @@ export default function Home() {
             </TabsList>
             <TabsContent value="trending">
               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent className="flex">
+                <CarouselContent>
                   {trendingItems.map((item, index) => (
                     <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                       <Card className="overflow-hidden">
@@ -263,7 +263,7 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="kitchens">
               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent className="flex">
+                <CarouselContent>
                   {bestSellingKitchens.map((item, index) => (
                     <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
                        <Card className="overflow-hidden">
@@ -283,7 +283,7 @@ export default function Home() {
             </TabsContent>
             <TabsContent value="wardrobes">
                <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto mt-8">
-                <CarouselContent className="flex">
+                <CarouselContent>
                   {bestSellingWardrobes.map((item, index) => (
                     <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                        <Card className="overflow-hidden">
@@ -356,4 +356,3 @@ export default function Home() {
     
 
     
-
