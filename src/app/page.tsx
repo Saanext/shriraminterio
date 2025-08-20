@@ -1,4 +1,5 @@
 
+
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
@@ -124,8 +125,7 @@ export default function Home() {
       <section className="relative w-full h-screen overflow-hidden">
         <div className="absolute inset-0">
           <video
-            src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" // Placeholder video URL
-            alt="Hero background image"
+            src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4"
             className="absolute inset-0 w-full h-full object-cover brightness-50"
             autoPlay
             loop
