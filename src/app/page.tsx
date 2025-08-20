@@ -1,4 +1,5 @@
 
+
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -130,7 +131,7 @@ export default function Home() {
         />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white p-4">
              <div>
-                 <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg font-headline">
+                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-shadow-lg font-headline">
                     Crafting Dreams, Designing Reality
                 </h1>
                 <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
