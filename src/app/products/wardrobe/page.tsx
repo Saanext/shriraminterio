@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const wardrobeImages = [
-  { src: '/wardrobe-1.png', alt: 'Sliding door wardrobe', dataAiHint: 'sliding wardrobe' },
+  { src: 'https://images.unsplash.com/photo-1677864944822-e3ca06e317c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzbGlkaW5nJTIwZG9vciUyMHdhcmRyb2JlfGVufDB8fHx8MTc1NTcxNTY2MHww&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Sliding door wardrobe', dataAiHint: 'sliding wardrobe' },
   { src: '/wardrobe-2.png', alt: 'Walk-in closet', dataAiHint: 'walk-in closet' },
   { src: '/wardrobe-3.png', alt: 'Hinged door wardrobe with mirror', dataAiHint: 'hinged wardrobe' },
   { src: '/wardrobe-4.png', alt: 'Free standing wardrobe unit', dataAiHint: 'freestanding wardrobe' },
