@@ -1,5 +1,4 @@
 
-
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
@@ -123,18 +122,14 @@ export default function Home() {
     <PageTransition>
       {/* Hero Section */}
       <section className="relative w-full h-screen overflow-hidden">
-        <div className="absolute inset-0">
-          <video
-            src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4"
+        <Image
+            src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+            alt="Hero background image"
+            layout="fill"
+            objectFit="cover"
             className="absolute inset-0 w-full h-full object-cover brightness-50"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            data-ai-hint="hero background video"
-          />
-        </div>
+            data-ai-hint="hero background"
+        />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
           <div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
