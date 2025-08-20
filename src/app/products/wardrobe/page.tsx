@@ -10,7 +10,7 @@ const wardrobeImages = [
   { src: 'https://images.unsplash.com/photo-1677864944822-e3ca06e317c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzbGlkaW5nJTIwZG9vciUyMHdhcmRyb2JlfGVufDB8fHx8MTc1NTcxNTY2MHww&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Sliding door wardrobe', dataAiHint: 'sliding wardrobe' },
   { src: 'https://images.unsplash.com/photo-1683181181300-44c0c991a2cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Walk-in closet', dataAiHint: 'walk-in closet' },
   { src: 'https://images.unsplash.com/photo-1611048268330-53de574cae3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Hinged door wardrobe with mirror', dataAiHint: 'hinged wardrobe' },
-  { src: '/wardrobe-4.png', alt: 'Free standing wardrobe unit', dataAiHint: 'freestanding wardrobe' },
+  { src: 'https://images.unsplash.com/photo-1573311392049-4186e3a47e9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Free standing wardrobe unit', dataAiHint: 'freestanding wardrobe' },
 ];
 
 const features = [
