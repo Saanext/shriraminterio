@@ -11,11 +11,13 @@ import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
 import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hoveredPath, setHoveredPath] = useState(pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,10 @@ export function Header() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
+  useEffect(() => {
+    setHoveredPath(pathname);
+  }, [pathname]);
 
   if (pathname.startsWith('/shriramadmin')) {
     return null;
@@ -45,25 +51,44 @@ export function Header() {
         </div>
 
 
-        <nav className="hidden lg:flex items-center space-x-2 text-sm font-medium absolute left-1/2 -translate-x-1/2">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                'relative transition-all duration-300 hover:text-primary whitespace-nowrap group px-4 py-2 rounded-full',
-                pathname === item.href 
-                  ? 'text-primary-foreground bg-primary' 
-                  : isScrolled 
-                    ? 'text-foreground/80' 
-                    : 'text-white'
-              )}
-            >
-              <span className="relative">
-                {item.label}
-              </span>
-            </Link>
-          ))}
+        <nav
+          className="hidden lg:flex items-center space-x-2 text-sm font-medium"
+          onMouseLeave={() => setHoveredPath(pathname)}
+        >
+          {NAV_ITEMS.map((item) => {
+            const isActive = item.href === pathname;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                data-active={isActive}
+                onMouseOver={() => setHoveredPath(item.href)}
+                className={cn(
+                  'relative transition-colors duration-300 hover:text-primary whitespace-nowrap px-4 py-2 rounded-full',
+                  isActive ? 'text-primary' : isScrolled ? 'text-foreground/80' : 'text-white'
+                )}
+              >
+                <span>{item.label}</span>
+                {item.href === hoveredPath && (
+                  <motion.div
+                    className="absolute bottom-0 left-0 h-0.5 bg-primary"
+                    layoutId="navbar"
+                    aria-hidden="true"
+                    style={{
+                      width: '100%',
+                    }}
+                    transition={{
+                      type: 'spring',
+                      bounce: 0.25,
+                      stiffness: 130,
+                      damping: 9,
+                      duration: 0.3,
+                    }}
+                  />
+                )}
+              </Link>
+            )
+          })}
         </nav>
 
         <div className="flex items-center gap-4">
