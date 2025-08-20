@@ -120,28 +120,42 @@ export default function Home() {
     <PageTransition>
       {/* Hero Section */}
       <section className="relative w-full h-screen min-h-[500px] overflow-hidden">
-        <Image
-            src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
-            alt="Hero background image"
-            layout="fill"
-            objectFit="cover"
-            className="absolute inset-0 w-full h-full object-cover brightness-50"
-            data-ai-hint="hero background"
-        />
-        <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-shadow-lg font-headline leading-tight">
-              Crafting Dreams, Designing Reality
-            </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl font-body px-2">
-              Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
-            </p>
-            <Button asChild size="lg" className="mt-6 sm:mt-8 transition-transform transform hover:scale-105 text-sm sm:text-base">
-              <Link href="/services">Explore Our Services</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
+  {/* Video Background */}
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="absolute inset-0 w-full h-full object-cover brightness-50 z-0"
+    poster="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+  >
+    <source src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+    <source src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" type="video/webm" />
+    {/* Fallback image if video doesn't load */}
+    <img 
+      src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" 
+      alt="Hero background" 
+      className="w-full h-full object-cover"
+    />
+  </video>
+  
+  {/* Optional: Video overlay for better text readability */}
+  <div className="absolute inset-0 bg-black/30 z-5"></div>
+  
+  <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
+    <div className="max-w-4xl mx-auto">
+      <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-shadow-lg font-headline leading-tight">
+        Crafting Dreams, Designing Reality
+      </h1>
+      <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl font-body px-2">
+        Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
+      </p>
+      <Button asChild size="lg" className="mt-6 sm:mt-8 transition-transform transform hover:scale-105 text-sm sm:text-base">
+        <Link href="/services">Explore Our Services</Link>
+      </Button>
+    </div>
+  </div>
+</section>
 
        {/* Welcome Section */}
        <section id="about" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
