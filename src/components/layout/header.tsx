@@ -40,10 +40,10 @@ export function Header() {
                 pathname === item.href ? 'text-primary' : 'text-foreground/60'
               )}
             >
-              <span className="relative">
+              <span className="relative py-2">
                 {item.label}
-                 <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                 <span className="absolute -top-1 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                 <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
+                 <span className="absolute top-0 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
               </span>
             </Link>
           ))}
