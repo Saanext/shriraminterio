@@ -121,7 +121,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
         <video
-          src="https://firebasestorage.googleapis.com/v0/b/genkit-llm-78373.appspot.com/o/1211783-hd_1920_1080_30fps.mp4?alt=media&token=818f0f04-4696-48d6-a2a2-835d39366f08"
+          src="https://videos.pexels.com/video-files/3769951/3769951-hd_1920_1080_25fps.mp4"
           autoPlay
           loop
           muted
