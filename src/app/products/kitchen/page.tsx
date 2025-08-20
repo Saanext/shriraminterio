@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const kitchenImages = [
   { src: 'https://images.unsplash.com/photo-1559554704-0f74b35a8718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Modern L-shaped kitchen', dataAiHint: 'l-shaped kitchen' },
-  { src: '/kitchen-2.png', alt: 'Minimalist island kitchen', dataAiHint: 'island kitchen' },
+  { src: 'https://images.unsplash.com/photo-1539922980492-38f6673af8dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Minimalist island kitchen', dataAiHint: 'island kitchen' },
   { src: '/kitchen-3.png', alt: 'U-shaped kitchen with wooden finish', dataAiHint: 'u-shaped kitchen' },
   { src: '/kitchen-4.png', alt: 'Parallel kitchen layout', dataAiHint: 'parallel kitchen' },
 ];
