@@ -40,8 +40,7 @@ export function Header() {
 
   return (
     <header className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300",
-        isScrolled || isMobileMenuOpen ? "bg-background shadow-md border-b" : "bg-transparent"
+        "fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b"
     )}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
@@ -65,7 +64,7 @@ export function Header() {
                 onMouseOver={() => setHoveredPath(item.href)}
                 className={cn(
                   'relative transition-colors duration-300 hover:text-primary whitespace-nowrap px-4 py-2 rounded-full',
-                  isActive ? 'text-primary' : isScrolled ? 'text-foreground/80' : 'text-white'
+                  isActive ? 'text-primary' : 'text-foreground/80'
                 )}
               >
                 <span>{item.label}</span>
@@ -108,7 +107,7 @@ export function Header() {
           </Sheet>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" className={cn("lg:hidden p-2", isScrolled ? 'text-foreground' : 'text-white hover:bg-white/10 hover:text-white')}>
+              <Button variant="ghost" className={cn("lg:hidden p-2 text-foreground")}>
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open Menu</span>
               </Button>
