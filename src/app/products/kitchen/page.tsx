@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
@@ -6,7 +7,7 @@ import { CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const kitchenImages = [
-  { src: '/kitchen-1.png', alt: 'Modern L-shaped kitchen', dataAiHint: 'l-shaped kitchen' },
+  { src: 'https://images.unsplash.com/photo-1559554704-0f74b35a8718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Modern L-shaped kitchen', dataAiHint: 'l-shaped kitchen' },
   { src: '/kitchen-2.png', alt: 'Minimalist island kitchen', dataAiHint: 'island kitchen' },
   { src: '/kitchen-3.png', alt: 'U-shaped kitchen with wooden finish', dataAiHint: 'u-shaped kitchen' },
   { src: '/kitchen-4.png', alt: 'Parallel kitchen layout', dataAiHint: 'parallel kitchen' },
