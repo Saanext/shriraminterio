@@ -51,7 +51,7 @@ export function Header() {
 
 
         <nav
-          className="hidden lg:flex items-center space-x-2 text-sm font-medium"
+          className="hidden lg:flex items-center space-x-2 text-sm font-medium bg-muted/50 p-1 rounded-full"
           onMouseLeave={() => setHoveredPath(pathname)}
         >
           {NAV_ITEMS.map((item) => {
@@ -63,28 +63,25 @@ export function Header() {
                 data-active={isActive}
                 onMouseOver={() => setHoveredPath(item.href)}
                 className={cn(
-                  'relative transition-colors duration-300 hover:text-primary whitespace-nowrap px-4 py-2 rounded-full',
-                  isActive ? 'text-primary' : 'text-foreground/80'
+                  'relative transition-colors duration-300 whitespace-nowrap px-4 py-2 rounded-full',
+                  hoveredPath === item.href ? 'text-primary-foreground' : 'text-foreground/80 hover:text-foreground'
                 )}
               >
-                <span>{item.label}</span>
                 {item.href === hoveredPath && (
                   <motion.div
-                    className="absolute bottom-0 left-0 h-0.5 bg-primary"
-                    layoutId="navbar"
+                    className="absolute inset-0 bg-primary rounded-full -z-10"
+                    layoutId="navbar-pill"
                     aria-hidden="true"
-                    style={{
-                      width: '100%',
-                    }}
                     transition={{
                       type: 'spring',
                       bounce: 0.25,
                       stiffness: 130,
-                      damping: 9,
+                      damping: 12,
                       duration: 0.3,
                     }}
                   />
                 )}
+                <span>{item.label}</span>
               </Link>
             )
           })}
