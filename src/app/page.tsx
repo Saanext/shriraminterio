@@ -121,34 +121,31 @@ const bestSellingWardrobes = [
 export default function Home() {
   return (
     <PageTransition>
-      {/* Hero Section - Responsive Video Background */}
- <section className="relative w-full h-screen overflow-hidden">
- <Carousel
- opts={{ align: 'start', loop: true }}
- className="w-full h-full"
- >
- <CarouselContent className="h-full">
-         {['https://placehold.co/1920x1080.png', 'https://placehold.co/1920x1080.png', 'https://placehold.co/1920x1080.png'].map((src, index) => (
- <CarouselItem key={index} className="h-full">
- <div className="relative h-full w-full">
- <Image src={src} alt={`Slide ${index + 1}`} layout="fill" objectFit="cover" className="brightness-50" data-ai-hint="hero background"/>
- </div> 
- </CarouselItem>
- ))}
- </CarouselContent>
- </Carousel>
- <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
-             <div>
-                 <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
-                    Crafting Dreams, Designing Reality
-                </h1>
-                <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
-                    Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
-                </p>
-                <Button asChild size="lg" className="mt-8 transition-transform transform hover:scale-105">
-                    <Link href="/services">Explore Our Services</Link>
-                </Button>
-            </div>
+      {/* Hero Section */}
+      <section className="relative w-full h-screen overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://placehold.co/1920x1080.png"
+            alt="Hero background image"
+            layout="fill"
+            objectFit="cover"
+            className="brightness-50"
+            data-ai-hint="hero background"
+            priority
+          />
+        </div>
+        <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
+          <div>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
+              Crafting Dreams, Designing Reality
+            </h1>
+            <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl font-body">
+              Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.
+            </p>
+            <Button asChild size="lg" className="mt-8 transition-transform transform hover:scale-105">
+              <Link href="/services">Explore Our Services</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -358,3 +355,4 @@ export default function Home() {
     
 
     
+
