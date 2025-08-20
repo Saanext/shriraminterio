@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
@@ -65,17 +65,11 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="left" className="p-0">
                <div className="flex flex-col h-full">
-                <SheetHeader className="p-4 border-b flex flex-row items-center justify-between">
+                <SheetHeader className="p-4 border-b">
                    <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
                     <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
                   </Link>
                   <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                  <SheetClose asChild>
-                    <Button variant="ghost" size="icon">
-                      <X className="h-6 w-6" />
-                      <span className="sr-only">Close Menu</span>
-                    </Button>
-                  </SheetClose>
                 </SheetHeader>
                 <nav className="flex flex-col space-y-1 p-4">
                   {NAV_ITEMS.map((item) => (
