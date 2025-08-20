@@ -1,6 +1,6 @@
 
 
-'use client';
+'use client'
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -122,16 +122,23 @@ export default function Home() {
   return (
     <PageTransition>
       {/* Hero Section - Responsive Video Background */}
-      <section className="relative w-full h-screen overflow-hidden">
-        <video
-          src="https://videos.pexels.com/video-files/3769951/3769951-hd_1920_1080_25fps.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute top-1/2 left-1/2 w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full brightness-50"
-        />
-        <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
+ <section className="relative w-full h-screen overflow-hidden">
+ <Carousel
+ opts={{ align: 'start', loop: true }}
+ className="w-full h-full"
+ >
+ <CarouselContent className="-ml-1 h-full">
+ {/* Add CarouselItems for each image */}
+         {['/b1.jpg', '/b2.jpg', '/r1.jpg'].map((src, index) => (
+ <CarouselItem key={index} className="pl-1 h-full">
+ <div className="relative h-full">
+ <Image src={src} alt={`Slide ${index + 1}`} layout="fill" objectFit="cover" className="brightness-50"/>
+ </div> 
+ </CarouselItem>
+ ))}
+ </CarouselContent>
+ </Carousel>
+ <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
              <div>
                  <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
                     Crafting Dreams, Designing Reality
