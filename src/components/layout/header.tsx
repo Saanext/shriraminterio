@@ -69,6 +69,7 @@ export function Header() {
                    <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
                     <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
                   </Link>
+                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                   <SheetClose asChild>
                     <Button variant="ghost" size="icon">
                       <X className="h-6 w-6" />
