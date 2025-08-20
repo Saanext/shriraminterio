@@ -43,7 +43,7 @@ const whyShriramInterio = [
     {
         icon: <Layers className="w-10 h-10 text-primary" />,
         title: 'Variety of Design Choices',
-        description: 'Enjoy multiple interior design alternatives until they match your expectations. We offer an array of designs to help you discover the perfect style.',
+        description: 'Enjoy multiple interior design alternatives until they match your expectations & requirement.',
     },
     {
         icon: <CircleDollarSign className="w-10 h-10 text-primary" />,
@@ -355,3 +355,4 @@ export default function Home() {
     
 
     
+
