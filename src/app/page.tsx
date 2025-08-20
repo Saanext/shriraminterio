@@ -129,7 +129,7 @@ export default function Home() {
           loop
           muted
           playsInline
-          className="absolute top-0 left-0 w-full h-full object-cover brightness-50"
+          className="absolute top-1/2 left-1/2 w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full brightness-50"
         />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
              <div>
