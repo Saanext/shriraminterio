@@ -7,7 +7,7 @@ const products = [
   {
     name: 'Modular Kitchens',
     href: '/products/kitchen',
-    imageSrc: '/product-kitchen.png',
+    imageSrc: 'https://images.unsplash.com/photo-1559554704-0f74b35a8718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'modern kitchen',
     description: 'Explore our stunning range of modular kitchens, designed for style and efficiency.',
   },
