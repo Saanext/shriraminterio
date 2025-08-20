@@ -131,7 +131,7 @@ export default function Home() {
             data-ai-hint="hero background"
         />
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
-          <div>
+          <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-shadow-lg font-headline">
               Crafting Dreams, Designing Reality
             </h1>

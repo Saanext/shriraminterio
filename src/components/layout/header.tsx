@@ -12,6 +12,7 @@ import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export function Header() {
   const pathname = usePathname();
@@ -19,6 +20,7 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [hoveredPath, setHoveredPath] = useState(pathname);
 
+  const isMobile = useIsMobile();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -48,83 +50,68 @@ export function Header() {
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
         </div>
-
-
-        <nav
-          className="hidden lg:flex items-center space-x-2 text-sm font-medium bg-muted/50 p-1 rounded-full"
-          onMouseLeave={() => setHoveredPath(pathname)}
-        >
-          {NAV_ITEMS.map((item) => {
-            const isActive = item.href === pathname;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                data-active={isActive}
-                onMouseOver={() => setHoveredPath(item.href)}
-                className={cn(
-                  'relative transition-colors duration-300 whitespace-nowrap px-4 py-2 rounded-full',
-                  hoveredPath === item.href ? 'text-primary-foreground' : 'text-foreground/80 hover:text-foreground'
-                )}
-              >
-                {item.href === hoveredPath && (
-                  <motion.div
-                    className="absolute inset-0 bg-primary rounded-full -z-10"
-                    layoutId="navbar-pill"
-                    aria-hidden="true"
-                    transition={{
-                      type: 'spring',
-                      bounce: 0.25,
-                      stiffness: 130,
-                      damping: 12,
-                      duration: 0.3,
-                    }}
-                  />
-                )}
-                <span>{item.label}</span>
-              </Link>
-            )
-          })}
-        </nav>
-
         <div className="flex items-center gap-4">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button>Get a Quote</Button>
-            </SheetTrigger>
-            <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
-              <SheetHeader>
-                <SheetTitle>Get a Free Quote</SheetTitle>
-                 <SheetDescription>
-                  Fill out the form below and we'll get back to you with a personalized quote.
-                </SheetDescription>
-              </SheetHeader>
-              <GetAQuoteForm />
-            </SheetContent>
-          </Sheet>
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" className={cn("lg:hidden p-2 text-foreground")}>
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="p-0">
-               <div className="flex flex-col h-full">
-                <SheetHeader className="p-4 border-b">
-                   <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
-                    <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
-                  </Link>
-                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-                </SheetHeader>
-                <nav className="flex flex-col space-y-1 p-4">
+           {!isMobile ? (
+              <nav
+                className="flex items-center space-x-2 text-sm font-medium bg-muted/50 p-1 rounded-full"
+                onMouseLeave={() => setHoveredPath(pathname)}
+              >
+                {NAV_ITEMS.map((item) => {
+                  const isActive = item.href === pathname;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      data-active={isActive}
+                      onMouseOver={() => setHoveredPath(item.href)}
+                      className={cn(
+                        'relative transition-colors duration-300 whitespace-nowrap px-4 py-2 rounded-full',
+                        hoveredPath === item.href ? 'text-primary-foreground' : 'text-foreground/80 hover:text-foreground'
+                      )}
+                    >
+                      {item.href === hoveredPath && (
+                        <motion.div
+                          className="absolute inset-0 bg-primary rounded-full -z-10"
+                          layoutId="navbar-pill"
+                          aria-hidden="true"
+                          transition={{
+                            type: 'spring',
+                            bounce: 0.25,
+                            stiffness: 130,
+                            damping: 12,
+                            duration: 0.3,
+                          }}
+                        />
+                      )}
+                      <span>{item.label}</span>
+                    </Link>
+                  )
+                })}
+              </nav>
+           ) : (
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" className={cn("lg:hidden p-2 text-foreground")}>
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open Menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="p-0">
+                  <div className="flex flex-col h-full">
+                    <SheetHeader className="p-4 border-b">
+                      <Link href="/" className="flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
+                      </Link>
+                      <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                    </SheetHeader>
+                    <nav className="flex flex-col space-y-1 p-4">
                   {NAV_ITEMS.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={cn(
-                        'text-lg rounded-md p-3 transition-colors hover:bg-muted',
+                        'text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
                         pathname === item.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                       )}
                     >
@@ -135,25 +122,40 @@ export function Header() {
                     </Link>
                   ))}
                 </nav>
-                 <div className="p-4 mt-auto">
-                    <Sheet>
-                      <SheetTrigger asChild>
-                         <Button className="w-full">Get a Quote</Button>
-                      </SheetTrigger>
-                       <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
-                        <SheetHeader>
-                          <SheetTitle>Get a Free Quote</SheetTitle>
-                           <SheetDescription>
-                            Fill out the form below and we'll get back to you with a personalized quote.
-                          </SheetDescription>
-                        </SheetHeader>
-                        <GetAQuoteForm />
-                      </SheetContent>
-                    </Sheet>
-                 </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+                    <div className="p-4 mt-auto">
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button className="w-full">Get a Quote</Button>
+                        </SheetTrigger>
+                        <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+                          <SheetHeader>
+                            <SheetTitle>Get a Free Quote</SheetTitle>
+                            <SheetDescription>
+                              Fill out the form below and we'll get back to you with a personalized quote.
+                            </SheetDescription>
+                          </SheetHeader>
+                          <GetAQuoteForm />
+                        </SheetContent>
+                      </Sheet>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+           )}
+           <Sheet>
+             <SheetTrigger asChild>
+               <Button className="hidden lg:inline-flex">Get a Quote</Button>
+             </SheetTrigger>
+             <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+               <SheetHeader>
+                 <SheetTitle>Get a Free Quote</SheetTitle>
+                 <SheetDescription>
+                   Fill out the form below and we'll get back to you with a personalized quote.
+                 </SheetDescription>
+               </SheetHeader>
+               <GetAQuoteForm />
+             </SheetContent>
+           </Sheet>
         </div>
       </div>
     </header>
