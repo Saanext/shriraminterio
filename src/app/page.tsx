@@ -101,7 +101,7 @@ const trendingItems = [
   { name: 'Wardrobe', image: '/trending1.jpg', hint: 'modern wardrobe' },
   { name: 'Kitchen', image: '/kitchen.jpg', hint: 'modern kitchen' },
   { name: 'King Size Bed', image: '/r1.jpg', hint: 'king size bed' },
-  { name: 'Living Room', image: '/living-room.jpg', hint: 'modern living room' },
+  { name: 'Living Room', image: 'https://images.unsplash.com/photo-1724582586529-62622e50c0b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU1NzE2MTA0fDA&ixlib=rb-4.1.0&q=80&w=1080', hint: 'modern living room' },
 ];
 
 const bestSellingKitchens = [
