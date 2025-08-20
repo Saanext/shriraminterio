@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from '@/components/ui/sheet';
@@ -15,13 +15,27 @@ import Image from 'next/image';
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   if (pathname.startsWith('/shriramadmin')) {
     return null;
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
+    <header className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        isScrolled ? "bg-background shadow-md border-b" : "bg-transparent"
+    )}>
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
@@ -30,20 +44,22 @@ export function Header() {
         </div>
 
 
-        <nav className="hidden lg:flex items-center space-x-6 text-sm font-medium absolute left-1/2 -translate-x-1/2">
+        <nav className="hidden lg:flex items-center space-x-2 text-sm font-medium absolute left-1/2 -translate-x-1/2">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'relative transition-colors hover:text-primary whitespace-nowrap group',
-                pathname === item.href ? 'text-primary' : 'text-foreground/60'
+                'relative transition-all duration-300 hover:text-primary whitespace-nowrap group px-4 py-2 rounded-full',
+                pathname === item.href 
+                  ? 'text-primary-foreground bg-primary' 
+                  : isScrolled 
+                    ? 'text-foreground/80' 
+                    : 'text-white'
               )}
             >
-              <span className="relative py-2">
+              <span className="relative">
                 {item.label}
-                 <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                 <span className="absolute top-0 left-1/2 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
               </span>
             </Link>
           ))}
@@ -66,7 +82,7 @@ export function Header() {
           </Sheet>
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" className="lg:hidden">
+              <Button variant="ghost" className={cn("lg:hidden", !isScrolled && "text-white hover:bg-white/10 hover:text-white")}>
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Open Menu</span>
               </Button>

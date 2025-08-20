@@ -122,7 +122,7 @@ export default function Home() {
   return (
     <PageTransition>
       {/* Hero Section - Responsive Video Background */}
-      <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden">
+      <section className="relative w-full h-screen overflow-hidden">
         <video
           src="https://videos.pexels.com/video-files/3769951/3769951-hd_1920_1080_25fps.mp4"
           autoPlay
