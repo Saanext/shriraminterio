@@ -14,7 +14,7 @@ const products = [
   {
     name: 'Wardrobes',
     href: '/products/wardrobe',
-    imageSrc: '/product-wardrobe.png',
+    imageSrc: 'https://images.unsplash.com/photo-1614631446501-abcf76949eca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'modern wardrobe',
     description: 'Discover custom wardrobe solutions that maximize space and complement your decor.',
   },
