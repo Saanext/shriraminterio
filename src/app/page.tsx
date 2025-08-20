@@ -1,5 +1,4 @@
 
-
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
@@ -124,14 +123,16 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-screen overflow-hidden">
         <div className="absolute inset-0">
-          <Image
-            src="https://placehold.co/1920x1080.png"
+          <video
+            src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" // Placeholder video URL
             alt="Hero background image"
-            layout="fill"
-            objectFit="cover"
-            className="brightness-50"
-            data-ai-hint="hero background"
-            priority
+            className="absolute inset-0 w-full h-full object-cover brightness-50"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            data-ai-hint="hero background video"
           />
         </div>
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
@@ -349,10 +350,3 @@ export default function Home() {
     </PageTransition>
   );
 }
-
-    
-
-    
-
-    
-
