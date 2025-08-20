@@ -129,10 +129,10 @@ export default function Home() {
  >
  <CarouselContent className="-ml-1 h-full">
  {/* Add CarouselItems for each image */}
-         {['/b1.jpg', '/b2.jpg', '/r1.jpg'].map((src, index) => (
+         {['https://placehold.co/1920x1080.png', 'https://placehold.co/1920x1080.png', 'https://placehold.co/1920x1080.png'].map((src, index) => (
  <CarouselItem key={index} className="pl-1 h-full">
  <div className="relative h-full">
- <Image src={src} alt={`Slide ${index + 1}`} layout="fill" objectFit="cover" className="brightness-50"/>
+ <Image src={src} alt={`Slide ${index + 1}`} layout="fill" objectFit="cover" className="brightness-50" data-ai-hint="hero background"/>
  </div> 
  </CarouselItem>
  ))}
