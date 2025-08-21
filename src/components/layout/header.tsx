@@ -120,7 +120,7 @@ export function Header() {
       })}
     </nav>
   );
-
+  
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
       <div className="flex h-20 items-center relative px-4 sm:px-6 lg:px-8">
