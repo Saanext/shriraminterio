@@ -110,12 +110,20 @@ const pageStructure = {
         sections: [
              { 
                 type: 'pageHeader', 
-                title: 'Page Header', 
+                title: 'Client Video Testimonials', 
                 fields: [
                     { name: 'title', label: 'Title', value: 'Client Video Testimonials', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'See our happy clients in action.', type: 'text' },
                 ]
             },
+            {
+                type: 'pageHeader',
+                title: 'Client Testimonials',
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Client Testimonials', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Hear from our happy clients across Pune.', type: 'text' },
+                ]
+            }
         ]
     },
     '/contact': {
