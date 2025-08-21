@@ -17,33 +17,15 @@ import { useIsMobile } from '@/hooks/use-mobile';
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [hoveredPath, setHoveredPath] = useState(pathname);
-
-  const isMobile = useIsMobile();
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Set initial state
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
   
-  useEffect(() => {
-    setHoveredPath(pathname);
-  }, [pathname]);
-
+  const isMobile = useIsMobile();
+  
   if (pathname.startsWith('/shriramadmin')) {
     return null;
   }
 
   return (
-    <header className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b"
-    )}>
+    <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
@@ -52,38 +34,27 @@ export function Header() {
         </div>
         <div className="flex items-center gap-4">
            {!isMobile ? (
-              <nav
-                className="flex items-center space-x-2 text-sm font-medium bg-muted/50 p-1 rounded-full"
-                onMouseLeave={() => setHoveredPath(pathname)}
-              >
+              <nav className="flex items-center space-x-6 text-sm font-medium">
                 {NAV_ITEMS.map((item) => {
                   const isActive = item.href === pathname;
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      data-active={isActive}
-                      onMouseOver={() => setHoveredPath(item.href)}
                       className={cn(
-                        'relative transition-colors duration-300 whitespace-nowrap px-4 py-2 rounded-full',
-                        hoveredPath === item.href ? 'text-primary-foreground' : 'text-foreground/80 hover:text-foreground'
+                        'relative transition-colors duration-300 group',
+                        isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                       )}
                     >
-                      {item.href === hoveredPath && (
-                        <motion.div
-                          className="absolute inset-0 bg-primary rounded-full -z-10"
-                          layoutId="navbar-pill"
-                          aria-hidden="true"
-                          transition={{
-                            type: 'spring',
-                            bounce: 0.25,
-                            stiffness: 130,
-                            damping: 12,
-                            duration: 0.3,
-                          }}
-                        />
-                      )}
                       <span>{item.label}</span>
+                       <span className={cn(
+                        "absolute left-0 -top-1 block h-[2px] w-full bg-primary transition-all duration-300 transform scale-x-0 group-hover:scale-x-100",
+                        isActive && "scale-x-100"
+                      )} />
+                      <span className={cn(
+                        "absolute left-0 -bottom-1 block h-[2px] w-full bg-primary transition-all duration-300 transform scale-x-0 group-hover:scale-x-100",
+                        isActive && "scale-x-100"
+                      )} />
                     </Link>
                   )
                 })}
