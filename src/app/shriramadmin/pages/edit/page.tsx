@@ -11,8 +11,23 @@ import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { Upload } from 'lucide-react';
 
-// Mock data representing the sections of the "About Us" page
+// Mock data representing the sections of the pages
 const pageStructure = {
+    '/': {
+        title: 'Home Page',
+        sections: [
+             { 
+                type: 'hero', 
+                title: 'Hero Section', 
+                fields: [
+                    { name: 'videoUrl', label: 'Background Video URL', value: 'https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4', type: 'text' },
+                    { name: 'title', label: 'Title', value: 'Crafting Dreams, Designing Reality', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.', type: 'textarea' },
+                    { name: 'buttonText', label: 'Button Text', value: 'Explore Our Services', type: 'text' },
+                ]
+            },
+        ]
+    },
     '/about': {
         title: 'About Shriram Interio',
         sections: [
@@ -32,12 +47,104 @@ const pageStructure = {
                     { name: 'heading', label: 'Heading', value: 'Welcome to Shriram Interio', type: 'text' },
                     { name: 'subheading', label: 'Subheading', value: 'Since we started work in 2016', type: 'text' },
                     { name: 'image', label: 'Image', value: '/r1.jpg', type: 'image' },
-                    { name: 'paragraph1', label: 'Paragraph 1', value: "Since our establishment in 2016, we have been dedicated to providing...", type: 'textarea' },
+                    { name: 'paragraph1', label: 'Paragraph 1', value: "Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team consists of the most passionate and best interior designers in Pune who love what they do and are committed to creating beautiful and functional spaces that reflect our client's unique styles and needs.", type: 'textarea' },
                 ]
             }
         ]
-    }
-}
+    },
+    '/products': {
+        title: 'Products',
+        sections: [
+             { 
+                type: 'pageHeader', 
+                title: 'Page Header', 
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Products', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Crafted with precision, designed for life.', type: 'text' },
+                ]
+            },
+        ]
+    },
+    '/how-it-works': {
+        title: 'How It Works',
+        sections: [
+            { 
+                type: 'hero', 
+                title: 'Hero Section', 
+                fields: [
+                    { name: 'backgroundImage', label: 'Background Image', value: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080', type: 'image' },
+                    { name: 'title', label: 'Title', value: 'How It Works', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Your seamless journey from concept to reality.', type: 'text' },
+                ]
+            },
+        ]
+    },
+     '/services': {
+        title: 'Services',
+        sections: [
+             { 
+                type: 'pageHeader', 
+                title: 'Page Header', 
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Services', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Comprehensive design solutions for every corner of your home.', type: 'text' },
+                ]
+            },
+        ]
+    },
+    '/portfolio': {
+        title: 'Portfolio',
+        sections: [
+             { 
+                type: 'pageHeader', 
+                title: 'Page Header', 
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Portfolio', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'A glimpse into the spaces we have transformed.', type: 'text' },
+                ]
+            },
+        ]
+    },
+    '/clients': {
+        title: 'Clients',
+        sections: [
+             { 
+                type: 'pageHeader', 
+                title: 'Page Header', 
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Client Video Testimonials', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'See our happy clients in action.', type: 'text' },
+                ]
+            },
+        ]
+    },
+    '/contact': {
+        title: 'Contact Us',
+        sections: [
+             { 
+                type: 'pageHeader', 
+                title: 'Page Header', 
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Contact Us', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Get in touch with us for a free consultation.', type: 'text' },
+                ]
+            },
+        ]
+    },
+     '/appointment': {
+        title: 'Book an Appointment',
+        sections: [
+             { 
+                type: 'pageHeader', 
+                title: 'Page Header', 
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Book an Appointment', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Schedule a free consultation with our design experts by following the steps below.', type: 'text' },
+                ]
+            },
+        ]
+    },
+};
 
 
 export default function EditPage() {
