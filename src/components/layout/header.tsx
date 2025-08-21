@@ -12,6 +12,7 @@ import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { motion } from 'framer-motion';
 
 export function Header() {
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export function Header() {
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex-1 flex justify-start">
+        <div className="flex items-center justify-start">
           <Link href="/" className="flex items-center space-x-2">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
@@ -92,20 +93,36 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative transition-colors duration-300 group',
+                      'relative transition-colors duration-300 group py-2',
                       isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                     )}
                   >
+                     {isActive && (
+                      <motion.div
+                        layoutId="nav-underline-top"
+                        className="absolute left-0 top-0 block h-[2px] w-full bg-primary"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      />
+                    )}
                     <span>{item.label}</span>
-                    <span className={cn(
-                      "absolute left-0 -bottom-1 block h-[2px] w-full bg-primary transition-all duration-300 transform scale-x-0 group-hover:scale-x-100",
-                      isActive && "scale-x-100"
-                    )} />
+                     {isActive && (
+                      <motion.div
+                        layoutId="nav-underline-bottom"
+                        className="absolute left-0 bottom-0 block h-[2px] w-full bg-primary"
+                         initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      />
+                    )}
                   </Link>
                 )
               })}
             </nav>
-            <div className="flex-1 flex justify-end">
+            <div className="flex items-center justify-end">
               <Sheet>
                 <SheetTrigger asChild>
                   <Button>Get a Quote</Button>
