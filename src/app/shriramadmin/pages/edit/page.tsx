@@ -1,6 +1,7 @@
 
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -341,8 +342,7 @@ const pageStructure = {
     }
 };
 
-
-export default function EditPage() {
+function EditPageImpl() {
     const searchParams = useSearchParams();
     const pageSlug = searchParams.get('page') || '';
     const pageData = NAV_ITEMS.find(p => p.href === `/${pageSlug}`);
@@ -443,3 +443,13 @@ export default function EditPage() {
         </div>
     );
 }
+
+export default function EditPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <EditPageImpl />
+        </Suspense>
+    )
+}
+
+    
