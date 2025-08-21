@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NAV_ITEMS } from '@/lib/constants';
 import Link from 'next/link';
+import { Textarea } from '@/components/ui/textarea';
 
 export default function EditPage() {
     const searchParams = useSearchParams();
@@ -33,7 +34,7 @@ export default function EditPage() {
             <Card>
                 <CardHeader>
                     <CardTitle>Page Details</CardTitle>
-                    <CardDescription>Update the page title and slug.</CardDescription>
+                    <CardDescription>Update the page title, slug, and content.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
                     <div className="space-y-2">
@@ -43,6 +44,10 @@ export default function EditPage() {
                      <div className="space-y-2">
                         <Label htmlFor="page-slug">Slug</Label>
                         <Input id="page-slug" defaultValue={pageData.href} />
+                    </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="page-content">Content</Label>
+                        <Textarea id="page-content" rows={15} defaultValue={`This is the current content for the ${pageData.label} page...`} />
                     </div>
                     <div className="flex justify-end gap-4">
                         <Button asChild variant="outline">
