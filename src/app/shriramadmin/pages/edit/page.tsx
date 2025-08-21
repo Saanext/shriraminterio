@@ -60,4 +60,3 @@ export default function EditPage() {
         </div>
     );
 }
-
