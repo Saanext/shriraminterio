@@ -27,7 +27,7 @@ export function Header() {
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex-shrink-0">
+        <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
@@ -97,16 +97,22 @@ export function Header() {
                       isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                     )}
                   >
-                     {item.label === 'HOME' && isActive ? (
-                        <span className="text-primary">{item.label}</span>
-                     ) : (
-                        <span>{item.label}</span>
-                     )}
                      {isActive && (
                       <motion.div
-                        layoutId="nav-underline"
-                        className="absolute left-0 -bottom-px block h-[1px] w-full bg-primary"
+                        layoutId="nav-underline-top"
+                        className="absolute left-0 top-0 block h-[2px] w-full bg-primary"
                         initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        exit={{ scaleX: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                      />
+                    )}
+                    <span>{item.label}</span>
+                     {isActive && (
+                      <motion.div
+                        layoutId="nav-underline-bottom"
+                        className="absolute left-0 bottom-0 block h-[2px] w-full bg-primary"
+                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
                         exit={{ scaleX: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -116,10 +122,10 @@ export function Header() {
                 )
               })}
             </nav>
-            <div className="flex-shrink-0">
+            <div className="flex items-center">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button className="rounded-full">Get Quote</Button>
+                  <Button>Get a Quote</Button>
                 </SheetTrigger>
                 <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
                   <SheetHeader>
