@@ -12,6 +12,9 @@ import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { Upload } from 'lucide-react';
 
+// This forces the page to be rendered dynamically
+export const dynamic = 'force-dynamic';
+
 // Mock data representing the sections of the pages
 const pageStructure = {
     '/': {
