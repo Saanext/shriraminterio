@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
@@ -17,9 +17,14 @@ import { motion } from 'framer-motion';
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
   const isMobile = useIsMobile();
   
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   if (pathname.startsWith('/shriramadmin')) {
     return null;
   }
@@ -33,7 +38,7 @@ export function Header() {
           </Link>
         </div>
 
-        {isMobile ? (
+        {isClient && isMobile ? (
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" className="p-2 text-foreground">
