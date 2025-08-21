@@ -1,10 +1,12 @@
 
+'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { NAV_ITEMS } from '@/lib/constants';
 import { FilePlus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
 
 export default function PagesManagementPage() {
     return (
@@ -43,9 +45,11 @@ export default function PagesManagementPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem>
-                                                    <Pencil className="mr-2 h-4 w-4" />
-                                                    <span>Edit</span>
+                                                <DropdownMenuItem asChild>
+                                                    <Link href={`/shriramadmin/pages/edit?page=${page.href.slice(1)}`}>
+                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                        <span>Edit</span>
+                                                    </Link>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuItem className="text-destructive">
                                                     <Trash2 className="mr-2 h-4 w-4" />
