@@ -82,71 +82,76 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <>
-      <nav className="hidden md:flex flex-1 justify-center items-center space-x-1 lg:space-x-4 text-sm font-medium">
-        {NAV_ITEMS.map((item) => {
-          const isActive = item.href === pathname;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                'relative transition-colors duration-300 group py-2 px-2 lg:px-3',
-                isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
-              )}
-            >
-               {isActive && (
-                <motion.div
-                  layoutId="nav-underline-top"
-                  className="absolute left-0 top-0 block h-[2px] w-full bg-primary"
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  exit={{ scaleX: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                />
-              )}
-              <span>{item.label}</span>
-               {isActive && (
-                <motion.div
-                  layoutId="nav-underline-bottom"
-                  className="absolute left-0 bottom-0 block h-[2px] w-full bg-primary"
-                   initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  exit={{ scaleX: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                />
-              )}
-            </Link>
-          )
-        })}
-      </nav>
-      <div className="flex items-center">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button>Get a Quote</Button>
-          </SheetTrigger>
-          <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Get a Free Quote</SheetTitle>
-            </SheetHeader>
-            <GetAQuoteForm />
-          </SheetContent>
-        </Sheet>
-      </div>
-    </>
+    <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-1 lg:space-x-4 text-sm font-medium">
+      {NAV_ITEMS.map((item) => {
+        const isActive = item.href === pathname;
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              'relative transition-colors duration-300 group py-2 px-2 lg:px-3',
+              isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
+            )}
+          >
+             {isActive && (
+              <motion.div
+                layoutId="nav-underline-top"
+                className="absolute left-0 top-0 block h-[2px] w-full bg-primary"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              />
+            )}
+            <span>{item.label}</span>
+             {isActive && (
+              <motion.div
+                layoutId="nav-underline-bottom"
+                className="absolute left-0 bottom-0 block h-[2px] w-full bg-primary"
+                 initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                exit={{ scaleX: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              />
+            )}
+          </Link>
+        )
+      })}
+    </nav>
   );
 
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
-      <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 items-center relative px-4 sm:px-6 lg:px-8">
+        {/* Logo - Left Corner */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
         </div>
 
-        {isMounted && isMobile ? renderMobileMenu() : renderDesktopMenu()}
+        {/* Desktop Navigation - Center */}
+        {isMounted && !isMobile && renderDesktopMenu()}
         
+        {/* Get a Quote Button - Right Corner */}
+        <div className="ml-auto flex items-center">
+          {isMounted && isMobile ? (
+            renderMobileMenu()
+          ) : (
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button>Get a Quote</Button>
+              </SheetTrigger>
+              <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle>Get a Free Quote</SheetTitle>
+                </SheetHeader>
+                <GetAQuoteForm />
+              </SheetContent>
+            </Sheet>
+          )}
+        </div>
       </div>
     </header>
   );
