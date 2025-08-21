@@ -85,7 +85,7 @@ export function Header() {
           </Sheet>
         ) : (
           <>
-            <nav className="flex-1 flex justify-center items-center space-x-6 text-sm font-medium">
+            <nav className="hidden md:flex flex-1 justify-center items-center space-x-1 lg:space-x-4 text-sm font-medium">
               {NAV_ITEMS.map((item) => {
                 const isActive = item.href === pathname;
                 return (
@@ -93,7 +93,7 @@ export function Header() {
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'relative transition-colors duration-300 group py-2',
+                      'relative transition-colors duration-300 group py-2 px-2 lg:px-3',
                       isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                     )}
                   >

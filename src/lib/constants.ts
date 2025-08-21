@@ -9,13 +9,13 @@ export type NavItem = {
 };
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: 'HOME', href: '/', icon: Home },
-  { label: 'ABOUT US', href: '/about', icon: Info },
-  { label: 'PRODUCTS', href: '/products', icon: ShoppingCart },
-  { label: 'HOW IT WORKS', href: '/how-it-works', icon: GanttChartSquare },
-  { label: 'SERVICES', href: '/services', icon: Wrench },
-  { label: 'PORTFOLIO', href: '/portfolio', icon: GalleryHorizontal },
-  { label: 'CLIENTS', href: '/clients', icon: Users },
-  { label: 'CONTACT', href: '/contact', icon: Phone },
-  { label: 'APPOINTMENT', href: '/appointment', icon: Users },
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'About Us', href: '/about', icon: Info },
+  { label: 'Products', href: '/products', icon: ShoppingCart },
+  { label: 'How It Works', href: '/how-it-works', icon: GanttChartSquare },
+  { label: 'Services', href: '/services', icon: Wrench },
+  { label: 'Portfolio', href: '/portfolio', icon: GalleryHorizontal },
+  { label: 'Clients', href: '/clients', icon: Users },
+  { label: 'Contact', href: '/contact', icon: Phone },
+  { label: 'Appointment', href: '/appointment', icon: Users },
 ];
