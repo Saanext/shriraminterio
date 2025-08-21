@@ -1,3 +1,4 @@
+
 'use client';
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
@@ -19,7 +20,7 @@ export default function WebLayout({
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex-grow pt-[-80px]">
+            <main className="flex-grow pt-20">
                 <PageTransition>
                     {children}
                 </PageTransition>
