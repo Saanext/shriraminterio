@@ -46,7 +46,7 @@ const stories = [
     slug: 'living-room-luxury',
     title: 'Crafting a Luxurious Living Area for Entertaining',
     category: 'Living Area',
-    image: '/portfolio-1.png',
+    image: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsaXZpbmclMjBhcmVhJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU2MDE1MjExfDA&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'living room',
     author: 'Sameer Joshi',
     authorAvatar: '/avatar-4.png',
