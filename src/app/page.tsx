@@ -116,6 +116,14 @@ const bestSellingWardrobes = [
     { name: 'Walk-in Wardrobe', image: '/b1.jpg', hint: 'walk-in wardrobe' },
 ];
 
+const workGallery = [
+  { title: 'Modern Living Room', image: '/portfolio-1.png', hint: 'modern living room' },
+  { title: 'Elegant Kitchen Design', image: '/portfolio-2.png', hint: 'elegant kitchen' },
+  { title: 'Cozy Bedroom Interior', image: '/portfolio-3.png', hint: 'cozy bedroom' },
+  { title: 'Luxury Wardrobe', image: '/portfolio-4.png', hint: 'luxury wardrobe' },
+  { title: 'Contemporary Space', image: '/kitchengallery.jpg', hint: 'contemporary space' },
+];
+
 const partners = [
     { name: 'Ebco', logoSrc: '/ebco.jpg' },
     { name: 'Hettich', logoSrc: '/hettich.png' },
@@ -254,9 +262,38 @@ export default function Home() {
                 </div>
             </div>
         </section>
+        
+      {/* Work Gallery Section */}
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Our Work Gallery</h2>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">A glimpse into the spaces we've transformed.</p>
+          </div>
+          <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
+            <CarouselContent className="-ml-2 sm:-ml-4">
+              {workGallery.map((item, index) => (
+                <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/3">
+                  <Card className="overflow-hidden group">
+                    <div className="relative aspect-video">
+                      <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                       <CardContent className="p-4 absolute bottom-0 left-0">
+                        <h3 className="text-lg font-bold text-white text-shadow-md">{item.title}</h3>
+                      </CardContent>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2 sm:-left-8" />
+            <CarouselNext className="right-2 sm:-right-8" />
+          </Carousel>
+        </div>
+      </section>
 
       {/* Design at Your Comfort Section */}
-      <section id="comfort-design" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
+      <section id="comfort-design" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6">
            <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-2">Design at Your Comfort – Our Expertise</h2>
@@ -264,7 +301,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {expertise.map((item) => (
-              <Card key={item.title} className="text-center p-4 sm:p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-background">
+              <Card key={item.title} className="text-center p-4 sm:p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-secondary">
                  <CardHeader className="flex items-center justify-center pb-2 sm:pb-4">
                   {item.icon}
                   <CardTitle className="mt-3 sm:mt-4 text-lg sm:text-xl leading-tight">{item.title}</CardTitle>
@@ -279,7 +316,7 @@ export default function Home() {
       </section>
 
       {/* Trending Section */}
-      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">What We Do</h2>
@@ -350,7 +387,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
+      <section id="testimonials" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Client Reviews</h2>
@@ -364,7 +401,7 @@ export default function Home() {
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
-                    <Card className="flex flex-col justify-between h-full p-4 sm:p-6 text-center bg-background">
+                    <Card className="flex flex-col justify-between h-full p-4 sm:p-6 text-center bg-secondary">
                       <CardContent className="p-0 flex-grow">
                         <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">{testimonial.review}</p>
                       </CardContent>
@@ -392,7 +429,7 @@ export default function Home() {
       </section>
 
       {/* Partners Section */}
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-secondary">
           <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                   <div className="flex justify-center items-center mb-2">
@@ -425,3 +462,4 @@ export default function Home() {
     
 
     
+
