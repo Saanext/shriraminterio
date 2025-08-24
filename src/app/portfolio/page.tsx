@@ -166,7 +166,7 @@ export default function PortfolioPage() {
                   {partners.map((partner) => (
                       <div key={partner.name} className="flex justify-center">
                           <Image
-                              src={partner.name}
+                              src={partner.logoSrc}
                               alt={`${partner.name} Logo`}
                               width={150}
                               height={75}
