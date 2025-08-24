@@ -163,7 +163,7 @@ export function AppointmentForm() {
                                      <RadioGroup
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
-                                        className="flex flex-col space-y-1"
+                                        className="flex flex-wrap gap-x-6 gap-y-2"
                                     >
                                         {floorplanOptions.map(option => (
                                         <FormItem key={option.id} className="flex items-center space-x-3 space-y-0">
