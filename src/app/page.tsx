@@ -117,10 +117,10 @@ const bestSellingWardrobes = [
 ];
 
 const workGallery = [
-  { title: 'Modern Living Room', image: '/portfolio-1.png', hint: 'modern living room' },
-  { title: 'Elegant Kitchen Design', image: '/portfolio-2.png', hint: 'elegant kitchen' },
-  { title: 'Cozy Bedroom Interior', image: '/portfolio-3.png', hint: 'cozy bedroom' },
-  { title: 'Luxury Wardrobe', image: '/portfolio-4.png', hint: 'luxury wardrobe' },
+  { title: 'Modern Living Room', image: '/b2.jpg', hint: 'modern living room' },
+  { title: 'Elegant Kitchen Design', image: '/b1.jpg', hint: 'elegant kitchen' },
+  { title: 'Cozy Bedroom Interior', image: '/kitchen.jpg', hint: 'cozy bedroom' },
+  { title: 'Luxury Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'luxury wardrobe' },
   { title: 'Contemporary Space', image: '/kitchengallery.jpg', hint: 'contemporary space' },
 ];
 

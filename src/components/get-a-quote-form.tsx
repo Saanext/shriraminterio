@@ -37,7 +37,6 @@ const formSchema = z.object({
     message: "Phone number must be at least 10 digits.",
   }),
   floorplan: z.string().optional(),
-  items: z.array(z.string()).optional(),
   purpose: z.string().optional(),
   message: z.string().optional(),
 });
@@ -60,7 +59,6 @@ export function GetAQuoteForm() {
             name: "",
             email: "",
             phone: "",
-            items: [],
         },
     });
 
@@ -142,56 +140,6 @@ export function GetAQuoteForm() {
                     />
                 </div>
 
-                <FormField
-                    control={form.control}
-                    name="items"
-                    render={() => (
-                        <FormItem>
-                            <div className="mb-4">
-                                <FormLabel className="text-base">What are you looking to furnish?</FormLabel>
-                                <FormDescription>
-                                    Select all that apply.
-                                </FormDescription>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4">
-                            {formItems.map((item) => (
-                                <FormField
-                                    key={item.id}
-                                    control={form.control}
-                                    name="items"
-                                    render={({ field }) => {
-                                        return (
-                                        <FormItem
-                                            key={item.id}
-                                            className="flex flex-row items-start space-x-3 space-y-0"
-                                        >
-                                            <FormControl>
-                                            <Checkbox
-                                                checked={field.value?.includes(item.id)}
-                                                onCheckedChange={(checked) => {
-                                                return checked
-                                                    ? field.onChange([...(field.value || []), item.id])
-                                                    : field.onChange(
-                                                        field.value?.filter(
-                                                        (value) => value !== item.id
-                                                        )
-                                                    )
-                                                }}
-                                            />
-                                            </FormControl>
-                                            <FormLabel className="font-normal">
-                                                {item.label}
-                                            </FormLabel>
-                                        </FormItem>
-                                        )
-                                    }}
-                                />
-                                ))}
-                            </div>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
                 
                 <FormField
                     control={form.control}

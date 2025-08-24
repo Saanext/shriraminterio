@@ -34,9 +34,6 @@ const formSchema = z.object({
   appointmentDate: z.date({ required_error: "An appointment date is required." }),
   timeSlot: z.string({ required_error: "Please select a time slot." }),
   floorplan: z.string({ required_error: "Please select a floorplan." }),
-  items: z.array(z.string()).refine(value => value.some(item => item), {
-    message: "You have to select at least one item.",
-  }),
   purpose: z.string({ required_error: "Please select a purpose." }),
   message: z.string().optional(),
 });
@@ -73,7 +70,7 @@ const timeSlots = [
     "04:00 PM - 05:00 PM",
 ]
 
-const totalSteps = 6;
+const totalSteps = 5;
 
 export function AppointmentForm() {
     const { toast } = useToast();
@@ -85,7 +82,6 @@ export function AppointmentForm() {
             name: "",
             email: "",
             phone: "",
-            items: [],
         },
     });
 
@@ -93,10 +89,9 @@ export function AppointmentForm() {
         let fieldsToValidate: (keyof z.infer<typeof formSchema>)[] = [];
         switch (currentStep) {
             case 1: fieldsToValidate = ['purpose']; break;
-            case 2: fieldsToValidate = ['items']; break;
-            case 3: fieldsToValidate = ['floorplan']; break;
-            case 4: fieldsToValidate = ['name', 'email', 'phone']; break;
-            case 5: fieldsToValidate = ['appointmentDate', 'timeSlot']; break;
+            case 2: fieldsToValidate = ['floorplan']; break;
+            case 3: fieldsToValidate = ['name', 'email', 'phone']; break;
+            case 4: fieldsToValidate = ['appointmentDate', 'timeSlot']; break;
         }
 
         const isValid = await form.trigger(fieldsToValidate);
@@ -158,47 +153,6 @@ export function AppointmentForm() {
                 )}
                 
                 {currentStep === 2 && (
-                    <FormField
-                        control={form.control}
-                        name="items"
-                        render={() => (
-                            <FormItem>
-                                <div className="mb-4">
-                                    <FormLabel className="text-xl font-bold">What are you looking to furnish?</FormLabel>
-                                    <p className="text-muted-foreground">Select all that apply.</p>
-                                </div>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
-                                {formItems.map((item) => (
-                                    <FormField
-                                        key={item.id}
-                                        control={form.control}
-                                        name="items"
-                                        render={({ field }) => (
-                                            <FormItem key={item.id} className="flex flex-row items-center space-x-3 space-y-0">
-                                                <FormControl>
-                                                    <Checkbox
-                                                        checked={field.value?.includes(item.id)}
-                                                        onCheckedChange={(checked) => {
-                                                            const updatedValue = checked
-                                                                ? [...(field.value || []), item.id]
-                                                                : field.value?.filter(v => v !== item.id);
-                                                            field.onChange(updatedValue);
-                                                        }}
-                                                    />
-                                                </FormControl>
-                                                <FormLabel className="font-normal text-base">{item.label}</FormLabel>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    ))}
-                                </div>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                )}
-
-                {currentStep === 3 && (
                      <FormField
                         control={form.control}
                         name="floorplan"
@@ -227,7 +181,7 @@ export function AppointmentForm() {
                     />
                 )}
 
-                {currentStep === 4 && (
+                {currentStep === 3 && (
                     <div className="space-y-4">
                         <h2 className="text-xl font-bold">Please provide your contact details</h2>
                         <FormField control={form.control} name="name" render={({ field }) => (
@@ -260,7 +214,7 @@ export function AppointmentForm() {
                     </div>
                 )}
                 
-                {currentStep === 5 && (
+                {currentStep === 4 && (
                     <div className="space-y-4">
                         <h2 className="text-xl font-bold">Schedule your consultation</h2>
                         <FormField
@@ -332,7 +286,7 @@ export function AppointmentForm() {
                         />
                     </div>
                 )}
-                 {currentStep === 6 && (
+                 {currentStep === 5 && (
                     <div className="text-center py-12">
                         <h2 className="text-2xl font-bold text-primary mb-4">Thank You!</h2>
                         <p className="text-lg text-muted-foreground">Your appointment request has been submitted successfully.</p>
