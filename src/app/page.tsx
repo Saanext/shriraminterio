@@ -1,3 +1,4 @@
+
 'use client'
 import Image from 'next/image';
 import Link from 'next/link';
@@ -113,6 +114,14 @@ const bestSellingWardrobes = [
     { name: 'Free Standing Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'freestanding wardrobe' },
     { name: 'Modular Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'modular wardrobe' },
     { name: 'Walk-in Wardrobe', image: '/b1.jpg', hint: 'walk-in wardrobe' },
+];
+
+const partners = [
+    { name: 'Ebco', logoSrc: '/ebco.jpg' },
+    { name: 'Hettich', logoSrc: '/hettich.png' },
+    { name: 'Royale Touche', logoSrc: '/Royal-Touch.jpg' },
+    { name: 'Hafele', logoSrc: '/hafele.png' },
+    { name: 'Godrej', logoSrc: '/godrej.png' },
 ];
 
 export default function Home() {
@@ -341,7 +350,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
+      <section id="testimonials" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Client Reviews</h2>
@@ -355,7 +364,7 @@ export default function Home() {
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
                   <div className="p-1 h-full">
-                    <Card className="flex flex-col justify-between h-full p-4 sm:p-6 text-center bg-secondary">
+                    <Card className="flex flex-col justify-between h-full p-4 sm:p-6 text-center bg-background">
                       <CardContent className="p-0 flex-grow">
                         <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">{testimonial.review}</p>
                       </CardContent>
@@ -381,6 +390,36 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Partners Section */}
+      <section className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                  <div className="flex justify-center items-center mb-2">
+                      <div className="border-t border-primary w-12"></div>
+                      <p className="text-sm text-primary font-bold tracking-widest mx-4">MEET OUR PARTNERS</p>
+                      <div className="border-t border-primary w-12"></div>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold">Our Partners</h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
+                  {partners.map((partner) => (
+                      <div key={partner.name} className="flex justify-center">
+                          <Image
+                              src={partner.logoSrc}
+                              alt={`${partner.name} Logo`}
+                              width={150}
+                              height={75}
+                              className="object-contain"
+                              data-ai-hint="partner logo"
+                          />
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
     </PageTransition>
   );
 }
+
+    
