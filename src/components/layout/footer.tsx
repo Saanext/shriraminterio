@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { NAV_ITEMS } from '@/lib/constants';
@@ -30,11 +32,20 @@ export function Footer() {
                         <h3 className="text-lg font-bold font-headline mb-4">QUICK LINKS</h3>
                         <ul className="space-y-2">
                             {NAV_ITEMS.map((item) => (
-                                <li key={item.href}>
-                                    <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                        {item.label}
-                                    </Link>
-                                </li>
+                                <React.Fragment key={item.href}>
+                                    <li>
+                                        <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                    {item.subItems && item.subItems.map(subItem => (
+                                         <li key={subItem.href} className="pl-4">
+                                            <Link href={subItem.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                                {subItem.label}
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </React.Fragment>
                             ))}
                         </ul>
                     </div>
