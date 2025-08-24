@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -12,7 +13,7 @@ export default function BedroomPage() {
         </CardHeader>
         <CardContent className="text-center">
           <Image
-            src="https://placehold.co/600x400.png"
+            src="https://images.unsplash.com/photo-1633948393301-d43e3ec0e5cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxiZWRyb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU2MDEzODEyfDA&ixlib=rb-4.1.0&q=80&w=1080"
             alt="Modern Bedroom"
             data-ai-hint="modern bedroom"
             width={600}
