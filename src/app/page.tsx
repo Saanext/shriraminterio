@@ -121,27 +121,52 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative w-full h-screen min-h-[500px] overflow-hidden">
   {/* Video Background */}
-  <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    className="absolute inset-0 w-full h-full object-cover brightness-50 z-0"
-    poster="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
-  >
-    <source src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" type="video/mp4" />
-    <source src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" type="video/webm" />
-    {/* Fallback image if video doesn't load */}
-    <img 
-      src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" 
-      alt="Hero background" 
-      className="w-full h-full object-cover"
-    />
-  </video>
-  
-  {/* Optional: Video overlay for better text readability */}
-  <div className="absolute inset-0 bg-black/30 z-5"></div>
-  
+  <Carousel className="w-full h-full">
+          <CarouselContent>
+            {/* Video Slide */}
+            <CarouselItem className="relative w-full h-screen min-h-[500px]">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover brightness-50 z-0"
+                poster="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+              >
+                <source src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" type="video/mp4" />
+                <source src="https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4" type="video/webm" />
+                {/* Fallback image if video doesn't load */}
+                <img
+                  src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+                  alt="Hero background"
+                  className="w-full h-full object-cover"
+                />
+              </video>
+               <div className="absolute inset-0 bg-black/30 z-5"></div>
+            </CarouselItem>
+
+            {/* Image Slide 1 */}
+            <CarouselItem className="relative w-full h-screen min-h-[500px]">
+              <Image src="/kitchengallery.jpg" alt="Modular Kitchen" layout="fill" objectFit="cover" className="brightness-50 z-0" data-ai-hint="modern kitchen interior"/>
+               <div className="absolute inset-0 bg-black/30 z-5"></div>
+            </CarouselItem>
+
+            {/* Image Slide 2 */}
+            <CarouselItem className="relative w-full h-screen min-h-[500px]">
+              <Image src="/industrial.jpg" alt="Industrial Interior" layout="fill" objectFit="cover" className="brightness-50 z-0" data-ai-hint="industrial style interior"/>
+               <div className="absolute inset-0 bg-black/30 z-5"></div>
+            </CarouselItem>
+
+            {/* Image Slide 3 */}
+            <CarouselItem className="relative w-full h-screen min-h-[500px]">
+              <Image src="/Royal-Touch.jpg" alt="Royal Touch Interior" layout="fill" objectFit="cover" className="brightness-50 z-0" data-ai-hint="luxury interior design"/>
+               <div className="absolute inset-0 bg-black/30 z-5"></div>
+            </CarouselItem>
+
+          </CarouselContent>
+           <CarouselPrevious className="left-4 z-20" />
+          <CarouselNext className="right-4 z-20" />
+        </Carousel>
   <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-shadow-lg font-headline leading-tight">
