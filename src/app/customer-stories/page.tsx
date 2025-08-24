@@ -1,10 +1,12 @@
 
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 
 const stories = [
   {
@@ -53,56 +55,105 @@ const stories = [
   },
 ];
 
-export default function CustomerStoriesPage() {
-  return (
-    <div className="bg-background">
-      <div className="container mx-auto px-4 py-16 md:py-24">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold">Customer Stories</h1>
-          <p className="text-lg text-muted-foreground mt-2">
-            Read about the journeys we've shared with our clients to create their dream homes.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {stories.map((story) => (
-            <Link href={`/customer-stories/${story.slug}`} key={story.slug} className="group block">
-              <Card className="h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl">
-                <div className="relative h-60">
-                  <Image
-                    src={story.image}
-                    alt={story.title}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-transform duration-500 group-hover:scale-105"
-                    data-ai-hint={story.dataAiHint}
-                  />
+const FeaturedStory = ({ story }: { story: typeof stories[0] }) => (
+    <section className="bg-secondary mb-16 md:mb-24">
+        <div className="container mx-auto px-4 py-16">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden shadow-2xl">
+                    <Image 
+                        src={story.image}
+                        alt={story.title}
+                        layout="fill"
+                        objectFit="cover"
+                        data-ai-hint={story.dataAiHint}
+                    />
                 </div>
-                <CardContent className="p-6 flex flex-col flex-grow">
-                  <Badge variant="secondary" className="w-fit mb-2">{story.category}</Badge>
-                  <h2 className="text-xl font-bold font-headline mb-3 flex-grow">{story.title}</h2>
-                  <p className="text-muted-foreground text-sm mb-4">{story.excerpt}</p>
-                  
-                  <div className="flex items-center text-sm text-muted-foreground mt-auto pt-4 border-t">
-                     <Avatar className="h-8 w-8 mr-3">
-                        <AvatarImage src={story.authorAvatar} alt={story.author} />
-                        <AvatarFallback>{story.author.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-grow">
-                        <span className="font-semibold">{story.author}</span>
-                        <div className="flex items-center gap-2">
-                             <CalendarDays className="h-4 w-4" />
-                             <span>{story.date}</span>
+                <div className="flex flex-col justify-center">
+                    <Badge variant="default" className="w-fit mb-4">{story.category}</Badge>
+                    <h1 className="text-3xl md:text-4xl font-bold font-headline mb-4">{story.title}</h1>
+                    <p className="text-muted-foreground text-lg mb-6">{story.excerpt}</p>
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-8">
+                        <Avatar className="h-10 w-10">
+                            <AvatarImage src={story.authorAvatar} alt={story.author} />
+                            <AvatarFallback>{story.author.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <span className="font-semibold text-foreground">{story.author}</span>
+                            <div className="flex items-center gap-2">
+                                <CalendarDays className="h-4 w-4" />
+                                <span>{story.date}</span>
+                            </div>
                         </div>
                     </div>
-                     <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+                     <Button asChild size="lg">
+                        <Link href={`/customer-stories/${story.slug}`}>
+                            Read Full Story <ArrowRight className="ml-2 h-5 w-5" />
+                        </Link>
+                    </Button>
+                </div>
+            </div>
         </div>
-      </div>
+    </section>
+);
+
+
+export default function CustomerStoriesPage() {
+  const [featuredStory, ...otherStories] = stories;
+
+  return (
+    <div className="bg-background">
+        <div className="py-16 md:py-24 text-center">
+             <div className="container mx-auto px-4">
+                 <h1 className="text-4xl md:text-5xl font-bold">Customer Stories</h1>
+                 <p className="text-lg text-muted-foreground mt-2 max-w-3xl mx-auto">
+                    Read about the journeys we've shared with our clients to create their dream homes.
+                 </p>
+             </div>
+        </div>
+
+        {featuredStory && <FeaturedStory story={featuredStory} />}
+
+        <div className="container mx-auto px-4 pb-16 md:pb-24">
+             <h2 className="text-3xl font-bold text-center mb-12">More Stories</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {otherStories.map((story) => (
+                    <Link href={`/customer-stories/${story.slug}`} key={story.slug} className="group block">
+                    <Card className="h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl bg-card">
+                        <div className="relative h-60">
+                        <Image
+                            src={story.image}
+                            alt={story.title}
+                            layout="fill"
+                            objectFit="cover"
+                            className="transition-transform duration-500 group-hover:scale-105"
+                            data-ai-hint={story.dataAiHint}
+                        />
+                        </div>
+                        <CardContent className="p-6 flex flex-col flex-grow">
+                        <Badge variant="secondary" className="w-fit mb-2">{story.category}</Badge>
+                        <h2 className="text-xl font-bold font-headline mb-3 flex-grow">{story.title}</h2>
+                        <p className="text-muted-foreground text-sm mb-4">{story.excerpt}</p>
+                        
+                        <div className="flex items-center text-sm text-muted-foreground mt-auto pt-4 border-t">
+                            <Avatar className="h-8 w-8 mr-3">
+                                <AvatarImage src={story.authorAvatar} alt={story.author} />
+                                <AvatarFallback>{story.author.charAt(0)}</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-grow">
+                                <span className="font-semibold text-foreground">{story.author}</span>
+                                <div className="flex items-center gap-2">
+                                    <CalendarDays className="h-4 w-4" />
+                                    <span>{story.date}</span>
+                                </div>
+                            </div>
+                            <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 text-primary" />
+                        </div>
+                        </CardContent>
+                    </Card>
+                    </Link>
+                ))}
+            </div>
+        </div>
     </div>
   );
 }
