@@ -64,6 +64,34 @@ const projects = [
     imageSrc: '/kitchengallery.jpg',
     dataAiHint: 'galley kitchen',
   },
+  {
+    id: 9,
+    category: 'TV Units',
+    title: 'Floating TV Console',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'floating tv unit',
+  },
+  {
+    id: 10,
+    category: 'POP Ceiling',
+    title: 'Modern Cove Lighting',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'cove lighting ceiling',
+  },
+  {
+    id: 11,
+    category: 'TV Units',
+    title: 'Entertainment Center Wall',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'entertainment center',
+  },
+  {
+    id: 12,
+    category: 'POP Ceiling',
+    title: 'Geometric Ceiling Design',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'geometric ceiling',
+  },
 ];
 
 const partners = [
@@ -74,7 +102,7 @@ const partners = [
     { name: 'Godrej', logoSrc: '/godrej.png' },
 ];
 
-const categories = ['All', 'Living Areas', 'Kitchens', 'Wardrobes'];
+const categories = ['All', 'Living Areas', 'Kitchens', 'Wardrobes', 'TV Units', 'POP Ceiling'];
 
 export default function PortfolioPage() {
   const [activeTab, setActiveTab] = useState('All');
@@ -92,9 +120,9 @@ export default function PortfolioPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full flex flex-col items-center">
-          <TabsList className="mb-10">
+          <TabsList className="mb-10 flex-wrap h-auto justify-center">
             {categories.map((category) => (
-              <TabsTrigger key={category} value={category}>
+              <TabsTrigger key={category} value={category} className="m-1">
                 {category}
               </TabsTrigger>
             ))}
@@ -138,7 +166,7 @@ export default function PortfolioPage() {
                   {partners.map((partner) => (
                       <div key={partner.name} className="flex justify-center">
                           <Image
-                              src={partner.logoSrc}
+                              src={partner.name}
                               alt={`${partner.name} Logo`}
                               width={150}
                               height={75}
