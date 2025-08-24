@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Users, Target, Eye, Layers, CircleDollarSign, CalendarCheck } from 'lucide-react';
+import { Users, Target, Eye, Layers, IndianRupee, CalendarCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
@@ -140,7 +140,7 @@ export default function AboutUsPage() {
                             </CardContent>
                         </Card>
                         <Card className="p-6 text-center">
-                            <CircleDollarSign className="h-12 w-12 text-primary mx-auto mb-4" />
+                            <IndianRupee className="h-12 w-12 text-primary mx-auto mb-4" />
                              <CardHeader>
                                 <CardTitle>Affordable Design Fees</CardTitle>
                             </CardHeader>

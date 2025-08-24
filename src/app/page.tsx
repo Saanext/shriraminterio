@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Video, Smartphone, CircleDollarSign, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
+import { Video, Smartphone, IndianRupee, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PageTransition } from '@/components/page-transition';
 
@@ -22,7 +22,7 @@ const expertise = [
     description: 'No stepping out. Design your home interiors at the comfort of your home.',
   },
   {
-    icon: <CircleDollarSign className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />,
+    icon: <IndianRupee className="w-6 h-6 sm:w-8 sm:h-8 text-primary" />,
     title: 'Instant Pricing',
     description: 'Complete price transparency and budget-friendly solutions.',
   },
@@ -45,7 +45,7 @@ const whyShriramInterio = [
         description: 'Enjoy multiple interior design alternatives until they match your expectations & requirement.',
     },
     {
-        icon: <CircleDollarSign className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />,
+        icon: <IndianRupee className="w-8 h-8 sm:w-10 sm:h-10 text-primary" />,
         title: 'Affordable Design Fees',
         description: 'We offer competitive and transparent design fees, making high-quality design accessible to everyone.',
     },
