@@ -34,9 +34,13 @@ export function Footer() {
                             {NAV_ITEMS.map((item) => (
                                 <React.Fragment key={item.href}>
                                     <li>
-                                        <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                            {item.label}
-                                        </Link>
+                                        {item.subItems ? (
+                                            <span className="text-sm text-muted-foreground font-semibold">{item.label}</span>
+                                        ) : (
+                                            <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                                {item.label}
+                                            </Link>
+                                        )}
                                     </li>
                                     {item.subItems && item.subItems.map(subItem => (
                                          <li key={subItem.href} className="pl-4">
