@@ -13,7 +13,7 @@ const stories = [
     slug: 'pune-home-transformation',
     title: 'A Complete Home Transformation in Pune',
     category: 'Full Home Interior',
-    image: '/portfolio-3.png',
+    image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxraXRjaGVuJTIwfGVufDB8fHx8MTc1NjAxNTAxNXww&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'home interior',
     author: 'Anjali P.',
     authorAvatar: '/avatar-1.png',
