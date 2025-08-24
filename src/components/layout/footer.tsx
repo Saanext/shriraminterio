@@ -12,9 +12,11 @@ const socialLinks = [
 ];
 
 export function Footer() {
-    const quickLinks = NAV_ITEMS.filter(item => 
-        item.label === 'Home' || item.label === 'Contact' || item.label === 'Appointment'
-    );
+    const quickLinks = [
+        { href: '/', label: 'Home' },
+        { href: '/contact', label: 'Contact' },
+        { href: '/appointment', label: 'Appointment' },
+    ];
 
     return (
         <footer className="bg-secondary text-secondary-foreground border-t">
