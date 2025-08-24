@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, IndianRupee, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { PageTransition } from '@/components/page-transition';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const expertise = [
   {
@@ -130,6 +131,25 @@ const partners = [
     { name: 'Royale Touche', logoSrc: '/Royal-Touch.jpg' },
     { name: 'Hafele', logoSrc: '/hafele.png' },
     { name: 'Godrej', logoSrc: '/godrej.png' },
+];
+
+const faqItems = [
+    {
+        question: "What services do you offer?",
+        answer: "We offer a comprehensive range of interior design services, including modular kitchens, custom wardrobes, full home interiors, living area design, bedroom design, and more. We handle everything from design conception to final installation."
+    },
+    {
+        question: "What is your design process?",
+        answer: "Our process begins with a free consultation to understand your needs. We then move to 3D design and visualization, material selection, manufacturing, and finally, professional installation and handover. We keep you involved at every step."
+    },
+    {
+        question: "How much does interior design cost?",
+        answer: "The cost varies greatly depending on the scope of the project, materials chosen, and the size of the space. We provide transparent pricing and detailed quotes after the initial consultation. We offer solutions for various budget ranges."
+    },
+    {
+        question: "How long does a project typically take?",
+        answer: "A typical project timeline can range from a few weeks for a single room to a few months for a full home interior. After understanding your requirements, we provide a detailed project timeline."
+    }
 ];
 
 export default function Home() {
@@ -428,8 +448,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Partners Section */}
+      {/* FAQ Section */}
       <section className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
+            <p className="text-lg text-muted-foreground mt-2">Have questions? We have answers.</p>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full">
+              {faqItems.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index + 1}`}>
+                  <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                   <div className="flex justify-center items-center mb-2">
@@ -460,6 +502,3 @@ export default function Home() {
 }
 
     
-
-    
-
