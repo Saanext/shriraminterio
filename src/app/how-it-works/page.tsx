@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Handshake, PencilRuler, Truck, ShieldCheck, Star, ArrowRight, ThumbsUp, Wallet, Smile } from 'lucide-react';
+import { Handshake, PencilRuler, Truck, ShieldCheck, Star, ArrowRight, ThumbsUp, Wallet, Smile, MessageSquareQuote } from 'lucide-react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
@@ -35,6 +35,11 @@ const processSteps = [
     icon: <Star className="h-8 w-8 text-primary" />,
     title: 'Warranty & Support',
     description: "Your satisfaction is our priority. We provide a one-year warranty on our work and are always available for any post-installation support you may need.",
+  },
+  {
+    icon: <MessageSquareQuote className="h-8 w-8 text-primary" />,
+    title: 'Satisfaction & Feedback',
+    description: "Our journey together doesn't end at handover. We actively seek your feedback to ensure you're delighted with your new space and to continuously improve our services.",
   },
 ];
 
@@ -133,7 +138,7 @@ export default function HowItWorksPage() {
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">Our 5-Step Process</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">Our 6-Step Process</h2>
             <p className="text-lg text-muted-foreground mt-2">A seamless journey from concept to completion.</p>
           </div>
           
