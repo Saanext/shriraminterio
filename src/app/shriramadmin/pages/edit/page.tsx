@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,8 @@ import { Label } from "@/components/ui/label";
 import { NAV_ITEMS } from '@/lib/constants';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload } from 'lucide-react';
+import { Upload, Eye, EyeOff } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
 
 // This forces the page to be rendered dynamically
 export const dynamic = 'force-dynamic';
@@ -19,10 +20,13 @@ export const dynamic = 'force-dynamic';
 const pageStructure = {
     '/': {
         title: 'Home Page',
+        metaTitle: 'Shriram Interio | Top Interior Designers in Pune',
+        metaDescription: 'Shriram Interio offers the best interior design services in Pune. We specialize in modular kitchens, wardrobes, and full home interiors with a focus on quality and timely delivery.',
         sections: [
              {
                 type: 'hero',
                 title: 'Hero Section',
+                visible: true,
                 fields: [
                     { name: 'videoUrl', label: 'Background Video URL', value: 'https://videos.pexels.com/video-files/7578544/7578544-uhd_2560_1440_30fps.mp4', type: 'text' },
                     { name: 'title', label: 'Title', value: 'Crafting Dreams, Designing Reality', type: 'text' },
@@ -33,6 +37,7 @@ const pageStructure = {
              {
                 type: 'welcome',
                 title: 'Welcome Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Welcome to Shriram Interio', type: 'text' },
                     { name: 'paragraph1', label: 'Paragraph 1', value: 'Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team of passionate and skilled interior designers specializes in designing and decorating residential spaces — focusing on space planning, color theory, furniture selection, and lighting design.', type: 'textarea' },
@@ -43,6 +48,7 @@ const pageStructure = {
             {
                 type: 'about_company',
                 title: 'About Company Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'About Company', type: 'text' },
                     { name: 'text', label: 'Text', value: 'SHRIRAM INTERIO — Where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we combine creativity, functionality, and personalization in every project.', type: 'textarea' },
@@ -51,6 +57,7 @@ const pageStructure = {
             {
                 type: 'why_us',
                 title: 'Why Shriram Interio Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Why Shriram Interio', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Our commitment to quality and customer satisfaction.', type: 'text' },
@@ -59,6 +66,7 @@ const pageStructure = {
              {
                 type: 'comfort_design',
                 title: 'Design at Your Comfort Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Design at Your Comfort – Our Expertise', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'We bring a wealth of expertise and passion for creating interiors at your comfort. Our process is designed to be seamless, transparent, and centered around you.', type: 'textarea' },
@@ -67,6 +75,7 @@ const pageStructure = {
             {
                 type: 'what_we_do',
                 title: 'What We Do Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'What We Do', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'End-to-end interior solutions.', type: 'text' },
@@ -75,6 +84,7 @@ const pageStructure = {
             {
                 type: 'testimonials',
                 title: 'Testimonials Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Client Reviews', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'We are proud of the homes we have transformed and the relationships we have built.', type: 'textarea' },
@@ -85,10 +95,13 @@ const pageStructure = {
     },
     '/about': {
         title: 'About Us Page',
+        metaTitle: 'About Shriram Interio | Our Story & Team',
+        metaDescription: 'Learn about Shriram Interio, our journey since 2016, our design philosophy, and meet the expert team dedicated to creating beautiful spaces in Pune.',
         sections: [
             {
                 type: 'hero',
                 title: 'Hero Section',
+                visible: true,
                 fields: [
                     { name: 'backgroundImage', label: 'Background Image', value: '/b1.jpg', type: 'image' },
                     { name: 'title', label: 'Title', value: 'About Shriram Interio', type: 'text' },
@@ -98,6 +111,7 @@ const pageStructure = {
             {
                 type: 'story',
                 title: 'Our Story Section',
+                visible: true,
                 fields: [
                     { name: 'heading', label: 'Heading', value: 'Welcome to Shriram Interio', type: 'text' },
                     { name: 'subheading', label: 'Subheading', value: 'Since we started work in 2016', type: 'text' },
@@ -111,6 +125,7 @@ const pageStructure = {
             {
                 type: 'journey',
                 title: 'Our Journey Section',
+                visible: true,
                 fields: [
                     { name: 'image', label: 'Image', value: '/SlidingWardrobe.jpg', type: 'image' },
                     { name: 'heading', label: 'Heading', value: 'Our Journey', type: 'text' },
@@ -123,6 +138,7 @@ const pageStructure = {
             {
                 type: 'values',
                 title: 'Our Values Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'What we do', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Our Values', type: 'text' },
@@ -131,6 +147,7 @@ const pageStructure = {
             {
                 type: 'mission_vision',
                 title: 'Mission and Vision Section',
+                visible: true,
                 fields: [
                     { name: 'visionTitle', label: 'Vision Title', value: 'Our Vision', type: 'text' },
                     { name: 'visionText', label: 'Vision Text', value: 'To be the most trusted and creative interior design firm in Maharashtra, known for our innovative solutions and unwavering commitment to quality.', type: 'textarea' },
@@ -141,6 +158,7 @@ const pageStructure = {
              {
                 type: 'team',
                 title: 'Meet the Team Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Meet Our Team', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'The creative minds behind our success.', type: 'textarea' },
@@ -150,10 +168,13 @@ const pageStructure = {
     },
     '/products': {
         title: 'Products Page',
+        metaTitle: 'Our Interior Design Products | Shriram Interio',
+        metaDescription: 'Explore our wide range of interior design products including modular kitchens, custom wardrobes, bedroom sets, and more. Quality craftsmanship from Pune\'s top designers.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Our Products', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Crafted with precision, designed for life.', type: 'text' },
@@ -163,10 +184,13 @@ const pageStructure = {
     },
      '/how-it-works': {
         title: 'How It Works Page',
+        metaTitle: 'Our Interior Design Process | Shriram Interio',
+        metaDescription: 'Understand our seamless 6-step interior design process, from initial consultation and 3D visualization to manufacturing, installation, and final handover.',
         sections: [
             {
                 type: 'hero',
                 title: 'Hero Section',
+                visible: true,
                 fields: [
                     { name: 'backgroundImage', label: 'Background Image', value: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080', type: 'image' },
                     { name: 'title', label: 'Title', value: 'How It Works', type: 'text' },
@@ -176,6 +200,7 @@ const pageStructure = {
             {
                 type: 'process',
                 title: 'Our Process Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Our 5-Step Process', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'A seamless journey from concept to completion.', type: 'textarea' },
@@ -184,6 +209,7 @@ const pageStructure = {
              {
                 type: 'benefits',
                 title: 'Why Our Process Works Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Why Our Process Works', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: "We've refined our approach to guarantee a smooth and successful project.", type: 'textarea' },
@@ -192,6 +218,7 @@ const pageStructure = {
              {
                 type: 'get_started',
                 title: 'Get Started Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Ready to Start Your Project?', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: "Let's bring your vision to life. Schedule a free, no-obligation consultation with our design experts today.", type: 'textarea' },
@@ -202,10 +229,13 @@ const pageStructure = {
     },
      '/services': {
         title: 'Services Page',
+        metaTitle: 'Interior Design Services in Pune | Shriram Interio',
+        metaDescription: 'We offer a wide range of interior design services in Pune, including modular kitchens, wardrobe design, full home interiors, and exterior design.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Our Services', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Comprehensive design solutions for every corner of your home.', type: 'text' },
@@ -215,10 +245,13 @@ const pageStructure = {
     },
     '/portfolio': {
         title: 'Portfolio Page',
+        metaTitle: 'Our Interior Design Portfolio | Shriram Interio Projects',
+        metaDescription: 'Browse our portfolio of completed projects. See examples of our modular kitchens, living areas, wardrobes, and other interior design work in Pune.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Our Portfolio', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'A glimpse into the spaces we have transformed.', type: 'text' },
@@ -227,6 +260,7 @@ const pageStructure = {
              {
                 type: 'partners',
                 title: 'Partners Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Our Partners', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'MEET OUR PARTNERS', type: 'text' },
@@ -236,10 +270,13 @@ const pageStructure = {
     },
     '/clients': {
         title: 'Clients Page',
+        metaTitle: 'Client Testimonials & Reviews | Shriram Interio',
+        metaDescription: 'Read reviews and watch video testimonials from our happy clients across Pune. See why we are the trusted choice for interior design.',
         sections: [
              {
                 type: 'video_testimonials',
                 title: 'Client Video Testimonials',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Client Video Testimonials', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'See our happy clients in action.', type: 'text' },
@@ -248,6 +285,7 @@ const pageStructure = {
             {
                 type: 'text_testimonials',
                 title: 'Client Testimonials',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Client Testimonials', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Hear from our happy clients across Pune.', type: 'text' },
@@ -257,10 +295,13 @@ const pageStructure = {
     },
     '/contact': {
         title: 'Contact Us Page',
+        metaTitle: 'Contact Shriram Interio | Get in Touch',
+        metaDescription: 'Contact us for a free interior design consultation in Pune. Find our address, phone number, and email. We look forward to hearing from you.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Contact Us', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Get in touch with us for a free consultation.', type: 'text' },
@@ -270,10 +311,13 @@ const pageStructure = {
     },
      '/appointment': {
         title: 'Appointment Page',
+        metaTitle: 'Book an Appointment | Shriram Interio',
+        metaDescription: 'Schedule a free consultation with our expert interior designers in Pune. Use our easy online booking form to find a convenient time.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Book an Appointment', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Schedule a free consultation with our design experts by following the steps below.', type: 'text' },
@@ -283,10 +327,13 @@ const pageStructure = {
     },
     '/get-a-quote': {
         title: 'Get a Quote Page',
+        metaTitle: 'Get a Free Quote for Interior Design | Shriram Interio',
+        metaDescription: 'Request a free, no-obligation quote for your interior design project in Pune. Fill out our form and we will get back to you with a personalized estimate.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Get a Free Quote', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: "Fill out the form below and we'll get back to you with a personalized quote.", type: 'text' },
@@ -296,10 +343,13 @@ const pageStructure = {
     },
     '/tracking': {
         title: 'Tracking Page',
+        metaTitle: 'Track Your Project | Shriram Interio',
+        metaDescription: 'Track the status of your ongoing interior design project with Shriram Interio. Enter your project ID for the latest updates.',
         sections: [
              {
                 type: 'pageHeader',
                 title: 'Page Header',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Track Your Project', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Enter your project ID or registered contact number to see the latest updates on your interior design project.', type: 'text' },
@@ -309,10 +359,13 @@ const pageStructure = {
     },
     '/products/kitchen': {
         title: 'Kitchen Products Page',
+        metaTitle: 'Modular Kitchens in Pune | Shriram Interio',
+        metaDescription: 'Discover our beautiful and functional modular kitchens. We offer custom designs, premium materials, and smart storage solutions for your home in Pune.',
         sections: [
             {
                 type: 'main',
                 title: 'Main Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Modular Kitchens', type: 'text' },
                     { name: 'description', label: 'Description', value: 'Discover the heart of your home with a Shriram Interio modular kitchen. We design beautiful, functional spaces that blend elegance and ergonomics, tailored to your unique lifestyle. Our kitchens are built to last, using premium materials and hardware for a seamless cooking experience every day.', type: 'textarea' },
@@ -322,6 +375,7 @@ const pageStructure = {
             {
                 type: 'why_choose_us',
                 title: 'Why Choose Us Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Why Choose Our Kitchens?', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Experience the perfect fusion of functionality and style.', type: 'text' },
@@ -331,10 +385,13 @@ const pageStructure = {
     },
     '/products/wardrobe': {
         title: 'Wardrobe Products Page',
+        metaTitle: 'Custom Wardrobes in Pune | Shriram Interio',
+        metaDescription: 'Explore our custom wardrobe solutions. We design and build sliding, hinged, and walk-in wardrobes to maximize your storage and enhance your bedroom decor.',
         sections: [
              {
                 type: 'main',
                 title: 'Main Section',
+                visible: true,
                 fields: [
                     { name: 'title', label: 'Title', value: 'Custom Wardrobes', type: 'text' },
                     { name: 'description', label: 'Description', value: 'Our wardrobes are thoughtfully designed to offer maximum storage while enhancing the aesthetics of your bedroom. From sleek sliding doors to classic hinged designs, we create personalized storage solutions that cater to your specific needs.', type: 'textarea' },
@@ -389,24 +446,43 @@ function EditPageImpl() {
                  <Card>
                     <CardHeader>
                         <CardTitle>Page Settings</CardTitle>
+                        <CardDescription>Manage SEO settings and page metadata.</CardDescription>
                     </CardHeader>
-                    <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div className="space-y-2">
-                            <Label htmlFor="page-title">Page Title</Label>
-                            <Input id="page-title" defaultValue={pageData?.label || title} />
+                    <CardContent className="space-y-6">
+                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="page-title">Page Title</Label>
+                                <Input id="page-title" defaultValue={pageData?.label || title} />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="page-slug">Slug</Label>
+                                <Input id="page-slug" defaultValue={pageData?.href || `/${pageSlug}`} />
+                            </div>
                         </div>
-                         <div className="space-y-2">
-                            <Label htmlFor="page-slug">Slug</Label>
-                            <Input id="page-slug" defaultValue={pageData?.href || `/${pageSlug}`} />
+                        <div className="space-y-2">
+                            <Label htmlFor="meta-title">Meta Title</Label>
+                            <Input id="meta-title" defaultValue={structure?.metaTitle} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="meta-description">Meta Description</Label>
+                            <Textarea id="meta-description" defaultValue={structure?.metaDescription} rows={3} />
                         </div>
                     </CardContent>
                 </Card>
 
                 {structure ? structure.sections.map((section, index) => (
                     <Card key={index}>
-                        <CardHeader>
-                            <CardTitle>{section.title}</CardTitle>
-                            <CardDescription>Edit the content for this section.</CardDescription>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>{section.title}</CardTitle>
+                                <CardDescription>Edit the content for this section.</CardDescription>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor={`section-visible-${index}`} className="text-sm text-muted-foreground">
+                                    {section.visible ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
+                                </Label>
+                                <Switch id={`section-visible-${index}`} defaultChecked={section.visible} />
+                            </div>
                         </CardHeader>
                         <CardContent className="space-y-6">
                             {section.fields.map(field => (
