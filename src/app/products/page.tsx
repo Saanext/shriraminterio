@@ -18,6 +18,41 @@ const products = [
     dataAiHint: 'modern wardrobe',
     description: 'Discover custom wardrobe solutions that maximize space and complement your decor.',
   },
+  {
+    name: 'Bedroom',
+    href: '/products/bedroom',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'modern bedroom',
+    description: 'Create your dream sanctuary with our bespoke bedroom interior designs.',
+  },
+  {
+    name: 'Living Room',
+    href: '/products/living-room',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'living room',
+    description: 'Design inviting and functional living spaces for family and friends.',
+  },
+  {
+    name: 'Bathroom',
+    href: '/products/bathroom',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'modern bathroom',
+    description: 'Stylish and practical bathroom designs for a refreshing experience.',
+  },
+  {
+    name: 'Space Saving Furniture',
+    href: '/products/space-saving-furniture',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'space saving',
+    description: 'Maximize your living area with our innovative and smart furniture solutions.',
+  },
+  {
+    name: 'Home Office',
+    href: '/products/home-office',
+    imageSrc: 'https://placehold.co/600x400.png',
+    dataAiHint: 'home office',
+    description: 'Productive and comfortable home office setups tailored to your needs.',
+  },
 ];
 
 export default function ProductsPage() {
@@ -28,11 +63,11 @@ export default function ProductsPage() {
           <h1 className="text-4xl md:text-5xl font-bold">Our Products</h1>
           <p className="text-lg text-muted-foreground mt-2">Crafted with precision, designed for life.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
             <Link href={product.href} key={product.name} className="group block">
-              <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl">
-                <div className="relative h-80">
+              <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl h-full flex flex-col">
+                <div className="relative h-64">
                   <Image
                     src={product.imageSrc}
                     alt={product.name}
@@ -42,9 +77,9 @@ export default function ProductsPage() {
                     data-ai-hint={product.dataAiHint}
                   />
                 </div>
-                <CardContent className="p-6">
-                  <h2 className="text-3xl font-bold font-headline">{product.name}</h2>
-                  <p className="mt-2 text-muted-foreground">{product.description}</p>
+                <CardContent className="p-6 flex flex-col flex-grow">
+                  <h2 className="text-2xl font-bold font-headline">{product.name}</h2>
+                  <p className="mt-2 text-muted-foreground flex-grow">{product.description}</p>
                   <div className="mt-4 flex items-center font-semibold text-primary">
                     Explore More <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
