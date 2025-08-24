@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { NAV_ITEMS } from '@/lib/constants';
-import { FilePlus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { FilePlus, MoreVertical, Pencil, Trash2, EyeOff } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 
 export default function PagesManagementPage() {
@@ -51,6 +51,11 @@ export default function PagesManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <EyeOff className="mr-2 h-4 w-4" />
+                                                    <span>Hide</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
                                                 <DropdownMenuItem className="text-destructive">
                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                     <span>Delete</span>
