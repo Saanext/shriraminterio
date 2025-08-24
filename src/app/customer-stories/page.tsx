@@ -35,7 +35,7 @@ const stories = [
     slug: 'wardrobe-wonder-in-baner',
     title: 'Wardrobe Wonder: Maximizing Space in a Baner Apartment',
     category: 'Wardrobe',
-    image: '/portfolio-4.png',
+    image: 'https://images.unsplash.com/photo-1573311392049-4186e3a47e9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8d2FyZHJvYmV8ZW58MHx8fHwxNzU2MDE1MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'modern wardrobe',
     author: 'Meera K.',
     authorAvatar: '/avatar-3.png',
