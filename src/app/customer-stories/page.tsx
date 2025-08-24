@@ -24,7 +24,7 @@ const stories = [
     slug: 'dream-kitchen-realized',
     title: 'The Dream Kitchen Realized: A Culinary Masterpiece',
     category: 'Modular Kitchen',
-    image: '/portfolio-2.png',
+    image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxraXRjaGVufGVufDB8fHx8MTc1NjAxNTA4MHww&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'modern kitchen',
     author: 'Rohan & Priya S.',
     authorAvatar: '/avatar-2.png',
