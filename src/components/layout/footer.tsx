@@ -31,26 +31,33 @@ export function Footer() {
                     <div>
                         <h3 className="text-lg font-bold font-headline mb-4">QUICK LINKS</h3>
                         <ul className="space-y-2">
-                            {NAV_ITEMS.map((item) => (
-                                <React.Fragment key={item.href}>
-                                    <li>
-                                        {item.subItems ? (
-                                            <span className="text-sm text-muted-foreground font-semibold">{item.label}</span>
-                                        ) : (
-                                            <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                                {item.label}
-                                            </Link>
-                                        )}
+                            {NAV_ITEMS.map((item) => {
+                                if (item.subItems) {
+                                    return (
+                                        <React.Fragment key={item.href}>
+                                            <li>
+                                                <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                                    {item.label}
+                                                </Link>
+                                            </li>
+                                            {item.subItems.map(subItem => (
+                                                <li key={subItem.href}>
+                                                    <Link href={subItem.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                                        {subItem.label}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </React.Fragment>
+                                    );
+                                }
+                                return (
+                                     <li key={item.href}>
+                                        <Link href={item.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                                            {item.label}
+                                        </Link>
                                     </li>
-                                    {item.subItems && item.subItems.map(subItem => (
-                                         <li key={subItem.href} className="pl-4">
-                                            <Link href={subItem.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                                                {subItem.label}
-                                            </Link>
-                                        </li>
-                                    ))}
-                                </React.Fragment>
-                            ))}
+                                )
+                            })}
                         </ul>
                     </div>
 
