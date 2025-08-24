@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const stories = [
   {
@@ -53,6 +54,22 @@ const stories = [
     date: 'April 22, 2024',
     excerpt: 'The Joshis love to host. We designed a living room that is perfect for entertaining, with custom seating, ambient lighting, and a stunning entertainment unit as the centerpiece...',
   },
+];
+
+const workGallery = [
+  { title: 'Modern Living Room', image: '/b2.jpg', hint: 'modern living room' },
+  { title: 'Elegant Kitchen Design', image: '/b1.jpg', hint: 'elegant kitchen' },
+  { title: 'Cozy Bedroom Interior', image: '/kitchen.jpg', hint: 'cozy bedroom' },
+  { title: 'Luxury Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'luxury wardrobe' },
+  { title: 'Contemporary Space', image: '/kitchengallery.jpg', hint: 'contemporary space' },
+];
+
+const partners = [
+    { name: 'Ebco', logoSrc: '/ebco.jpg' },
+    { name: 'Hettich', logoSrc: '/hettich.png' },
+    { name: 'Royale Touche', logoSrc: '/Royal-Touch.jpg' },
+    { name: 'Hafele', logoSrc: '/hafele.png' },
+    { name: 'Godrej', logoSrc: '/godrej.png' },
 ];
 
 const FeaturedStory = ({ story }: { story: typeof stories[0] }) => (
@@ -154,6 +171,65 @@ export default function CustomerStoriesPage() {
                 ))}
             </div>
         </div>
+
+      {/* Work Gallery Section */}
+      <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Our Work Gallery</h2>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">A glimpse into the spaces we've transformed.</p>
+          </div>
+          <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
+            <CarouselContent className="-ml-2 sm:-ml-4">
+              {workGallery.map((item, index) => (
+                <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/3">
+                  <Card className="overflow-hidden group">
+                    <div className="relative aspect-video">
+                      <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                       <CardContent className="p-4 absolute bottom-0 left-0">
+                        <h3 className="text-lg font-bold text-white text-shadow-md">{item.title}</h3>
+                      </CardContent>
+                    </div>
+                  </Card>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2 sm:-left-8" />
+            <CarouselNext className="right-2 sm:-right-8" />
+          </Carousel>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                  <div className="flex justify-center items-center mb-2">
+                      <div className="border-t border-primary w-12"></div>
+                      <p className="text-sm text-primary font-bold tracking-widest mx-4">MEET OUR PARTNERS</p>
+                      <div className="border-t border-primary w-12"></div>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold">Our Partners</h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
+                  {partners.map((partner) => (
+                      <div key={partner.name} className="flex justify-center">
+                          <Image
+                              src={partner.logoSrc}
+                              alt={`${partner.name} Logo`}
+                              width={150}
+                              height={75}
+                              className="object-contain"
+                              data-ai-hint="partner logo"
+                          />
+                      </div>
+                  ))}
+              </div>
+          </div>
+      </section>
     </div>
   );
 }
+
+    
