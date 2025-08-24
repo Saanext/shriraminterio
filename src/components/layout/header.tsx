@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -12,7 +12,9 @@ import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export function Header() {
   const pathname = usePathname();
@@ -46,22 +48,57 @@ export function Header() {
             <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
           </SheetHeader>
           <nav className="flex flex-col space-y-1 p-4">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                  'text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
-                  pathname === item.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
-                )}
-              >
-                <div className="flex items-center gap-4">
+            {NAV_ITEMS.map((item) => 
+              item.subItems ? (
+                <Collapsible key={item.href}>
+                  <CollapsibleTrigger className="w-full">
+                    <div
+                      className={cn(
+                        'flex items-center justify-between text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                        pathname.startsWith(item.href) ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                      )}
+                    >
+                      <div className="flex items-center gap-4">
+                        <item.icon className="h-5 w-5" />
+                        {item.label}
+                      </div>
+                       <ChevronDown className="h-5 w-5 transition-transform ui-open:rotate-180" />
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <div className="flex flex-col space-y-1 py-2 pl-8">
+                       {item.subItems.map(subItem => (
+                         <Link
+                          key={subItem.href}
+                          href={subItem.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={cn(
+                            'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                            pathname === subItem.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                          )}
+                        >
+                          <subItem.icon className="h-5 w-5" />
+                          {subItem.label}
+                        </Link>
+                       ))}
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                    pathname === item.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                  )}
+                >
                   <item.icon className="h-5 w-5" />
                   {item.label}
-                </div>
-              </Link>
-            ))}
+                </Link>
+              )
+            )}
           </nav>
           <div className="p-4 mt-auto">
             <Sheet>
@@ -84,8 +121,54 @@ export function Header() {
   const renderDesktopMenu = () => (
     <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-1 lg:space-x-4 text-sm font-medium">
       {NAV_ITEMS.map((item) => {
-        const isActive = item.href === pathname;
-        return (
+        const isActive = pathname === item.href || (item.subItems && item.subItems.some(si => si.href === pathname));
+        
+        return item.subItems ? (
+           <DropdownMenu key={item.href}>
+              <DropdownMenuTrigger asChild>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    'relative transition-colors duration-300 group py-2 px-2 lg:px-3 flex items-center gap-1',
+                    isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
+                  )}
+                >
+                  {isActive && (
+                    <motion.div
+                      layoutId="nav-underline-top"
+                      className="absolute left-0 top-0 block h-[2px] w-full bg-primary"
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      exit={{ scaleX: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    />
+                  )}
+                  <span>{item.label}</span>
+                  <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                   {isActive && (
+                    <motion.div
+                      layoutId="nav-underline-bottom"
+                      className="absolute left-0 bottom-0 block h-[2px] w-full bg-primary"
+                       initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      exit={{ scaleX: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                    />
+                  )}
+                </Link>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {item.subItems.map(subItem => (
+                  <DropdownMenuItem key={subItem.href} asChild>
+                    <Link href={subItem.href} className="flex items-center gap-2">
+                      <subItem.icon className="h-4 w-4 text-muted-foreground" />
+                      <span>{subItem.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+        ) : (
           <Link
             key={item.href}
             href={item.href}
