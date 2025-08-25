@@ -3,7 +3,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, PlayCircle } from 'lucide-react';
 import Image from 'next/image';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const testimonials = [
   {
@@ -109,7 +108,7 @@ export default function ClientsPage() {
                       <CardContent className="p-6 bg-card flex-grow flex flex-col">
                         <h3 className="text-xl font-bold">{video.name}</h3>
                         <p className="text-sm text-muted-foreground mb-4">{video.location}</p>
-                        <p className="text-muted-foreground text-sm">{video.review}</p>
+                        <p className="text-muted-foreground text-sm flex-grow">{video.review}</p>
                       </CardContent>
                     </Card>
                   </a>
