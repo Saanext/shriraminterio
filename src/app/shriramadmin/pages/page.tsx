@@ -1,4 +1,5 @@
 
+
 'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +10,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import Link from 'next/link';
 
 export default function PagesManagementPage() {
+    const allPages = [
+        ...NAV_ITEMS,
+        ...(NAV_ITEMS.find(item => item.href === '/about')?.subItems || []),
+    ];
+
     return (
         <div>
             <div className="flex justify-between items-center mb-8">
@@ -33,7 +39,7 @@ export default function PagesManagementPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {NAV_ITEMS.map((page) => (
+                            {allPages.map((page) => (
                                 <TableRow key={page.href}>
                                     <TableCell className="font-medium">{page.label}</TableCell>
                                     <TableCell>{page.href}</TableCell>

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { Suspense, useState } from 'react';
@@ -64,6 +65,15 @@ const pageStructure = {
                 ]
             },
              {
+                type: 'work_gallery',
+                title: 'Work Gallery Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Work Gallery', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: "A glimpse into the spaces we've transformed.", type: 'textarea' },
+                ]
+            },
+             {
                 type: 'comfort_design',
                 title: 'Design at Your Comfort Section',
                 visible: true,
@@ -89,6 +99,24 @@ const pageStructure = {
                     { name: 'title', label: 'Title', value: 'Client Reviews', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'We are proud of the homes we have transformed and the relationships we have built.', type: 'textarea' },
                     { name: 'buttonText', label: 'Button Text', value: 'More Testimonials', type: 'text' },
+                ]
+            },
+            {
+                type: 'faq',
+                title: 'FAQ Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Frequently Asked Questions', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Have questions? We have answers.', type: 'textarea' },
+                ]
+            },
+             {
+                type: 'partners',
+                title: 'Partners Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Partners', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'MEET OUR PARTNERS', type: 'text' },
                 ]
             },
         ]
@@ -202,7 +230,7 @@ const pageStructure = {
                 title: 'Our Process Section',
                 visible: true,
                 fields: [
-                    { name: 'title', label: 'Title', value: 'Our 5-Step Process', type: 'text' },
+                    { name: 'title', label: 'Title', value: 'Our 6-Step Process', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'A seamless journey from concept to completion.', type: 'textarea' },
                 ]
             },
@@ -241,6 +269,12 @@ const pageStructure = {
                     { name: 'subtitle', label: 'Subtitle', value: 'Comprehensive design solutions for every corner of your home.', type: 'text' },
                 ]
             },
+            {
+                type: 'detailed_services',
+                title: 'Detailed Services',
+                visible: true,
+                fields: [],
+            }
         ]
     },
     '/portfolio': {
@@ -291,6 +325,63 @@ const pageStructure = {
                     { name: 'subtitle', label: 'Subtitle', value: 'Hear from our happy clients across Pune.', type: 'text' },
                 ]
             }
+        ]
+    },
+    '/customer-stories': {
+        title: 'Customer Stories Page',
+        metaTitle: 'Customer Stories | Shriram Interio Project Showcases',
+        metaDescription: 'Read in-depth stories about our client projects. See how we transformed homes and lives with our interior design expertise in Pune.',
+        sections: [
+             {
+                type: 'pageHeader',
+                title: 'Page Header',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Customer Stories', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: "Read about the journeys we've shared with our clients to create their dream homes.", type: 'text' },
+                ]
+            },
+             {
+                type: 'featured_story',
+                title: 'Featured Story',
+                visible: true,
+                fields: [],
+            },
+            {
+                type: 'more_stories',
+                title: 'More Stories',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'More Stories', type: 'text' },
+                ],
+            },
+            {
+                type: 'work_gallery',
+                title: 'Work Gallery Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Work Gallery', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: "A glimpse into the spaces we've transformed.", type: 'textarea' },
+                ]
+            },
+            {
+                type: 'partners',
+                title: 'Partners Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Our Partners', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'MEET OUR PARTNERS', type: 'text' },
+                ]
+            },
+             {
+                type: 'faq',
+                title: 'FAQ Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Frequently Asked Questions', type: 'text' },
+                    { name: 'subtitle', label: 'Subtitle', value: 'Have questions? We have answers.', type: 'textarea' },
+                ]
+            },
         ]
     },
     '/contact': {
@@ -399,21 +490,115 @@ const pageStructure = {
                 ]
             }
         ]
-    }
+    },
+    '/products/bedroom': {
+        title: 'Bedroom Products Page',
+        metaTitle: 'Bedroom Interior Design in Pune | Shriram Interio',
+        metaDescription: 'Create your dream sanctuary with our bespoke bedroom interior designs. We focus on comfort, style, and functionality to give you a space for relaxation.',
+        sections: [
+             {
+                type: 'main',
+                title: 'Main Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Bedroom Interiors', type: 'text' },
+                    { name: 'image', label: 'Image', value: 'https://images.unsplash.com/photo-1617098900591-3f90928e8c54?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMnx8YmVkcm9vbSUyMGludGVyaW9yfGVufDB8fHx8MTc1NjAxMzgxMnww&ixlib=rb-4.1.0&q=80&w=1080', type: 'image' },
+                    { name: 'description', label: 'Description', value: 'Create your dream sanctuary with our bespoke bedroom interior designs. We focus on creating a perfect balance of comfort, style, and functionality to give you a space where you can truly relax and rejuvenate.', type: 'textarea' },
+                    { name: 'buttonText', label: 'Button Text', value: 'Get a Free Quote', type: 'text' },
+                ]
+            }
+        ]
+    },
+    '/products/living-room': {
+        title: 'Living Room Products Page',
+        metaTitle: 'Living Room Design in Pune | Shriram Interio',
+        metaDescription: 'Design inviting and functional living spaces. Our experts help with furniture, lighting, and color schemes to create a warm atmosphere.',
+        sections: [
+             {
+                type: 'main',
+                title: 'Main Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Living Room Design', type: 'text' },
+                    { name: 'image', label: 'Image', value: 'https://placehold.co/600x400.png', type: 'image' },
+                    { name: 'description', label: 'Description', value: 'Design inviting and functional living spaces for family and friends. Our expert designers help you choose the right furniture, lighting, and color schemes to create a warm and welcoming atmosphere.', type: 'textarea' },
+                    { name: 'buttonText', label: 'Button Text', value: 'Get a Free Quote', type: 'text' },
+                ]
+            }
+        ]
+    },
+    '/products/bathroom': {
+        title: 'Bathroom Products Page',
+        metaTitle: 'Bathroom Design in Pune | Shriram Interio',
+        metaDescription: 'Transform your bathroom into a stylish and practical oasis with our contemporary and classic design solutions.',
+        sections: [
+             {
+                type: 'main',
+                title: 'Main Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Bathroom Design', type: 'text' },
+                    { name: 'image', label: 'Image', value: 'https://placehold.co/600x400.png', type: 'image' },
+                    { name: 'description', label: 'Description', value: 'Transform your bathroom into a stylish and practical oasis. We offer a range of solutions from contemporary to classic designs, ensuring a refreshing and luxurious experience.', type: 'textarea' },
+                    { name: 'buttonText', label: 'Button Text', value: 'Get a Free Quote', type: 'text' },
+                ]
+            }
+        ]
+    },
+     '/products/space-saving-furniture': {
+        title: 'Space Saving Furniture Page',
+        metaTitle: 'Space Saving Furniture in Pune | Shriram Interio',
+        metaDescription: 'Maximize your living area with our innovative and smart furniture solutions, perfect for modern apartments and compact homes.',
+        sections: [
+             {
+                type: 'main',
+                title: 'Main Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Space Saving Furniture', type: 'text' },
+                    { name: 'image', label: 'Image', value: 'https://placehold.co/600x400.png', type: 'image' },
+                    { name: 'description', label: 'Description', value: 'Maximize your living area with our innovative and smart furniture solutions. Perfect for modern apartments and compact homes, our designs are both stylish and functional.', type: 'textarea' },
+                    { name: 'buttonText', label: 'Button Text', value: 'Get a Free Quote', type: 'text' },
+                ]
+            }
+        ]
+    },
+     '/products/home-office': {
+        title: 'Home Office Page',
+        metaTitle: 'Home Office Design in Pune | Shriram Interio',
+        metaDescription: 'Create a productive and comfortable workspace at home with our tailored home office solutions that blend ergonomics and aesthetics.',
+        sections: [
+             {
+                type: 'main',
+                title: 'Main Section',
+                visible: true,
+                fields: [
+                    { name: 'title', label: 'Title', value: 'Home Office Design', type: 'text' },
+                    { name: 'image', label: 'Image', value: 'https://placehold.co/600x400.png', type: 'image' },
+                    { name: 'description', label: 'Description', value: 'Create a productive and comfortable workspace at home. Our home office solutions are tailored to your professional needs, ensuring a seamless blend of ergonomics and aesthetics.', type: 'textarea' },
+                    { name: 'buttonText', label: 'Button Text', value: 'Get a Free Quote', type: 'text' },
+                ]
+            }
+        ]
+    },
 };
 
 function EditPageImpl() {
     const searchParams = useSearchParams();
     const pageSlug = searchParams.get('page') || '';
-    const pageData = NAV_ITEMS.find(p => p.href === `/${pageSlug}`);
+    const allNavItems = [...NAV_ITEMS, ...NAV_ITEMS.flatMap(item => item.subItems || [])];
+    const pageData = allNavItems.find(p => p.href === `/${pageSlug}`);
+
+    // Handle nested product pages
     const isProductSubPage = pageSlug.startsWith('products/');
-    
+    const isCustomerStorySubPage = pageSlug.startsWith('customer-stories/');
+
     let structure;
-    if (isProductSubPage) {
-        // @ts-ignore
+    if (isProductSubPage || isCustomerStorySubPage) {
+         // @ts-ignore
         structure = pageStructure[`/${pageSlug}`];
     } else {
-        // @ts-ignore
+         // @ts-ignore
         structure = pageStructure[pageData?.href || ''];
     }
 
@@ -475,7 +660,7 @@ function EditPageImpl() {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle>{section.title}</CardTitle>
-                                <CardDescription>Edit the content for this section.</CardDescription>
+                                {section.fields.length > 0 && <CardDescription>Edit the content for this section.</CardDescription>}
                             </div>
                             <div className="flex items-center gap-2">
                                 <Label htmlFor={`section-visible-${index}`} className="text-sm text-muted-foreground">
@@ -484,28 +669,30 @@ function EditPageImpl() {
                                 <Switch id={`section-visible-${index}`} defaultChecked={section.visible} />
                             </div>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                            {section.fields.map(field => (
-                                <div key={field.name} className="space-y-2">
-                                    <Label htmlFor={`${section.type}-${field.name}`}>{field.label}</Label>
-                                    {field.type === 'text' && (
-                                        <Input id={`${section.type}-${field.name}`} defaultValue={field.value} />
-                                    )}
-                                    {field.type === 'textarea' && (
-                                        <Textarea id={`${section.type}-${field.name}`} defaultValue={field.value} rows={5}/>
-                                    )}
-                                    {field.type === 'image' && (
-                                        <div className="flex items-center gap-4">
-                                            <img src={field.value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />
-                                            <Button variant="outline">
-                                                <Upload className="mr-2 h-4 w-4"/>
-                                                Change Image
-                                            </Button>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </CardContent>
+                         {section.fields.length > 0 && (
+                            <CardContent className="space-y-6">
+                                {section.fields.map(field => (
+                                    <div key={field.name} className="space-y-2">
+                                        <Label htmlFor={`${section.type}-${field.name}`}>{field.label}</Label>
+                                        {field.type === 'text' && (
+                                            <Input id={`${section.type}-${field.name}`} defaultValue={field.value} />
+                                        )}
+                                        {field.type === 'textarea' && (
+                                            <Textarea id={`${section.type}-${field.name}`} defaultValue={field.value} rows={5}/>
+                                        )}
+                                        {field.type === 'image' && (
+                                            <div className="flex items-center gap-4">
+                                                <img src={field.value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />
+                                                <Button variant="outline">
+                                                    <Upload className="mr-2 h-4 w-4"/>
+                                                    Change Image
+                                                </Button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </CardContent>
+                         )}
                     </Card>
                 )) : (
                      <Card>
@@ -530,5 +717,3 @@ export default function EditPage() {
         </Suspense>
     )
 }
-
-    
