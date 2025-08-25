@@ -33,6 +33,11 @@ const pageStructure = {
                     { name: 'title', label: 'Title', value: 'Crafting Dreams, Designing Reality', type: 'text' },
                     { name: 'subtitle', label: 'Subtitle', value: 'Your trusted partner in Pune for bespoke modular kitchens, wardrobes, and complete home interiors.', type: 'textarea' },
                     { name: 'buttonText', label: 'Button Text', value: 'Explore Our Services', type: 'text' },
+                    { name: 'slides', label: 'Image Slides', type: 'repeater', fields: [
+                        { name: 'image', label: 'Image', value: '/kitchengallery.jpg', type: 'image' },
+                        { name: 'image', label: 'Image', value: '/industrial.jpg', type: 'image' },
+                        { name: 'image', label: 'Image', value: '/Royal-Touch.jpg', type: 'image' },
+                    ]}
                 ]
             },
              {
