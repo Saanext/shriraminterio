@@ -62,37 +62,37 @@ const testimonials = [
         name: 'Mr. Prashant Lukade & Mrs. Manisha Lukade',
         review: '"Choosing Shriram Interio was the best decision. Professionalism, design expertise, and commitment to delivering exceptional results were evident from day one."',
         avatar: 'PL',
-        image: '/avatar-1.png',
+        image: '/c1.jpg',
     },
     {
         name: 'Amit Purohit',
         review: '"I am very impressed with their service and quality. They customized my modular kitchen beautifully."',
         avatar: 'AP',
-        image: '/avatar-2.png',
+        image: '/c2.jpg',
     },
     {
         name: 'Anushka Sen',
         review: '"Innovative approach and flawless execution. Communication and transparency made the process enjoyable."',
         avatar: 'AS',
-        image: '/avatar-3.png',
+        image: '/c3.jpg',
     },
     {
         name: 'Anubhav Mittal',
         review: '"They designed the front of my house with great aesthetics and creativity."',
         avatar: 'AM',
-        image: '/avatar-4.png',
+        image: '/c4.jpg',
     },
     {
         name: 'Mr. Akshay Singh',
         review: '"They crafted a design perfectly suited to my needs. Attention to detail was outstanding."',
         avatar: 'AS',
-        image: '/avatar-5.png',
+        image: '/c5.jpgeg',
     },
     {
         name: 'Mr. Ashok Malge & Mrs. Shrisha Malge',
         review: '"They transformed my space into a breathtaking environment. Exceptional craftsmanship and design."',
         avatar: 'AM',
-        image: '/avatar-6.png',
+        image: '/c2.jpg',
     },
 ];
 
