@@ -420,25 +420,22 @@ export default function Home() {
             <CarouselContent className="-ml-2 sm:-ml-4">
               {testimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                  <div className="p-1 h-full">
-                    <Card className="flex flex-col justify-between h-full p-4 sm:p-6 text-center bg-secondary">
-                      <CardContent className="p-0 flex-grow">
-                        <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed">{testimonial.review}</p>
-                      </CardContent>
-                      <div className="mt-4 sm:mt-6 pt-4 border-t">
-                        <Avatar className="mx-auto mb-2 w-10 h-10 sm:w-12 sm:h-12">
-                          <AvatarImage src={testimonial.image} alt={testimonial.name} data-ai-hint="person portrait" />
-                          <AvatarFallback className="text-xs sm:text-sm">{testimonial.avatar}</AvatarFallback>
-                        </Avatar>
-                        <p className="font-bold font-headline text-xs sm:text-sm leading-tight">{testimonial.name}</p>
-                      </div>
+                   <Card className="overflow-hidden group h-full flex flex-col">
+                        <div className="relative aspect-square">
+                           <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" className="transition-transform duration-500 group-hover:scale-105"/>
+                        </div>
+                        <CardContent className="p-4 sm:p-6 bg-secondary flex-grow flex flex-col text-center">
+                            <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed flex-grow">"{testimonial.review}"</p>
+                            <div className="mt-4 sm:mt-6 pt-4 border-t">
+                                <p className="font-bold font-headline text-xs sm:text-sm leading-tight">{testimonial.name}</p>
+                            </div>
+                        </CardContent>
                     </Card>
-                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-2 sm:left-4" />
-            <CarouselNext className="right-2 sm:right-4" />
+            <CarouselPrevious className="left-2 sm:-left-4" />
+            <CarouselNext className="right-2 sm:-right-4" />
           </Carousel>
           <div className="text-center mt-8 sm:mt-12">
             <Button asChild size="default" className="text-sm sm:text-base">
