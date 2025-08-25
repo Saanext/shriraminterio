@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Star, PlayCircle } from 'lucide-react';
@@ -45,28 +46,28 @@ const testimonials = [
 
 const clientVideos = [
   {
-    name: 'Rohan & Priya S. on their Living Room',
-    imageSrc: '/portfolio-1.png',
-    dataAiHint: 'living room',
+    name: 'P. Manikandan & Kruthhikka',
+    location: 'Subramaniya Nagar, Chennai',
+    review: "Manikandan & Kruthhikka were impressed by the experienced HomeLane designers and how they were able to understand their vision for their home. HomeLane made sure everything was personalised to match the requirements and comfort of the family. Book your free consultation today.",
+    imageSrc: 'https://images.unsplash.com/photo-1588854337236-6889d631f379?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwY291cGxlfGVufDB8fHx8MTc1NjA0NjQyNnww&ixlib=rb-4.1.0&q=80&w=1080',
+    dataAiHint: 'smiling couple',
     videoUrl: 'https://www.youtube.com/watch?v=your_video_id_1'
   },
   {
-    name: 'Anjali P. loving her new Kitchen',
-    imageSrc: '/portfolio-2.png',
-    dataAiHint: 'modern kitchen',
+    name: 'Anitha & Mahendiran',
+    location: 'Parappalayam, Coimbatore',
+    review: "HomeLane brought Anitha's dream home to life for her, just the way she envisioned It. After doing some research she chose HomeLane where she got the best price and the quality she was looking for. The HomeLane designer delivered all the requirements before time and with the highest quality possible.",
+    imageSrc: 'https://images.unsplash.com/photo-1543165384-245f3a093754?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzbWlsaW5nJTIwd29tYW58ZW58MHx8fHwxNzU2MDQ2NTYxfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    dataAiHint: 'smiling woman',
     videoUrl: 'https://www.youtube.com/watch?v=your_video_id_2'
   },
   {
-    name: 'Sameer J. reviews his Full Home Interior',
-    imageSrc: '/portfolio-3.png',
-    dataAiHint: 'home interior',
+    name: 'Mr Kanagasabai',
+    location: 'Jains Pebble Brook, Chennai',
+    review: "Mr Kanagasabai and family gave Homelane the responsibility to deliver a home that takes Into account the needs of each and every family member, and HomeLane delivered. Their vision of a calm, not too flashy home was shown to them by experienced HomeLane designers in 3D using Spacecraft Pro, which helped them visualize how their home would look like.",
+    imageSrc: 'https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwbWFuJTIwaW5kaWFufGVufDB8fHx8MTc1NjA0NjY0OHww&ixlib=rb-4.1.0&q=80&w=1080',
+    dataAiHint: 'smiling man',
     videoUrl: 'https://www.youtube.com/watch?v=your_video_id_3'
-  },
-  {
-    name: 'Meera K. showcases her Wardrobe',
-    imageSrc: '/portfolio-4.png',
-    dataAiHint: 'modern wardrobe',
-    videoUrl: 'https://www.youtube.com/watch?v=your_video_id_4'
   }
 ];
 
@@ -88,15 +89,10 @@ export default function ClientsPage() {
             <h2 className="text-3xl md:text-4xl font-bold">Client Video Testimonials</h2>
             <p className="text-lg text-muted-foreground mt-2">See our happy clients in action.</p>
           </div>
-          <Carousel
-            opts={{ align: 'start', loop: true }}
-            className="w-full max-w-6xl mx-auto"
-          >
-            <CarouselContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {clientVideos.map((video, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="group block">
-                    <Card className="overflow-hidden">
+                <a href={video.videoUrl} target="_blank" rel="noopener noreferrer" className="group block" key={index}>
+                    <Card className="overflow-hidden h-full flex flex-col">
                        <div className="relative aspect-video">
                         <Image
                           src={video.imageSrc}
@@ -110,17 +106,15 @@ export default function ClientsPage() {
                           <PlayCircle className="h-16 w-16 text-white/80 transition-transform duration-300 group-hover:scale-110" />
                         </div>
                       </div>
-                      <CardContent className="p-4 bg-card">
-                        <h3 className="text-lg font-bold truncate">{video.name}</h3>
+                      <CardContent className="p-6 bg-card flex-grow flex flex-col">
+                        <h3 className="text-xl font-bold">{video.name}</h3>
+                        <p className="text-sm text-muted-foreground mb-4">{video.location}</p>
+                        <p className="text-muted-foreground text-sm">{video.review}</p>
                       </CardContent>
                     </Card>
                   </a>
-                </CarouselItem>
               ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-          </Carousel>
+            </div>
         </div>
       </section>
 
@@ -150,5 +144,3 @@ export default function ClientsPage() {
     </div>
   );
 }
-
-    
