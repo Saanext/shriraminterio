@@ -74,21 +74,24 @@ const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) 
     const x = useTransform(scrollYProgress, [0, 0.5], isMobile ? [0,0] : [isEven ? -100 : 100, 0]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
     
-    // On mobile, card is always in the same column
-    const cardOrder = isMobile ? 'order-2' : (isEven ? 'md:order-1' : 'md:order-3');
-    const numberOrder = isMobile ? 'order-1' : 'md:order-2';
-    const gridCols = isMobile ? 'grid-cols-[auto_1fr]' : 'md:grid-cols-5';
-
-    return (
+    if (isMobile) {
+      return (
         <motion.div
             ref={ref}
             style={{ opacity }}
-            className={cn("relative grid items-center gap-6 md:gap-8", gridCols)}
+            className="relative grid grid-cols-[auto_1fr] items-start gap-6"
         >
+            {/* Timeline Connector */}
+            <div className="flex flex-col items-center h-full">
+                <div className="z-10 flex h-16 w-16 items-center justify-center rounded-full bg-secondary shadow-lg border-2 border-primary flex-shrink-0">
+                    <span className="text-2xl font-bold text-primary">{index + 1}</span>
+                </div>
+            </div>
+
             {/* Card Content */}
             <motion.div
                 style={{ x }}
-                className={cn("md:col-span-2", cardOrder)}
+                className="pt-1"
             >
                 <Card className="shadow-xl">
                     <CardContent className="p-6">
@@ -100,16 +103,52 @@ const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) 
                     </CardContent>
                 </Card>
             </motion.div>
+        </motion.div>
+      )
+    }
+
+    return (
+        <motion.div
+            ref={ref}
+            style={{ opacity }}
+            className="relative grid grid-cols-5 items-center gap-8"
+        >
+            {/* Card Content (Left) */}
+            {isEven ? (
+                <motion.div style={{ x }} className="col-span-2">
+                    <Card className="shadow-xl">
+                        <CardContent className="p-6">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="flex-shrink-0 bg-primary/10 p-3 rounded-full">{step.icon}</div>
+                                <h3 className="text-xl font-bold">{step.title}</h3>
+                            </div>
+                            <p className="text-muted-foreground">{step.description}</p>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+            ) : <div className="col-span-2"></div>}
 
             {/* Timeline Connector */}
-            <div className={cn("flex justify-center items-center md:col-span-1", numberOrder)}>
+            <div className="col-span-1 flex justify-center items-center">
                  <div className="z-10 flex h-16 w-16 items-center justify-center rounded-full bg-secondary shadow-lg border-2 border-primary">
                     <span className="text-2xl font-bold text-primary">{index + 1}</span>
                  </div>
             </div>
             
-            {/* Spacer on Desktop */}
-            <div className="hidden md:block md:col-span-2"></div>
+            {/* Card Content (Right) */}
+            {!isEven ? (
+                <motion.div style={{ x }} className="col-span-2">
+                    <Card className="shadow-xl">
+                        <CardContent className="p-6">
+                            <div className="flex items-center gap-4 mb-4">
+                                <div className="flex-shrink-0 bg-primary/10 p-3 rounded-full">{step.icon}</div>
+                                <h3 className="text-xl font-bold">{step.title}</h3>
+                            </div>
+                            <p className="text-muted-foreground">{step.description}</p>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+            ) : <div className="col-span-2"></div>}
         </motion.div>
     );
 }
@@ -128,7 +167,7 @@ export default function HowItWorksPage() {
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
         <Image
-          src="https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib-rb-4.1.0&q=80&w=1080"
+          src="https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080"
           alt="A team of interior designers collaborating on a project"
           data-ai-hint="design team collaboration"
           layout="fill"
@@ -154,7 +193,7 @@ export default function HowItWorksPage() {
                   style={{ scaleY }}
                   className={cn(
                     "absolute top-0 bottom-0 w-1 bg-primary/20 origin-top",
-                    "left-10 md:left-1/2 md:-translate-x-1/2"
+                    "left-8 md:left-1/2 md:-translate-x-1/2"
                   )}
               />
               <div className="flex flex-col gap-16">
