@@ -151,7 +151,10 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
                     </CardHeader>
                     <CardContent className="space-y-4">
                        <div className="flex items-center gap-3">
-                           <User className="h-5 w-5 text-primary" />
+                            <Avatar className="h-10 w-10">
+                                <AvatarImage src={story.authorAvatar} alt={story.author} />
+                                <AvatarFallback>{story.author.charAt(0)}</AvatarFallback>
+                            </Avatar>
                            <div>
                                <p className="text-sm text-muted-foreground">Client</p>
                                <p className="font-semibold">{story.author}</p>
