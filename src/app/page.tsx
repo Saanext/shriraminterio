@@ -196,7 +196,7 @@ export default function Home() {
 
             {/* Image Slide 3 */}
             <CarouselItem className="relative w-full h-screen min-h-[500px]">
-              <Image src="/Royal-Touch.jpg" alt="Royal Touch Interior" layout="fill" objectFit="cover" className="brightness-50 z-0" data-ai-hint="luxury interior design"/>
+              <Image src="/b2.jpg" alt="Royal Touch Interior" layout="fill" objectFit="cover" className="brightness-50 z-0" data-ai-hint="luxury interior design"/>
                <div className="absolute inset-0 bg-black/30 z-5"></div>
             </CarouselItem>
 
