@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { CalendarDays, Tag, User } from 'lucide-react';
+import { CalendarDays, Tag, User, MapPin, Building, Bed } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 // This data would typically come from a CMS or database
@@ -13,10 +13,15 @@ const storiesData = [
     title: 'A Complete Home Transformation in Pune',
     category: 'Full Home Interior',
     image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxraXRjaGVuJTIwfGVufDB8fHx8MTc1NjAxNTAxNXww&ixlib=rb-4.1.0&q=80&w=1080',
+    clientImage: 'https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwbWFuJTIwaW5kaWFufGVufDB8fHx8MTc1NjA0NjY0OHww&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'home interior',
     author: 'Anjali P.',
     authorAvatar: '/avatar-1.png',
     date: 'June 15, 2024',
+    location: 'Pune',
+    project: 'Sharma Residence',
+    size: '3 BHK',
+    quote: "Shriram Interio's Design Expert made intelligent use of the available space to bring our dream home interiors to life.",
     excerpt: 'See how we took a standard 3BHK and turned it into a personalized haven for the Sharma family, focusing on multi-functional spaces and a modern aesthetic that reflects their lifestyle...',
     content: `
       <p>The Sharma family came to us with a common challenge: a beautiful 3BHK apartment in Pune that didn't quite match their dynamic lifestyle. They needed spaces that could serve multiple purposes – a home office that could transform into a guest room, a living area perfect for both quiet family nights and entertaining guests, and a kitchen that was both highly functional and aesthetically pleasing.</p>
@@ -34,10 +39,15 @@ const storiesData = [
     title: 'The Dream Kitchen Realized: A Culinary Masterpiece',
     category: 'Modular Kitchen',
     image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxraXRjaGVufGVufDB8fHx8MTc1NjAxNTA4MHww&ixlib=rb-4.1.0&q=80&w=1080',
+    clientImage: 'https://images.unsplash.com/photo-1588854337236-6889d631f379?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwY291cGxlfGVufDB8fHx8MTc1NjA0NjQyNnww&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'modern kitchen',
     author: 'Rohan & Priya S.',
     authorAvatar: '/avatar-2.png',
     date: 'May 28, 2024',
+    location: 'Hinjewadi',
+    project: 'Singh Kitchen',
+    size: 'Modular',
+    quote: "The design process was so transparent and collaborative. They listened to our needs and delivered beyond our expectations.",
     excerpt: 'The Singh couple wanted a kitchen that was both a high-functioning workspace and a beautiful gathering spot. We delivered a state-of-the-art modular kitchen with smart storage...',
     content: `
         <p>Rohan and Priya are passionate home cooks who love to entertain. Their existing kitchen was cramped, outdated, and didn't serve their culinary ambitions. They dreamed of a space that was not just a place to cook, but the true heart of their home, where friends and family could gather.</p>
@@ -47,18 +57,23 @@ const storiesData = [
     gallery: [
       { src: 'https://images.unsplash.com/photo-1559554704-0f74b35a8718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Kitchen Island Detail', dataAiHint: 'kitchen island' },
       { src: 'https://images.unsplash.com/photo-1539922980492-38f6673af8dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Smart Storage Solution', dataAiHint: 'kitchen storage' },
-      { src: 'https://images.unsplash.com/photo-1585261450736-67d578ff00b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx1JTIwc2hhcGVkJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTU1NDN8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Overall Kitchen View', dataAiHint: 'u-shaped kitchen' },
+      { src: 'https://images.unsplash.com/photo-1585261450736-67d578ff00b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx1JTIwc2hhcGVkJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTU1NDN8MA&ixlib-rb-4.1.0&q=80&w=1080', alt: 'Overall Kitchen View', dataAiHint: 'u-shaped kitchen' },
     ]
   },
   {
     slug: 'wardrobe-wonder-in-baner',
     title: 'Wardrobe Wonder: Maximizing Space in a Baner Apartment',
     category: 'Wardrobe',
-    image: 'https://images.unsplash.com/photo-1573311392049-4186e3a47e9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8d2FyZHJvYmV8ZW58MHx8fHwxNzU2MDE1MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: 'https://images.unsplash.com/photo-1573311392049-4186e3a47e9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8d2FyZHJvYmV8ZW58MHx8fHwxNzU2MDE1MTMxfDA&ixlib-rb-4.1.0&q=80&w=1080',
+    clientImage: 'https://images.unsplash.com/photo-1543165384-245f3a093754?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzbWlsaW5nJTIwd29tYW58ZW58MHx8fHwxNzU2MDQ2NTYxfDA&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'modern wardrobe',
     author: 'Meera K.',
     authorAvatar: '/avatar-3.png',
     date: 'May 10, 2024',
+    location: 'Baner',
+    project: 'Compact Apartment',
+    size: '1 BHK',
+    quote: "Excellent service and stunning wardrobe design. The quality of materials is top-notch.",
     excerpt: 'For Meera, a walk-in wardrobe felt like an impossible dream in her compact apartment. Our design team created a clever, space-saving solution that exceeded all her expectations...',
      content: `
         <p>Meera, a fashion enthusiast living in a chic but compact Baner apartment, faced a common urban problem: a lack of storage. Her dream of a walk-in wardrobe seemed impossible given the space constraints. She needed a solution that was stylish, organized, and didn't make her bedroom feel cramped.</p>
@@ -66,20 +81,25 @@ const storiesData = [
         <p>We also integrated soft-close mechanisms and LED strip lighting that activates when the doors open, adding a touch of luxury and convenience. Meera's "wardrobe wonder" is a testament to how smart design can overcome space limitations, creating a functional and beautiful storage solution that feels like a personal boutique.</p>
     `,
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1614631446501-abcf76949eca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Wardrobe Interior', dataAiHint: 'wardrobe interior' },
-      { src: 'https://images.unsplash.com/photo-1611048268330-53de574cae3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Accessory Drawer', dataAiHint: 'accessory drawer' },
-      { src: 'https://images.unsplash.com/photo-1677864944822-e3ca06e317c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzbGlkaW5nJTIwZG9vciUyMHdhcmRyb2JlfGVufDB8fHx8MTc1NTcxNTY2MHww&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Sliding Mirror Doors', dataAiHint: 'sliding door wardrobe' },
+      { src: 'https://images.unsplash.com/photo-1614631446501-abcf76949eca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib-rb-4.1.0&q=80&w=1080', alt: 'Wardrobe Interior', dataAiHint: 'wardrobe interior' },
+      { src: 'https://images.unsplash.com/photo-1611048268330-53de574cae3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib-rb-4.1.0&q=80&w=1080', alt: 'Accessory Drawer', dataAiHint: 'accessory drawer' },
+      { src: 'https://images.unsplash.com/photo-1677864944822-e3ca06e317c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzbGlkaW5nJTIwZG9vciUyMHdhcmRyb2JlfGVufDB8fHx8MTc1NTcxNTY2MHww&ixlib-rb-4.1.0&q=80&w=1080', alt: 'Sliding Mirror Doors', dataAiHint: 'sliding door wardrobe' },
     ]
   },
    {
     slug: 'living-room-luxury',
     title: 'Crafting a Luxurious Living Area for Entertaining',
     category: 'Living Area',
-    image: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsaXZpbmclMjBhcmVhJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU2MDE1MjExfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    image: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsaXZpbmclMjBhcmVhJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU2MDE1MjExfDA&ixlib-rb-4.1.0&q=80&w=1080',
+    clientImage: 'https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwbWFuJTIwaW5kaWFufGVufDB8fHx8MTc1NjA0NjY0OHww&ixlib=rb-4.1.0&q=80&w=1080',
     dataAiHint: 'living room',
     author: 'Sameer Joshi',
     authorAvatar: '/avatar-4.png',
     date: 'April 22, 2024',
+    location: 'Wakad',
+    project: 'Joshi Living Room',
+    size: 'Living Area',
+    quote: "The team managed everything, and the final result is a cohesive, beautiful home.",
     excerpt: 'The Joshis love to host. We designed a living room that is perfect for entertaining, with custom seating, ambient lighting, and a stunning entertainment unit as the centerpiece...',
     content: `
         <p>For the Joshi family, the living room is the hub of their social life. They love hosting gatherings, from intimate dinners to lively parties. They needed a space that felt luxurious and impressive, yet comfortable and inviting for their guests.</p>
@@ -87,8 +107,8 @@ const storiesData = [
         <p>A rich color palette of deep blues, grays, and gold accents ties the room together, creating an atmosphere of modern luxury. The result is a living area that not only wows guests but also serves as a cozy retreat for the family.</p>
     `,
     gallery: [
-      { src: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Entertainment Unit Detail', dataAiHint: 'entertainment unit' },
-      { src: 'https://images.unsplash.com/photo-1724582586529-62622e50c0b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU1NzE2MTA0fDA&ixlib=rb-4.1.0&q=80&w=1080', alt: 'Custom Seating', dataAiHint: 'custom sofa' },
+      { src: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib-rb-4.1.0&q=80&w=1080', alt: 'Entertainment Unit Detail', dataAiHint: 'entertainment unit' },
+      { src: 'https://images.unsplash.com/photo-1724582586529-62622e50c0b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU1NzE2MTA0fDA&ixlib-rb-4.1.0&q=80&w=1080', alt: 'Custom Seating', dataAiHint: 'custom sofa' },
       { src: '/b2.jpg', alt: 'Ambient Lighting', dataAiHint: 'ambient lighting' },
     ]
   },
@@ -133,50 +153,48 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
       </section>
-
-      {/* Story Content Section */}
+      
+      {/* Featured Testimonial Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2">
-              <div
-                className="prose prose-lg max-w-none text-muted-foreground space-y-6"
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
+              <Image 
+                src={story.clientImage} 
+                alt={story.author} 
+                layout="fill"
+                objectFit="cover"
+                data-ai-hint="smiling person"
+              />
+            </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground mb-4">
+                  <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-primary" />
+                      <span>{story.location}</span>
+                  </div>
+                  <span className="text-primary">&bull;</span>
+                   <div className="flex items-center gap-2">
+                      <Building className="w-4 h-4 text-primary" />
+                      <span>{story.project}</span>
+                  </div>
+                   <span className="text-primary">&bull;</span>
+                   <div className="flex items-center gap-2">
+                      <Bed className="w-4 h-4 text-primary" />
+                      <span>{story.size}</span>
+                  </div>
+              </div>
+              <h2 className="relative text-2xl md:text-3xl font-bold font-headline mb-6 pl-8">
+                 <span className="absolute left-0 top-0 text-6xl text-primary/20 font-serif -mt-2">“</span>
+                 {story.quote}
+              </h2>
+               <div className="w-16 h-1 bg-primary mb-6"></div>
+              <p className="font-bold text-lg mb-2">{story.author}</p>
+                <div
+                className="prose max-w-none text-muted-foreground space-y-6"
                 dangerouslySetInnerHTML={{ __html: story.content }}
               />
             </div>
-            <aside className="lg:col-span-1">
-                <Card className="sticky top-24">
-                    <CardHeader>
-                        <CardTitle>Project Details</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                       <div className="flex items-center gap-3">
-                            <Avatar className="h-10 w-10">
-                                <AvatarImage src={story.authorAvatar} alt={story.author} />
-                                <AvatarFallback>{story.author.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                           <div>
-                               <p className="text-sm text-muted-foreground">Client</p>
-                               <p className="font-semibold">{story.author}</p>
-                           </div>
-                       </div>
-                       <div className="flex items-center gap-3">
-                           <Tag className="h-5 w-5 text-primary" />
-                           <div>
-                               <p className="text-sm text-muted-foreground">Category</p>
-                               <p className="font-semibold">{story.category}</p>
-                           </div>
-                       </div>
-                       <div className="flex items-center gap-3">
-                           <CalendarDays className="h-5 w-5 text-primary" />
-                           <div>
-                               <p className="text-sm text-muted-foreground">Date</p>
-                               <p className="font-semibold">{story.date}</p>
-                           </div>
-                       </div>
-                    </CardContent>
-                </Card>
-            </aside>
           </div>
         </div>
       </section>
