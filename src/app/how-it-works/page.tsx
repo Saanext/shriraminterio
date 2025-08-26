@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const processSteps = [
   {
@@ -62,6 +63,7 @@ const benefits = [
 ];
 
 const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) => {
+    const isMobile = useIsMobile();
     const isEven = index % 2 === 0;
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -69,19 +71,24 @@ const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) 
         offset: ["start end", "end start"]
     });
 
-    const x = useTransform(scrollYProgress, [0, 0.5], [isEven ? -100 : 100, 0]);
+    const x = useTransform(scrollYProgress, [0, 0.5], isMobile ? [0,0] : [isEven ? -100 : 100, 0]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+    
+    // On mobile, card is always in the same column
+    const cardOrder = isMobile ? 'order-2' : (isEven ? 'md:order-1' : 'md:order-3');
+    const numberOrder = isMobile ? 'order-1' : 'md:order-2';
+    const gridCols = isMobile ? 'grid-cols-[auto_1fr]' : 'md:grid-cols-5';
 
     return (
         <motion.div
             ref={ref}
             style={{ opacity }}
-            className="relative grid grid-cols-2 md:grid-cols-5 gap-8 items-center"
+            className={cn("relative grid items-center gap-6 md:gap-8", gridCols)}
         >
             {/* Card Content */}
             <motion.div
                 style={{ x }}
-                className={cn("md:col-span-2", isEven ? 'order-1 md:order-1' : 'order-1 md:order-3')}
+                className={cn("md:col-span-2", cardOrder)}
             >
                 <Card className="shadow-xl">
                     <CardContent className="p-6">
@@ -95,14 +102,14 @@ const Step = ({ step, index }: { step: typeof processSteps[0]; index: number }) 
             </motion.div>
 
             {/* Timeline Connector */}
-            <div className={cn("md:col-span-1 flex justify-center items-center", isEven ? 'order-2 md:order-2' : 'order-2 md:order-2')}>
+            <div className={cn("flex justify-center items-center md:col-span-1", numberOrder)}>
                  <div className="z-10 flex h-16 w-16 items-center justify-center rounded-full bg-secondary shadow-lg border-2 border-primary">
                     <span className="text-2xl font-bold text-primary">{index + 1}</span>
                  </div>
             </div>
-
-             {/* Spacer */}
-            <div className={cn("hidden md:block md:col-span-2", isEven ? 'order-3' : 'order-1')}></div>
+            
+            {/* Spacer on Desktop */}
+            <div className="hidden md:block md:col-span-2"></div>
         </motion.div>
     );
 }
@@ -121,7 +128,7 @@ export default function HowItWorksPage() {
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
         <Image
-          src="https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080"
+          src="https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib-rb-4.1.0&q=80&w=1080"
           alt="A team of interior designers collaborating on a project"
           data-ai-hint="design team collaboration"
           layout="fill"
@@ -145,7 +152,10 @@ export default function HowItWorksPage() {
           <div ref={timelineRef} className="relative">
               <motion.div
                   style={{ scaleY }}
-                  className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-1 bg-primary/20 origin-top"
+                  className={cn(
+                    "absolute top-0 bottom-0 w-1 bg-primary/20 origin-top",
+                    "left-10 md:left-1/2 md:-translate-x-1/2"
+                  )}
               />
               <div className="flex flex-col gap-16">
                   {processSteps.map((step, index) => (
