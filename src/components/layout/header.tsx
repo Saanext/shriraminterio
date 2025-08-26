@@ -126,13 +126,10 @@ export function Header() {
         return item.subItems ? (
            <DropdownMenu key={item.href}>
               <DropdownMenuTrigger asChild>
-                <Link
-                  href={item.href}
-                  className={cn(
+                <Button variant="ghost" className={cn(
                     'relative transition-colors duration-300 group py-2 px-2 lg:px-3 flex items-center gap-1',
                     isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
-                  )}
-                >
+                  )}>
                   {isActive && (
                     <motion.div
                       layoutId="nav-underline-top"
@@ -155,9 +152,15 @@ export function Header() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     />
                   )}
-                </Link>
+                </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                 <DropdownMenuItem asChild>
+                    <Link href={item.href} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4 text-muted-foreground" />
+                      <span>Overview</span>
+                    </Link>
+                  </DropdownMenuItem>
                 {item.subItems.map(subItem => (
                   <DropdownMenuItem key={subItem.href} asChild>
                     <Link href={subItem.href} className="flex items-center gap-2">
