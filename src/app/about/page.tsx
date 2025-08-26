@@ -188,17 +188,14 @@ export default function AboutUsPage() {
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         {teamMembers.map((member) => (
-                            <Card key={member.name} className="text-center bg-secondary">
-                                <CardHeader className="items-center">
-                                    <Avatar className="h-24 w-24 mb-4">
-                                        <AvatarImage src={member.image} alt={member.name} data-ai-hint="person portrait" />
-                                        <AvatarFallback>{member.avatar}</AvatarFallback>
-                                    </Avatar>
+                            <Card key={member.name} className="overflow-hidden group h-full flex flex-col">
+                                <div className="relative aspect-square">
+                                    <Image src={member.image} alt={member.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" className="transition-transform duration-500 group-hover:scale-105" />
+                                </div>
+                                <CardContent className="p-6 bg-secondary flex-grow flex flex-col text-center">
                                     <CardTitle>{member.name}</CardTitle>
-                                    <p className="text-primary font-semibold">{member.role}</p>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-muted-foreground">{member.bio}</p>
+                                    <p className="text-primary font-semibold my-2">{member.role}</p>
+                                    <p className="text-muted-foreground text-sm flex-grow">{member.bio}</p>
                                 </CardContent>
                             </Card>
                         ))}
