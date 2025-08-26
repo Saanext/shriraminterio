@@ -48,8 +48,8 @@ const clientVideos = [
     name: 'P. Manikandan & Kruthhikka',
     location: 'Subramaniya Nagar, Chennai',
     review: "Manikandan & Kruthhikka were impressed by the experienced HomeLane designers and how they were able to understand their vision for their home. HomeLane made sure everything was personalised to match the requirements and comfort of the family. Book your free consultation today.",
-    imageSrc: 'https://images.unsplash.com/photo-1588854337236-6889d631f379?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwY291cGxlfGVufDB8fHx8MTc1NjA0NjQyNnww&ixlib=rb-4.1.0&q=80&w=1080',
-    dataAiHint: 'smiling couple',
+    imageSrc: 'https://images.unsplash.com/photo-1530268729831-4b0b9e170218?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxpbmRpYW4lMjBwZXJzb258ZW58MHx8fHwxNzU2MTk0ODk1fDA&ixlib=rb-4.1.0&q=80&w=1080',
+    dataAiHint: 'smiling person',
     videoUrl: 'https://www.youtube.com/watch?v=your_video_id_1'
   },
   {
