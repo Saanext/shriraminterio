@@ -1,111 +1,46 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { cn } from '@/lib/utils';
-
-const projects = [
-  {
-    id: 1,
-    category: 'Living Areas',
-    title: 'Modern Minimalist Living',
-    imageSrc: '/kitchen.jpg',
-    dataAiHint: 'minimalist living room',
-  },
-  {
-    id: 2,
-    category: 'Kitchens',
-    title: 'Elegant U-Shaped Kitchen',
-    imageSrc: '/kitchen2.jpg',
-    dataAiHint: 'elegant kitchen',
-  },
-  {
-    id: 3,
-    category: 'Living Areas',
-    title: 'Cozy Scandinavian Retreat',
-    imageSrc: '/kitchn1.jpg',
-    dataAiHint: 'scandinavian living room',
-  },
-  {
-    id: 4,
-    category: 'Wardrobes',
-    title: 'Sleek Sliding Wardrobe',
-    imageSrc: '/r1.jpg',
-    dataAiHint: 'sliding wardrobe',
-  },
-  {
-    id: 5,
-    category: 'Kitchens',
-    title: 'Rustic Farmhouse Kitchen',
-    imageSrc: '/SlidingWardrobe.jpg',
-    dataAiHint: 'farmhouse kitchen',
-  },
-  {
-    id: 6,
-    category: 'Wardrobes',
-    title: 'Spacious Walk-in Closet',
-    imageSrc: '/b1.jpg',
-    dataAiHint: 'walk-in closet',
-  },
-   {
-    id: 7,
-    category: 'Living Areas',
-    title: 'Industrial Loft Space',
-    imageSrc: '/industrial.jpg',
-    dataAiHint: 'industrial loft',
-  },
-  {
-    id: 8,
-    category: 'Kitchens',
-    title: 'Contemporary Galley Kitchen',
-    imageSrc: '/kitchengallery.jpg',
-    dataAiHint: 'galley kitchen',
-  },
-  {
-    id: 9,
-    category: 'TV Units',
-    title: 'Floating TV Console',
-    imageSrc: '/rv.jpg',
-    dataAiHint: 'floating tv unit',
-  },
-  {
-    id: 10,
-    category: 'POP Ceiling',
-    title: 'Modern Cove Lighting',
-    imageSrc: '/pop.jpg',
-    dataAiHint: 'cove lighting ceiling',
-  },
-  {
-    id: 11,
-    category: 'TV Units',
-    title: 'Entertainment Center Wall',
-    imageSrc: '/industrial.jpg',
-    dataAiHint: 'entertainment center',
-  },
-  {
-    id: 12,
-    category: 'POP Ceiling',
-    title: 'Geometric Ceiling Design',
-    imageSrc: '/kitchengallery.jpg',
-    dataAiHint: 'geometric ceiling',
-  },
-];
-
-const partners = [
-    { name: 'Ebco', logoSrc: '/ebco.jpg' },
-    { name: 'Hettich', logoSrc: '/hettich.png' },
-    { name: 'Royale Touche', logoSrc: '/Royal-Touch.jpg' },
-    { name: 'Hafele', logoSrc: '/hafele.png' },
-    { name: 'Godrej', logoSrc: '/godrej.png' },
-];
-
-const categories = ['All', 'Living Areas', 'Kitchens', 'Wardrobes', 'TV Units', 'POP Ceiling'];
+import { createClient } from '@/lib/supabase/client';
 
 export default function PortfolioPage() {
   const [activeTab, setActiveTab] = useState('All');
+  const [projects, setProjects] = useState<any[]>([]);
+  const [partners, setPartners] = useState<any[]>([]);
+  const [categories, setCategories] = useState<string[]>(['All']);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+        const supabase = createClient();
+        const { data: pageData } = await supabase
+            .from('pages')
+            .select('*, sections(*)')
+            .eq('slug', 'portfolio')
+            .single();
+
+        if (pageData) {
+            const projectsSection = pageData.sections.find((s: any) => s.type === 'projects_gallery');
+            const partnersSection = pageData.sections.find((s: any) => s.type === 'partners');
+
+            if (projectsSection) {
+                const fetchedProjects = projectsSection.content.projects || [];
+                setProjects(fetchedProjects);
+                const uniqueCategories = ['All', ...Array.from(new Set(fetchedProjects.map((p: any) => p.category))) as string[]];
+                setCategories(uniqueCategories);
+            }
+
+            if (partnersSection) {
+                setPartners(partnersSection.content.items || []);
+            }
+        }
+    };
+
+    fetchContent();
+  }, []);
 
   const filteredProjects = activeTab === 'All'
     ? projects

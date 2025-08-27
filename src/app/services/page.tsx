@@ -1,8 +1,11 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CookingPot, Sofa, Paintbrush, Bed, Tv, Home, ArrowRight, Lamp, Building } from 'lucide-react';
+import { CookingPot, Sofa, Paintbrush, Bed, Tv, Home, ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase/server';
+import { notFound } from 'next/navigation';
 
 type Service = {
   icon: React.ReactElement<LucideIcon>;
@@ -10,92 +13,64 @@ type Service = {
   description: string;
 };
 
-const services: Service[] = [
-  {
-    icon: <CookingPot className="w-10 h-10 text-primary" />,
-    title: 'Modular Kitchen Design',
-    description: 'We specialize in creating ergonomic and stylish modular kitchens tailored to your cooking habits and space.',
-  },
-  {
-    icon: <Sofa className="w-10 h-10 text-primary" />,
-    title: 'Wardrobe & Storage Solutions',
-    description: 'Custom-designed wardrobes and storage units that maximize space and organize your life beautifully.',
-  },
-  {
-    icon: <Bed className="w-10 h-10 text-primary" />,
-    title: 'Bedroom Interiors',
-    description: 'Transform your bedroom into a serene and personal sanctuary with our bespoke design solutions.',
-  },
-  {
-    icon: <Tv className="w-10 h-10 text-primary" />,
-    title: 'Living Area Design',
-    description: 'From entertainment units to seating arrangements, we design living spaces that are both functional and inviting.',
-  },
-  {
-    icon: <Paintbrush className="w-10 h-10 text-primary" />,
-    title: 'Exterior Design Services',
-    description: 'Enhance your home\'s curb appeal with our expert services in exterior aesthetics, including finishes and lighting.',
-  },
-  {
-    icon: <Home className="w-10 h-10 text-primary" />,
-    title: 'Full Home Interiors',
-    description: 'A comprehensive, end-to-end design service for your entire home, ensuring a cohesive and harmonious look.',
-  },
-];
+const serviceIcons: { [key: string]: React.ReactElement<LucideIcon> } = {
+    'Modular Kitchen Design': <CookingPot className="w-10 h-10 text-primary" />,
+    'Wardrobe & Storage Solutions': <Sofa className="w-10 h-10 text-primary" />,
+    'Bedroom Interiors': <Bed className="w-10 h-10 text-primary" />,
+    'Living Area Design': <Tv className="w-10 h-10 text-primary" />,
+    'Exterior Design Services': <Paintbrush className="w-10 h-10 text-primary" />,
+    'Full Home Interiors': <Home className="w-10 h-10 text-primary" />,
+};
 
-const detailedServices = [
-    {
-        imageSrc: '/SlidingWardrobe.jpg',
-        dataAiHint: 'modern house exterior',
-        title: 'Exterior Design Services',
-        href: '#',
-    },
-    {
-        imageSrc: '/kitchen2.jpg',
-        dataAiHint: 'commercial office interior',
-        title: 'Commercial and Residential Interior Design Services',
-        href: '#',
-    },
-    {
-        imageSrc: '/r1.jpg',
-        dataAiHint: 'living room fireplace',
-        title: 'Design Concept Services',
-        href: '#',
-    },
-    {
-        imageSrc: '/trending1.jpg',
-        dataAiHint: 'modern kitchen interior',
-        title: 'Modular Kitchen Interior Design',
-        href: '#',
-    },
-    {
-        imageSrc: '/kitchn1.jpg',
-        dataAiHint: 'spacious living room',
-        title: 'Room Space Planning Services',
-        href: '#',
-    },
-    {
-        imageSrc: '/b2.jpg',
-        dataAiHint: 'modern apartment interior',
-        title: 'Turnkey Services',
-        href: '#',
-    },
-];
+async function getContent() {
+    const supabase = createClient();
+    const { data: page } = await supabase
+        .from('pages')
+        .select('*, sections(*)')
+        .eq('slug', 'services')
+        .single();
+    
+    if (!page) {
+        return null;
+    }
+    
+    const content: { [key: string]: any } = {};
+    for (const section of page.sections) {
+        const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
+        content[sectionKey] = {
+            ...section.content,
+            visible: section.visible,
+            title: section.title,
+        };
+    }
+    
+    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+}
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+    const pageContent = await getContent();
+
+    if (!pageContent) {
+        notFound();
+    }
+    
+    const { header, ourServices, detailedServices } = pageContent;
+
   return (
     <div className="bg-background">
+      {header.visible && (
       <section className="bg-secondary">
           <div className="container mx-auto px-4 py-16">
             <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold">Our Services</h1>
-              <p className="text-lg text-muted-foreground mt-2">Comprehensive design solutions for every corner of your home.</p>
+              <h1 className="text-4xl md:text-5xl font-bold">{header.title}</h1>
+              <p className="text-lg text-muted-foreground mt-2">{header.subtitle}</p>
             </div>
+            {ourServices.visible && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service) => (
+              {ourServices.services.map((service: any) => (
                 <Card key={service.title} className="flex flex-col text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2 bg-card">
                   <CardHeader className="items-center">
-                    {service.icon}
+                    {serviceIcons[service.title]}
                     <CardTitle className="mt-4 text-2xl">{service.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -104,13 +79,16 @@ export default function ServicesPage() {
                 </Card>
               ))}
             </div>
+            )}
           </div>
       </section>
+      )}
 
+      {detailedServices.visible && (
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {detailedServices.map((service) => (
+                {detailedServices.services.map((service: any) => (
                     <Link href={service.href} key={service.title} className="group block">
                         <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl h-full flex flex-col">
                             <div className="relative h-60">
@@ -137,6 +115,7 @@ export default function ServicesPage() {
             </div>
         </div>
       </section>
+      )}
     </div>
   );
 }
