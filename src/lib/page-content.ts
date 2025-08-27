@@ -48,7 +48,7 @@ const pageStructureData = {
                 visible: true,
                 fields: {
                     title: { label: 'Title', value: 'About Company', type: 'text' },
-                    text: { label: 'Text', value: 'SHRIRAM INTERIO — Where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we combine creativity, functionality, and personalization in every project.', type: 'textarea' },
+                    text: { label: 'Text', value: 'Where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we combine creativity, functionality, and personalization in every project.', type: 'textarea' },
                 }
             },
             {
@@ -195,7 +195,7 @@ const pageStructureData = {
                 title: 'Our Story Section',
                 visible: true,
                 fields: {
-                    heading: { label: 'Heading', value: 'Welcome to Shriram Interio deepak', type: 'text' },
+                    heading: { label: 'Heading', value: 'Welcome to Shriram Interio', type: 'text' },
                     subheading: { label: 'Subheading', value: 'Since we started work in 2016', type: 'text' },
                     image: { label: 'Image', value: '/r1.jpg', type: 'image' },
                     paragraph1: { label: 'Paragraph 1', value: "Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team consists of the most passionate and best interior designers in Pune who love what they do and are committed to creating beautiful and functional spaces that reflect our client's unique styles and needs.", type: 'textarea' },
