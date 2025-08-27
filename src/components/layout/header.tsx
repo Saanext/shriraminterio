@@ -4,27 +4,75 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, ChevronDown } from 'lucide-react';
+import { Menu, ChevronDown, LucideIcon, Home, Info, BookText, ShoppingCart, GanttChartSquare, Wrench, GalleryHorizontal, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS } from '@/lib/constants';
 import { GetAQuoteForm } from '../get-a-quote-form';
 import Image from 'next/image';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { createClient } from '@/lib/supabase/client';
+
+const iconMap: { [key: string]: LucideIcon } = {
+    'home': Home,
+    'about': Info,
+    'customer-stories': BookText,
+    'products': ShoppingCart,
+    'how-it-works': GanttChartSquare,
+    'services': Wrench,
+    'portfolio': GalleryHorizontal,
+    'contact': Phone,
+};
+
+type NavItem = {
+    title: string;
+    slug: string;
+    icon: LucideIcon;
+    subItems?: NavItem[];
+}
 
 export function Header() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
   
   const isMobile = useIsMobile();
   
   useEffect(() => {
     setIsMounted(true);
+    const fetchNavItems = async () => {
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from('pages')
+            .select('title, slug, parent_slug')
+            .order('nav_order');
+
+        if (error) {
+            console.error("Error fetching nav items", error);
+            return;
+        }
+        
+        const items: NavItem[] = data
+            .filter(item => !item.parent_slug)
+            .map(item => ({
+                title: item.title,
+                slug: item.slug === 'home' ? '/' : `/${item.slug}`,
+                icon: iconMap[item.slug] || Home,
+                subItems: data
+                    .filter(sub => sub.parent_slug === item.slug)
+                    .map(sub => ({
+                        title: sub.title,
+                        slug: `/${sub.slug}`,
+                        icon: iconMap[sub.slug] || Home
+                    }))
+            }));
+        setNavItems(items);
+    };
+    fetchNavItems();
   }, []);
 
   if (pathname.startsWith('/shriramadmin')) {
@@ -48,19 +96,19 @@ export function Header() {
             <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
           </SheetHeader>
           <nav className="flex flex-col space-y-1 p-4">
-            {NAV_ITEMS.map((item) => 
-              item.subItems ? (
-                <Collapsible key={item.href}>
+            {navItems.map((item) => 
+              item.subItems && item.subItems.length > 0 ? (
+                <Collapsible key={item.slug}>
                   <CollapsibleTrigger className="w-full">
                     <div
                       className={cn(
                         'flex items-center justify-between text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
-                        pathname.startsWith(item.href) ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                        pathname.startsWith(item.slug) ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                       )}
                     >
                       <div className="flex items-center gap-4">
                         <item.icon className="h-5 w-5" />
-                        {item.label}
+                        {item.title}
                       </div>
                        <ChevronDown className="h-5 w-5 transition-transform ui-open:rotate-180" />
                     </div>
@@ -69,16 +117,16 @@ export function Header() {
                     <div className="flex flex-col space-y-1 py-2 pl-8">
                        {item.subItems.map(subItem => (
                          <Link
-                          key={subItem.href}
-                          href={subItem.href}
+                          key={subItem.slug}
+                          href={subItem.slug}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={cn(
                             'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
-                            pathname === subItem.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                            pathname === subItem.slug ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                           )}
                         >
                           <subItem.icon className="h-5 w-5" />
-                          {subItem.label}
+                          {subItem.title}
                         </Link>
                        ))}
                     </div>
@@ -86,16 +134,16 @@ export function Header() {
                 </Collapsible>
               ) : (
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  key={item.slug}
+                  href={item.slug}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
                     'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
-                    pathname === item.href ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                    pathname === item.slug ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                   )}
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.label}
+                  {item.title}
                 </Link>
               )
             )}
@@ -111,11 +159,11 @@ export function Header() {
 
   const renderDesktopMenu = () => (
     <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-1 lg:space-x-4 text-sm font-medium">
-      {NAV_ITEMS.map((item) => {
-        const isActive = pathname === item.href || (item.subItems && item.subItems.some(si => si.href === pathname));
+      {navItems.map((item) => {
+        const isActive = pathname === item.slug || (item.subItems && item.subItems.some(si => si.slug === pathname));
         
-        return item.subItems ? (
-           <DropdownMenu key={item.href}>
+        return item.subItems && item.subItems.length > 0 ? (
+           <DropdownMenu key={item.slug}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className={cn(
                     'relative transition-colors duration-300 group py-2 px-2 lg:px-3 flex items-center gap-1',
@@ -131,7 +179,7 @@ export function Header() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     />
                   )}
-                  <span>{item.label}</span>
+                  <span>{item.title}</span>
                   <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                    {isActive && (
                     <motion.div
@@ -147,16 +195,16 @@ export function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                  <DropdownMenuItem asChild>
-                    <Link href={item.href} className="flex items-center gap-2">
+                    <Link href={item.slug} className="flex items-center gap-2">
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span>Overview</span>
                     </Link>
                   </DropdownMenuItem>
                 {item.subItems.map(subItem => (
-                  <DropdownMenuItem key={subItem.href} asChild>
-                    <Link href={subItem.href} className="flex items-center gap-2">
+                  <DropdownMenuItem key={subItem.slug} asChild>
+                    <Link href={subItem.slug} className="flex items-center gap-2">
                       <subItem.icon className="h-4 w-4 text-muted-foreground" />
-                      <span>{subItem.label}</span>
+                      <span>{subItem.title}</span>
                     </Link>
                   </DropdownMenuItem>
                 ))}
@@ -164,8 +212,8 @@ export function Header() {
             </DropdownMenu>
         ) : (
           <Link
-            key={item.href}
-            href={item.href}
+            key={item.slug}
+            href={item.slug}
             className={cn(
               'relative transition-colors duration-300 group py-2 px-2 lg:px-3',
               isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
@@ -181,7 +229,7 @@ export function Header() {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               />
             )}
-            <span>{item.label}</span>
+            <span>{item.title}</span>
              {isActive && (
               <motion.div
                 layoutId="nav-underline-bottom"
