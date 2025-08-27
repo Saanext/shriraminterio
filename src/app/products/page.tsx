@@ -7,66 +7,49 @@ import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
-async function getContent() {
+async function getProducts() {
     const supabase = createClient();
-    const { data: page } = await supabase
-        .from('pages')
-        .select('*, sections(*)')
-        .eq('slug', 'products')
-        .single();
-    
-    if (!page) {
-        notFound();
+    const { data: products, error } = await supabase.from('products').select('*').order('name');
+    if (error) {
+        console.error("Error fetching products:", error);
+        return [];
     }
-    
-    const content: { [key: string]: any } = {};
-    for (const section of page.sections) {
-        const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
-        content[sectionKey] = {
-            ...section.content,
-            visible: section.visible,
-            title: section.title,
-        };
-    }
-    
-    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+    return products;
 }
 
 export default async function ProductsPage() {
-  const pageContent = await getContent();
+  const products = await getProducts();
 
-  if (!pageContent) {
+  if (!products) {
     notFound();
   }
-
-  const { header, productList } = pageContent;
 
   return (
     <div className="bg-background">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold">{header.title}</h1>
-          <p className="text-lg text-muted-foreground mt-2">{header.subtitle}</p>
+          <h1 className="text-4xl md:text-5xl font-bold">Our Products</h1>
+          <p className="text-lg text-muted-foreground mt-2">Explore our collection of finely crafted interior solutions.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {productList.products.map((product: any) => (
-            <Link href={product.href} key={product.name} className="group block">
+          {products.map((product) => (
+            <Link href={`/products/${product.slug}`} key={product.id} className="group block">
               <Card className="overflow-hidden transition-all duration-300 hover:shadow-2xl h-full flex flex-col">
                 <div className="relative h-64">
                   <Image
-                    src={product.imageSrc}
+                    src={product.main_image}
                     alt={product.name}
                     fill
                     objectFit="cover"
                     className="transition-transform duration-500 group-hover:scale-105"
-                    data-ai-hint={product.dataAiHint}
+                    data-ai-hint={product.name.toLowerCase()}
                   />
                 </div>
                 <CardContent className="p-6 flex flex-col flex-grow">
                   <h2 className="text-2xl font-bold font-headline">{product.name}</h2>
-                  <p className="mt-2 text-muted-foreground flex-grow">{product.description}</p>
+                  <p className="mt-2 text-muted-foreground flex-grow">{product.short_description}</p>
                   <div className="mt-4 flex items-center font-semibold text-primary">
-                    Explore More <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    View Details <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </CardContent>
               </Card>
