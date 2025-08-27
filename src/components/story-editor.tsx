@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -5,6 +6,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -169,7 +171,7 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
               </CardContent>
             </Card>
              <Card>
-              <CardHeader><CardTitle>Client Details & Testimonial</CardTitle></CardHeader>
+              <CardHeader><CardTitle>Client Details &amp; Testimonial</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField control={form.control} name="location" render={({ field }) => (
@@ -286,3 +288,5 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     </Form>
   );
 }
+
+    
