@@ -74,6 +74,10 @@ function EditPageImpl() {
         if (!formRef.current) return;
 
         const formData = new FormData(formRef.current);
+        
+        // This conversion handles simple cases, but complex forms (especially with files)
+        // are better handled by passing formData directly if the action supports it.
+        // For this action, we expect a plain object.
         const data = Object.fromEntries(formData.entries());
 
         const result = await savePageContent(pageSlug, data);

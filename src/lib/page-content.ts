@@ -687,21 +687,26 @@ export function getContent(page: string) {
         return null;
     }
     
-    const content = structure.sections.reduce((acc: any, section: any) => {
+    const content: { [key: string]: any } = structure.sections.reduce((acc: any, section: any) => {
         const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
-        acc[sectionKey] = { ...section.fields, visible: section.visible, title: section.title };
+        const sectionData: { [key: string]: any } = { 
+            visible: section.visible, 
+            title: section.title 
+        };
         
-        // Handle repeater fields
-        if(section.fields) {
+        if (section.fields) {
             Object.entries(section.fields).forEach(([key, value]: [string, any]) => {
-                if (value.items) {
-                    acc[sectionKey][key] = value.items;
-                } else if (value.value) {
-                    acc[sectionKey][key] = value.value;
+                if (value && typeof value === 'object' && 'value' in value) {
+                    sectionData[key] = value.value;
+                } else if (value && typeof value === 'object' && 'items' in value) {
+                    sectionData[key] = value.items;
+                } else {
+                    sectionData[key] = value;
                 }
             });
         }
         
+        acc[sectionKey] = sectionData;
         return acc;
     }, {} as any);
 
