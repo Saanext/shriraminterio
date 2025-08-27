@@ -87,7 +87,11 @@ export default async function CustomerStoriesPage() {
   }
 
   const { header, featuredStory, moreStories, workGallery, partners, faq } = pageContent;
-  const [featured, ...otherStories] = moreStories.stories;
+  const stories = moreStories?.stories || [];
+  const [featured, ...otherStories] = stories;
+  const galleryItems = workGallery?.items || [];
+  const partnerItems = partners?.items || [];
+  const faqItems = faq?.items || [];
 
   return (
     <div className="bg-background">
@@ -102,7 +106,7 @@ export default async function CustomerStoriesPage() {
         </div>
         )}
 
-        {featuredStory.visible && <FeaturedStory story={featured} buttonText={featuredStory.buttonText} />}
+        {featuredStory.visible && featured && <FeaturedStory story={featured} buttonText={featuredStory.buttonText} />}
 
         {moreStories.visible && (
         <div className="container mx-auto px-4 pb-16 md:pb-24">
@@ -158,7 +162,7 @@ export default async function CustomerStoriesPage() {
           </div>
           <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
             <CarouselContent className="-ml-2 sm:-ml-4">
-              {workGallery.items.map((item: any, index: number) => (
+              {galleryItems.map((item: any, index: number) => (
                 <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/3">
                   <Card className="overflow-hidden group">
                     <div className="relative aspect-video">
@@ -192,7 +196,7 @@ export default async function CustomerStoriesPage() {
                   <h2 className="text-3xl md:text-4xl font-bold">{partners.title}</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
-                  {partners.items.map((partner: any) => (
+                  {partnerItems.map((partner: any) => (
                       <div key={partner.name} className="flex justify-center">
                           <Image
                               src={partner.logoSrc}
@@ -219,7 +223,7 @@ export default async function CustomerStoriesPage() {
           </div>
           <div className="max-w-3xl mx-auto">
             <Accordion type="single" collapsible className="w-full">
-              {faq.items.map((item: any, index: number) => (
+              {faqItems.map((item: any, index: number) => (
                 <AccordionItem key={index} value={`item-${index + 1}`}>
                   <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">
