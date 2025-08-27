@@ -454,216 +454,112 @@
     ]
   },
   "about": {
-    "title": "About Us Page",
+    "title": "About Us",
     "metaTitle": "About Shriram Interio | Our Story & Team",
     "metaDescription": "Learn about Shriram Interio, our journey since 2016, our design philosophy, and meet the expert team dedicated to creating beautiful spaces in Pune.",
     "sections": [
       {
         "type": "hero",
         "title": "Hero Section",
-        "visible": false,
+        "visible": true,
         "fields": {
-          "backgroundImage": {
-            "label": "Background Image",
-            "value": "/b1.jpg",
-            "type": "image"
-          },
-          "title": {
-            "label": "Title",
-            "value": "About Shriram Interio",
-            "type": "text"
-          },
-          "subtitle": {
-            "label": "Subtitle",
-            "value": "Your vision, our passion.",
-            "type": "text"
-          }
+          "backgroundImage": "/b1.jpg",
+          "title": "About Shriram Interio",
+          "subtitle": "Your vision, our passion."
         }
       },
       {
         "type": "story",
         "title": "Our Story Section",
-        "visible": false,
+        "visible": true,
         "fields": {
-          "heading": {
-            "label": "Heading",
-            "value": "Welcome to Shriram Interio",
-            "type": "text"
-          },
-          "subheading": {
-            "label": "Subheading",
-            "value": "Since we started work in 2016",
-            "type": "text"
-          },
-          "image": {
-            "label": "Image",
-            "value": "/r1.jpg",
-            "type": "image"
-          },
-          "paragraph1": {
-            "label": "Paragraph 1",
-            "value": "Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team consists of the most passionate and best interior designers in Pune who love what they do and are committed to creating beautiful and functional spaces that reflect our client's unique styles and needs.",
-            "type": "textarea"
-          },
-          "paragraph2": {
-            "label": "Paragraph 2",
-            "value": "We specialize in designing and decorating residential spaces. With years of experience in the industry, we have honed our skills in space planning, color theory, furniture selection, and lighting design.",
-            "type": "textarea"
-          },
-          "paragraph3": {
-            "label": "Paragraph 3",
-            "value": "We strongly believe that a well-designed interior can have a profound impact on people's lives. That's why we take the time to truly understand our client's aspirations and preferences for their space. By working closely with them, we develop a personalized design plan that perfectly fits their aesthetic preferences, lifestyle, and budget.",
-            "type": "textarea"
-          },
-          "paragraph4": {
-            "label": "Paragraph 4",
-            "value": "Whether you want to give your living room a makeover, update your kitchen, or transform your entire home, our team is here to turn your dreams into reality. Feel Free to Contact us for a consultation and take the first step toward creating your dream space !!",
-            "type": "textarea"
-          }
+          "heading": "Welcome to Shriram Interio deepak",
+          "subheading": "Since we started work in 2016",
+          "image": "/r1.jpg",
+          "paragraph1": "Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team consists of the most passionate and best interior designers in Pune who love what they do and are committed to creating beautiful and functional spaces that reflect our client's unique styles and needs.",
+          "paragraph2": "We specialize in designing and decorating residential spaces. With years of experience in the industry, we have honed our skills in space planning, color theory, furniture selection, and lighting design.",
+          "paragraph3": "We strongly believe that a well-designed interior can have a profound impact on people's lives. That's why we take the time to truly understand our client's aspirations and preferences for their space. By working closely with them, we develop a personalized design plan that perfectly fits their aesthetic preferences, lifestyle, and budget.",
+          "paragraph4": "Whether you want to give your living room a makeover, update your kitchen, or transform your entire home, our team is here to turn your dreams into reality. Feel Free to Contact us for a consultation and take the first step toward creating your dream space !!"
         }
       },
       {
         "type": "journey",
         "title": "Our Journey Section",
-        "visible": false,
+        "visible": true,
         "fields": {
-          "image": {
-            "label": "Image",
-            "value": "/SlidingWardrobe.jpg",
-            "type": "image"
-          },
-          "heading": {
-            "label": "Heading",
-            "value": "Our Journey",
-            "type": "text"
-          },
-          "paragraph1": {
-            "label": "Paragraph 1",
-            "value": "We have a deep love for Interior Design and a strong vision of creating spaces that are both beautiful and functional for our clients. This passion led us to start our own interior design company in Pune, where we are dedicated to delivering exceptional designs and personalized services to every client.",
-            "type": "textarea"
-          },
-          "paragraph2": {
-            "label": "Paragraph 2",
-            "value": "As we embarked on this journey, we worked hard to establish a strong brand identity and build a portfolio of our best work. With the growth of our brand, our client base also expanded. We now work with clients from diverse backgrounds, including families who want to update their homes and create warm and functional spaces.",
-            "type": "textarea"
-          },
-          "paragraph3": {
-            "label": "Paragraph 3",
-            "value": "With every new project, Shriram Interiors' interior design team approaches the design process with a fresh perspective. Our goal is not only to create stunning designs but also to ensure that the spaces we design are practical and serve their intended purpose.",
-            "type": "textarea"
-          },
-          "paragraph4": {
-            "label": "Paragraph 4",
-            "value": "Over time, Shriram Interio has experienced tremendous growth and expansion. We have welcomed more talented designers and staff members to our team, further enhancing our capabilities to serve our clients. We are excited to continue our journey of creating beautiful and functional spaces, and we look forward to the opportunity to work with you.",
-            "type": "textarea"
-          }
+          "image": "/SlidingWardrobe.jpg",
+          "heading": "Our Journey",
+          "paragraph1": "We have a deep love for Interior Design and a strong vision of creating spaces that are both beautiful and functional for our clients. This passion led us to start our own interior design company in Pune, where we are dedicated to delivering exceptional designs and personalized services to every client.",
+          "paragraph2": "As we embarked on this journey, we worked hard to establish a strong brand identity and build a portfolio of our best work. With the growth of our brand, our client base also expanded. We now work with clients from diverse backgrounds, including families who want to update their homes and create warm and functional spaces.",
+          "paragraph3": "With every new project, Shriram Interiors' interior design team approaches the design process with a fresh perspective. Our goal is not only to create stunning designs but also to ensure that the spaces we design are practical and serve their intended purpose.",
+          "paragraph4": "Over time, Shriram Interio has experienced tremendous growth and expansion. We have welcomed more talented designers and staff members to our team, further enhancing our capabilities to serve our clients. We are excited to continue our journey of creating beautiful and functional spaces, and we look forward to the opportunity to work with you."
         }
       },
       {
         "type": "values",
         "title": "Our Values Section",
-        "visible": false,
+        "visible": true,
         "fields": {
-          "title": {
-            "label": "Title",
-            "value": "What we do",
-            "type": "text"
-          },
-          "subtitle": {
-            "label": "Subtitle",
-            "value": "Our Values",
-            "type": "text"
-          },
-          "items": {
-            "label": "Value Items",
-            "type": "repeater",
-            "items": [
-              {
-                "title": "Expert Design Team",
-                "description": "Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project. Our designers combine their diverse backgrounds and unique perspectives to curate interiors that captivate and inspire."
-              },
-              {
-                "title": "Variety of Design Choices",
-                "description": "Enjoy multiple Interior design alternatives until they match your expectations & requirement. We pride ourselves on our ability to offer an array of design,let us guide you on a journey to discover the perfect style that speaks to your soul"
-              },
-              {
-                "title": "Affordable Design Fees",
-                "description": "We believe in making high-quality design services accessible to everyone. We offer competitive and transparent design fees tailored to suit various budgets.Affordable design solutions can transform your space as per your vision."
-              },
-              {
-                "title": "On-Time Project Delivery",
-                "description": "We understand the importance of time and deadlines. Our commitment to excellence extends to ensuring on-time project delivery allowing you to experience the joy of your newly transformed space exactly when expected"
-              }
-            ]
-          }
+          "title": "What we do",
+          "subtitle": "Our Values",
+          "items": [
+            {
+              "title": "Expert Design Team",
+              "description": "Our team of designers brings a wealth of expertise, creativity, and a keen eye for detail to every project. Our designers combine their diverse backgrounds and unique perspectives to curate interiors that captivate and inspire."
+            },
+            {
+              "title": "Variety of Design Choices",
+              "description": "Enjoy multiple Interior design alternatives until they match your expectations & requirement. We pride ourselves on our ability to offer an array of design,let us guide you on a journey to discover the perfect style that speaks to your soul"
+            },
+            {
+              "title": "Affordable Design Fees",
+              "description": "We believe in making high-quality design services accessible to everyone. We offer competitive and transparent design fees tailored to suit various budgets.Affordable design solutions can transform your space as per your vision."
+            },
+            {
+              "title": "On-Time Project Delivery",
+              "description": "We understand the importance of time and deadlines. Our commitment to excellence extends to ensuring on-time project delivery allowing you to experience the joy of your newly transformed space exactly when expected"
+            }
+          ]
         }
       },
       {
         "type": "mission_vision",
         "title": "Mission and Vision Section",
-        "visible": false,
+        "visible": true,
         "fields": {
-          "visionTitle": {
-            "label": "Vision Title",
-            "value": "Our Vision",
-            "type": "text"
-          },
-          "visionText": {
-            "label": "Vision Text",
-            "value": "To be the most trusted and creative interior design firm in Maharashtra, known for our innovative solutions and unwavering commitment to quality.",
-            "type": "textarea"
-          },
-          "missionTitle": {
-            "label": "Mission Title",
-            "value": "Our Mission",
-            "type": "text"
-          },
-          "missionText": {
-            "label": "Mission Text",
-            "value": "To create beautiful, functional, and personal living spaces by listening to our clients, embracing creativity, and delivering excellence in every detail.",
-            "type": "textarea"
-          }
+          "visionTitle": "Our Vision",
+          "visionText": "To be the most trusted and creative interior design firm in Maharashtra, known for our innovative solutions and unwavering commitment to quality.",
+          "missionTitle": "Our Mission",
+          "missionText": "To create beautiful, functional, and personal living spaces by listening to our clients, embracing creativity, and delivering excellence in every detail."
         }
       },
       {
         "type": "team",
         "title": "Meet the Team Section",
-        "visible": false,
+        "visible": true,
         "fields": {
-          "title": {
-            "label": "Title",
-            "value": "Meet Our Team",
-            "type": "text"
-          },
-          "subtitle": {
-            "label": "Subtitle",
-            "value": "The creative minds behind our success.",
-            "type": "textarea"
-          },
-          "members": {
-            "label": "Team Members",
-            "type": "repeater",
-            "items": [
-              {
-                "name": "Shriram P.",
-                "role": "Founder & Principal Designer",
-                "image": "/team-member-1.png",
-                "bio": "With a passion for creating beautiful and functional spaces, Shriram leads the creative vision of the company."
-              },
-              {
-                "name": "Sunita K.",
-                "role": "Head of Operations",
-                "image": "/team-member-2.png",
-                "bio": "Sunita ensures that every project is executed flawlessly from concept to completion, managing all operational aspects."
-              },
-              {
-                "name": "Rahul Desai",
-                "role": "Lead Interior Designer",
-                "image": "/team-member-3.png",
-                "bio": "Rahul specializes in residential design, bringing a wealth of creativity and technical skill to every home he transforms."
-              }
-            ]
-          }
+          "title": "Meet Our Team",
+          "subtitle": "The creative minds behind our success.",
+          "members": [
+            {
+              "name": "Shriram P.",
+              "role": "Founder & Principal Designer",
+              "image": "/team-member-1.png",
+              "bio": "With a passion for creating beautiful and functional spaces, Shriram leads the creative vision of the company."
+            },
+            {
+              "name": "Sunita K.",
+              "role": "Head of Operations",
+              "image": "/team-member-2.png",
+              "bio": "Sunita ensures that every project is executed flawlessly from concept to completion, managing all operational aspects."
+            },
+            {
+              "name": "Rahul Desai",
+              "role": "Lead Interior Designer",
+              "image": "/team-member-3.png",
+              "bio": "Rahul specializes in residential design, bringing a wealth of creativity and technical skill to every home he transforms."
+            }
+          ]
         }
       }
     ],
@@ -717,7 +613,8 @@
     "sections-5-fields-team-members-2-name": "Rahul Desai",
     "sections-5-fields-team-members-2-role": "Lead Interior Designer",
     "sections-5-fields-team-members-2-image": "/team-member-3.png",
-    "sections-5-fields-team-members-2-bio": "Rahul specializes in residential design, bringing a wealth of creativity and technical skill to every home he transforms."
+    "sections-5-fields-team-members-2-bio": "Rahul specializes in residential design, bringing a wealth of creativity and technical skill to every home he transforms.",
+    "slug": "/about"
   },
   "products": {
     "title": "Products Page",

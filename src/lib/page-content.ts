@@ -1,3 +1,4 @@
+
 // This is a server-only module. It will not be included in the client-side bundle.
 import 'server-only';
 import fs from 'fs';
@@ -194,7 +195,7 @@ const pageStructureData = {
                 title: 'Our Story Section',
                 visible: true,
                 fields: {
-                    heading: { label: 'Heading', value: 'Welcome to Shriram Interio', type: 'text' },
+                    heading: { label: 'Heading', value: 'Welcome to Shriram Interio deepak', type: 'text' },
                     subheading: { label: 'Subheading', value: 'Since we started work in 2016', type: 'text' },
                     image: { label: 'Image', value: '/r1.jpg', type: 'image' },
                     paragraph1: { label: 'Paragraph 1', value: "Since our establishment in 2016, we have been dedicated to providing exceptional interior design services in Pune and throughout Maharashtra. Our team consists of the most passionate and best interior designers in Pune who love what they do and are committed to creating beautiful and functional spaces that reflect our client's unique styles and needs.", type: 'textarea' },
@@ -687,16 +688,20 @@ export function getContent(page: string) {
     }
     
     const content = structure.sections.reduce((acc: any, section: any) => {
-        if (!section.fields) return acc;
-        
-        const fields = Object.entries(section.fields).reduce((fieldAcc: any, [key, value]: [string, any]) => {
-            fieldAcc[key] = value.items || value.value;
-            return fieldAcc;
-        }, {} as any);
-        
         const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
-
-        acc[sectionKey] = { ...fields, title: section.title, visible: section.visible };
+        acc[sectionKey] = { ...section.fields, visible: section.visible, title: section.title };
+        
+        // Handle repeater fields
+        if(section.fields) {
+            Object.entries(section.fields).forEach(([key, value]: [string, any]) => {
+                if (value.items) {
+                    acc[sectionKey][key] = value.items;
+                } else if (value.value) {
+                    acc[sectionKey][key] = value.value;
+                }
+            });
+        }
+        
         return acc;
     }, {} as any);
 
