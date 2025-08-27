@@ -109,7 +109,7 @@ const pageStructureData = {
                         { name: 'Wardrobe', image: '/trending1.jpg', hint: 'modern wardrobe' },
                         { name: 'Kitchen', image: '/kitchen.jpg', hint: 'modern kitchen' },
                         { name: 'King Size Bed', image: '/r1.jpg', hint: 'king size bed' },
-                        { name: 'Living Room', image: 'https://images.unsplash.com/photo-1724582586529-62622e50c0b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU1NzE2MTA0fDA&ixlib=rb-4.1.0&q=80&w=1080', hint: 'modern living room' },
+                        { name: 'Living Room', image: 'https://images.unsplash.com/photo-1724582586529-62622e50c0b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsaXZpbmclMjByb29tJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU1NzE2MTA0fDA&ixlib-rb-4.1.0&q=80&w=1080', hint: 'modern living room' },
                     ]},
                     bestSellingKitchens: { label: 'Best Selling Kitchens', type: 'repeater', items: [
                         { name: 'L-Shaped Kitchen', image: '/kitchn1.jpg', hint: 'l-shaped kitchen' },
@@ -286,7 +286,7 @@ const pageStructureData = {
                 title: 'Hero Section',
                 visible: true,
                 fields: {
-                    backgroundImage: { label: 'Background Image', value: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080', type: 'image' },
+                    backgroundImage: { label: 'Background Image', value: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib-rb-4.1.0&q=80&w=1080', type: 'image' },
                     title: { label: 'Title', value: 'How It Works', type: 'text' },
                     subtitle: { label: 'Subtitle', value: 'Your seamless journey from concept to reality.', type: 'text' },
                 }
@@ -514,7 +514,7 @@ const pageStructureData = {
             },
         ]
     },
-    'products/kitchen': {
+    'products_kitchen': {
         title: 'Kitchen Products Page',
         metaTitle: 'Modular Kitchens in Pune | Shriram Interio',
         metaDescription: 'Discover our beautiful and functional modular kitchens. We offer custom designs, premium materials, and smart storage solutions for your home in Pune.',
@@ -540,7 +540,7 @@ const pageStructureData = {
             }
         ]
     },
-    'products/wardrobe': {
+    'products_wardrobe': {
         title: 'Wardrobe Products Page',
         metaTitle: 'Custom Wardrobes in Pune | Shriram Interio',
         metaDescription: 'Explore our custom wardrobe solutions. We design and build sliding, hinged, and walk-in wardrobes to maximize your storage and enhance your bedroom decor.',
@@ -557,7 +557,7 @@ const pageStructureData = {
             }
         ]
     },
-    'products/bedroom': {
+    'products_bedroom': {
         title: 'Bedroom Products Page',
         metaTitle: 'Bedroom Interior Design in Pune | Shriram Interio',
         metaDescription: 'Create your dream sanctuary with our bespoke bedroom interior designs. We focus on comfort, style, and functionality to give you a space for relaxation.',
@@ -575,7 +575,7 @@ const pageStructureData = {
             }
         ]
     },
-    'products/living-room': {
+    'products_living-room': {
         title: 'Living Room Products Page',
         metaTitle: 'Living Room Design in Pune | Shriram Interio',
         metaDescription: 'Design inviting and functional living spaces. Our experts help with furniture, lighting, and color schemes to create a warm atmosphere.',
@@ -593,7 +593,7 @@ const pageStructureData = {
             }
         ]
     },
-    'products/bathroom': {
+    'products_bathroom': {
         title: 'Bathroom Products Page',
         metaTitle: 'Bathroom Design in Pune | Shriram Interio',
         metaDescription: 'Transform your bathroom into a stylish and practical oasis with our contemporary and classic design solutions.',
@@ -611,7 +611,7 @@ const pageStructureData = {
             }
         ]
     },
-     'products/space-saving-furniture': {
+     'products_space-saving-furniture': {
         title: 'Space Saving Furniture Page',
         metaTitle: 'Space Saving Furniture in Pune | Shriram Interio',
         metaDescription: 'Maximize your living area with our innovative and smart furniture solutions, perfect for modern apartments and compact homes.',
@@ -629,7 +629,7 @@ const pageStructureData = {
             }
         ]
     },
-     'products/home-office': {
+     'products_home-office': {
         title: 'Home Office Page',
         metaTitle: 'Home Office Design in Pune | Shriram Interio',
         metaDescription: 'Create a productive and comfortable workspace at home with our tailored home office solutions that blend ergonomics and aesthetics.',
@@ -681,7 +681,7 @@ export function getPageStructure() {
 
 // Public interface to get transformed content for a specific page
 export function getContent(page: keyof typeof pageStructureData) {
-    const structure = getPageStructure()[page];
+    const structure = getPageStructure()[page.replace(/-/g, '_')];
     if (!structure) {
         return null;
     }

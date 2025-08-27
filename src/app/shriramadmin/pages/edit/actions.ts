@@ -5,21 +5,11 @@ import fs from 'fs';
 import path from 'path';
 import { getPageStructure } from '@/lib/page-content';
 import { revalidatePath } from 'next/cache';
-import { set, get, toPath } from 'lodash';
+import { set, get, toPath, cloneDeep } from 'lodash';
 
 // Helper function to parse nested form data keys
 function parseKey(key: string): (string | number)[] {
-    return key.split('-').flatMap(part => {
-        const asNumber = parseInt(part, 10);
-        if (!isNaN(asNumber)) {
-            const pathParts = toPath(part);
-            if (pathParts.length > 1) {
-                return pathParts;
-            }
-            return asNumber;
-        }
-        return part;
-    });
+    return toPath(key);
 }
 
 export async function savePageContent(pageSlug: string, data: Record<string, any>) {
@@ -27,67 +17,58 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
         const pageKey = pageSlug.replace(/-/g, '_') || 'home';
         
         const currentStructure = getPageStructure();
-        const pageContent = currentStructure[pageKey];
+        
+        const pageContent = cloneDeep(currentStructure[pageKey]);
 
         if (!pageContent) {
             throw new Error(`No content structure found for page: ${pageSlug}`);
         }
 
         const newData: Record<string, any> = {};
+        const visibilityFlags: Record<string, boolean> = {};
 
         // Reconstruct the object from the flat form data
         for (const [key, value] of Object.entries(data)) {
-            const path = parseKey(key);
-            set(newData, path, value);
-        }
-
-        // Deep merge the new data into the existing structure
-        const formKeys = new Set(Object.keys(data));
-        const mergeAndUpdate = (target: any, source: any, currentPath: string[] = []) => {
-            if (typeof target !== 'object' || target === null || typeof source !== 'object' || source === null) {
-                return;
+            if (key.endsWith('-visible')) {
+                const path = parseKey(key);
+                visibilityFlags[path.slice(0, -1).join('.')] = true;
+            } else {
+                const path = parseKey(key);
+                set(newData, path, value);
             }
-
-            Object.keys(source).forEach(key => {
-                const newPath = [...currentPath, key];
-                const newPathString = newPath.join('-');
-
-                if (target[key] !== undefined && typeof target[key] === 'object' && target[key] !== null && !Array.isArray(target[key])) {
-                     // Recursively merge for nested objects (like 'fields')
-                    if (source[key] !== undefined) {
-                        mergeAndUpdate(target[key], source[key], newPath);
-                    }
-                } else if (Array.isArray(target[key]) && Array.isArray(source[key])) {
-                     // Handle repeaters (arrays of objects)
-                    target[key] = source[key].map((item: any, index: number) => {
-                        const newArrayItem: any = {};
-                         Object.keys(item).forEach(itemKey => {
-                             newArrayItem[itemKey] = item[itemKey];
-                        });
-                        return { ...(target[key][index] || {}), ...newArrayItem };
-                    });
+        }
+        
+        // Deep merge the new data into the existing structure
+        const mergeAndUpdate = (target: any, source: any) => {
+            for (const key in source) {
+                if (source[key] instanceof Object && key in target) {
+                    mergeAndUpdate(target[key], source[key]);
                 } else {
-                     // Direct value update
-                    if (source[key] !== undefined) {
-                        if (key === 'visible') {
-                            // Correctly handle boolean for visibility switch
-                             target[key] = formKeys.has(newPathString);
-                        } else {
-                            target[key] = source[key];
-                        }
-                    }
+                    target[key] = source[key];
                 }
-            });
-             // Handle unchecked switches for sections
-            if (currentPath.length > 0 && currentPath[0] === 'sections' && target.visible !== undefined && !formKeys.has([...currentPath, 'visible'].join('-'))) {
-                 target.visible = false;
             }
         };
-        
+
         mergeAndUpdate(pageContent, newData);
         
+        // Update visibility
+        pageContent.sections.forEach((section: any, index: number) => {
+            const sectionPath = `sections.${index}`;
+            if (visibilityFlags[sectionPath]) {
+                section.visible = true;
+            } else {
+                // Check if any field within the section was submitted. If not, the switch was off.
+                const wasSubmitted = Object.keys(data).some(d => d.startsWith(`sections-${index}-`));
+                 if (section.visible !== undefined && wasSubmitted) {
+                    section.visible = false;
+                 }
+            }
+        });
+        
+        const newStructure = { ...currentStructure, [pageKey]: pageContent };
+        
         const dataFilePath = path.join(process.cwd(), 'src', 'lib', 'page-structure.json');
-        fs.writeFileSync(dataFilePath, JSON.stringify(currentStructure, null, 2));
+        fs.writeFileSync(dataFilePath, JSON.stringify(newStructure, null, 2));
 
         // Revalidate the path to show changes
         const revalidationSlug = pageSlug ? `/${pageSlug}`: '/';
