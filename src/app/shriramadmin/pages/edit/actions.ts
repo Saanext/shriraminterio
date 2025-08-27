@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { getPageStructure } from '@/lib/page-content';
 import { revalidatePath } from 'next/cache';
-import { set, get, toPath, cloneDeep } from 'lodash';
+import { set, get, toPath, cloneDeep, isObject } from 'lodash';
 
 // Helper function to parse nested form data keys
 function parseKey(key: string): (string | number)[] {
@@ -17,7 +17,6 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
         const pageKey = pageSlug.replace(/-/g, '_') || 'home';
         
         const currentStructure = getPageStructure();
-        
         const pageContent = cloneDeep(currentStructure[pageKey]);
 
         if (!pageContent) {
@@ -25,45 +24,55 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
         }
 
         const newData: Record<string, any> = {};
-        const visibilityFlags: Record<string, boolean> = {};
 
         // Reconstruct the object from the flat form data
         for (const [key, value] of Object.entries(data)) {
-            if (key.endsWith('-visible')) {
-                const path = parseKey(key);
-                visibilityFlags[path.slice(0, -1).join('.')] = true;
-            } else {
-                const path = parseKey(key);
-                set(newData, path, value);
-            }
+            // Handle file inputs separately if needed, for now assuming URLs
+            if (key.endsWith('-file') && (value as File).size === 0) continue;
+            
+            const path = parseKey(key.replace(/-value$/, ''));
+            set(newData, path, value);
         }
-        
+
         // Deep merge the new data into the existing structure
         const mergeAndUpdate = (target: any, source: any) => {
-            for (const key in source) {
-                if (source[key] instanceof Object && key in target) {
+            Object.keys(source).forEach(key => {
+                if (isObject(source[key]) && !Array.isArray(source[key]) && isObject(target[key])) {
                     mergeAndUpdate(target[key], source[key]);
-                } else {
+                } else if(target) {
                     target[key] = source[key];
                 }
-            }
+            });
         };
-
-        mergeAndUpdate(pageContent, newData);
         
-        // Update visibility
-        pageContent.sections.forEach((section: any, index: number) => {
-            const sectionPath = `sections.${index}`;
-            if (visibilityFlags[sectionPath]) {
-                section.visible = true;
-            } else {
-                // Check if any field within the section was submitted. If not, the switch was off.
-                const wasSubmitted = Object.keys(data).some(d => d.startsWith(`sections-${index}-`));
-                 if (section.visible !== undefined && wasSubmitted) {
-                    section.visible = false;
-                 }
-            }
-        });
+        // Merge meta fields
+        if (newData.meta) {
+           mergeAndUpdate(pageContent, newData.meta);
+        }
+
+        // Merge section fields
+        if (newData.sections) {
+            pageContent.sections.forEach((section: any, index: number) => {
+                const newSectionData = newData.sections[index];
+                if (newSectionData) {
+                    // Update visibility
+                    if (newSectionData.visible === 'on') {
+                        section.visible = true;
+                    } else {
+                        // Check if any field for this section was submitted.
+                        // The switch only sends a value when 'on', not when 'off'.
+                        const wasSubmitted = Object.keys(data).some(d => d.startsWith(`sections-${index}-`));
+                        if(wasSubmitted) {
+                            section.visible = false;
+                        }
+                    }
+
+                    if (section.fields && newSectionData.fields) {
+                        mergeAndUpdate(section.fields, newSectionData.fields);
+                    }
+                }
+            });
+        }
         
         const newStructure = { ...currentStructure, [pageKey]: pageContent };
         
@@ -75,7 +84,6 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
         revalidatePath(revalidationSlug, 'page');
         revalidatePath('/shriramadmin/pages/edit', 'page');
         revalidatePath('/', 'layout'); // Revalidate all pages
-
 
         return { success: true };
     } catch (error: any) {

@@ -8,9 +8,14 @@ import { getContent } from '@/lib/page-content';
 export default function AboutUsPage() {
     const aboutContent = getContent('about');
 
+    if (!aboutContent) {
+        return <div>Loading...</div>; // Or a proper loading state
+    }
+    
     return (
         <div className="bg-background">
             {/* Hero Section */}
+            {aboutContent.hero.visible && (
             <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
                 <Image
                   src={aboutContent.hero.backgroundImage}
@@ -25,8 +30,10 @@ export default function AboutUsPage() {
                     <p className="mt-2 text-lg md:text-xl text-primary-foreground/90">{aboutContent.hero.subtitle}</p>
                 </div>
             </section>
+            )}
 
             {/* Our Story Section */}
+            {aboutContent.story.visible && (
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -59,8 +66,10 @@ export default function AboutUsPage() {
                     </div>
                 </div>
             </section>
+            )}
             
             {/* Our Journey Section */}
+            {aboutContent.journey.visible && (
             <section className="py-16 md:py-24 bg-secondary">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -92,8 +101,10 @@ export default function AboutUsPage() {
                     </div>
                 </div>
             </section>
+            )}
 
              {/* Our Values Section */}
+             {aboutContent.values.visible && (
             <section className="py-16 md:py-24 bg-background">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
@@ -122,8 +133,10 @@ export default function AboutUsPage() {
                     </div>
                 </div>
             </section>
+            )}
 
             {/* Mission and Vision Section */}
+            {aboutContent.missionVision.visible && (
             <section className="py-16 md:py-24 bg-secondary">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
@@ -140,8 +153,10 @@ export default function AboutUsPage() {
                     </div>
                 </div>
             </section>
+            )}
 
             {/* Meet the Team Section */}
+            {aboutContent.team.visible && (
             <section className="py-16 md:py-24 bg-background">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-12">
@@ -164,6 +179,7 @@ export default function AboutUsPage() {
                     </div>
                 </div>
             </section>
+            )}
         </div>
     );
 }

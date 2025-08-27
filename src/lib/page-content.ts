@@ -1,5 +1,3 @@
-
-
 // This is a server-only module. It will not be included in the client-side bundle.
 import 'server-only';
 import fs from 'fs';
@@ -689,6 +687,8 @@ export function getContent(page: string) {
     }
     
     const content = structure.sections.reduce((acc: any, section: any) => {
+        if (!section.fields) return acc;
+        
         const fields = Object.entries(section.fields).reduce((fieldAcc: any, [key, value]: [string, any]) => {
             fieldAcc[key] = value.items || value.value;
             return fieldAcc;
