@@ -2,97 +2,42 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { createClient } from '@/lib/supabase/server';
+import { notFound } from 'next/navigation';
 
-const stories = [
-  {
-    slug: 'pune-home-transformation',
-    title: 'A Complete Home Transformation in Pune',
-    category: 'Full Home Interior',
-    image: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxraXRjaGVuJTIwfGVufDB8fHx8MTc1NjAxNTAxNXww&ixlib=rb-4.1.0&q=80&w=1080',
-    dataAiHint: 'home interior',
-    author: 'Anjali P.',
-    authorAvatar: '/avatar-1.png',
-    date: 'June 15, 2024',
-    excerpt: 'See how we took a standard 3BHK and turned it into a personalized haven for the Sharma family, focusing on multi-functional spaces and a modern aesthetic that reflects their lifestyle...',
-  },
-  {
-    slug: 'dream-kitchen-realized',
-    title: 'The Dream Kitchen Realized: A Culinary Masterpiece',
-    category: 'Modular Kitchen',
-    image: 'https://images.unsplash.com/photo-1622372738946-62e02505feb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxraXRjaGVufGVufDB8fHx8MTc1NjAxNTA4MHww&ixlib=rb-4.1.0&q=80&w=1080',
-    dataAiHint: 'modern kitchen',
-    author: 'Rohan & Priya S.',
-    authorAvatar: '/avatar-2.png',
-    date: 'May 28, 2024',
-    excerpt: 'The Singh couple wanted a kitchen that was both a high-functioning workspace and a beautiful gathering spot. We delivered a state-of-the-art modular kitchen with smart storage...',
-  },
-  {
-    slug: 'wardrobe-wonder-in-baner',
-    title: 'Wardrobe Wonder: Maximizing Space in a Baner Apartment',
-    category: 'Wardrobe',
-    image: 'https://images.unsplash.com/photo-1573311392049-4186e3a47e9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxOXx8d2FyZHJvYmV8ZW58MHx8fHwxNzU2MDE1MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080',
-    dataAiHint: 'modern wardrobe',
-    author: 'Meera K.',
-    authorAvatar: '/avatar-3.png',
-    date: 'May 10, 2024',
-    excerpt: 'For Meera, a walk-in wardrobe felt like an impossible dream in her compact apartment. Our design team created a clever, space-saving solution that exceeded all her expectations...',
-  },
-   {
-    slug: 'living-room-luxury',
-    title: 'Crafting a Luxurious Living Area for Entertaining',
-    category: 'Living Area',
-    image: 'https://images.unsplash.com/photo-1564078516393-cf04bd966897?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxsaXZpbmclMjBhcmVhJTIwaW50ZXJpb3J8ZW58MHx8fHwxNzU2MDE1MjExfDA&ixlib=rb-4.1.0&q=80&w=1080',
-    dataAiHint: 'living room',
-    author: 'Sameer Joshi',
-    authorAvatar: '/avatar-4.png',
-    date: 'April 22, 2024',
-    excerpt: 'The Joshis love to host. We designed a living room that is perfect for entertaining, with custom seating, ambient lighting, and a stunning entertainment unit as the centerpiece...',
-  },
-];
-
-const workGallery = [
-  { title: 'Modern Living Room', image: '/b2.jpg', hint: 'modern living room' },
-  { title: 'Elegant Kitchen Design', image: '/b1.jpg', hint: 'elegant kitchen' },
-  { title: 'Cozy Bedroom Interior', image: '/kitchen.jpg', hint: 'cozy bedroom' },
-  { title: 'Luxury Wardrobe', image: '/SlidingWardrobe.jpg', hint: 'luxury wardrobe' },
-  { title: 'Contemporary Space', image: '/kitchengallery.jpg', hint: 'contemporary space' },
-];
-
-const partners = [
-    { name: 'Ebco', logoSrc: '/ebco.jpg' },
-    { name: 'Hettich', logoSrc: '/hettich.png' },
-    { name: 'Royale Touche', logoSrc: '/Royal-Touch.jpg' },
-    { name: 'Hafele', logoSrc: '/hafele.png' },
-    { name: 'Godrej', logoSrc: '/godrej.png' },
-];
-
-const faqItems = [
-    {
-        question: "What services do you offer?",
-        answer: "We offer a comprehensive range of interior design services, including modular kitchens, custom wardrobes, full home interiors, living area design, bedroom design, and more. We handle everything from design conception to final installation."
-    },
-    {
-        question: "What is your design process?",
-        answer: "Our process begins with a free consultation to understand your needs. We then move to 3D design and visualization, material selection, manufacturing, and finally, professional installation and handover. We keep you involved at every step."
-    },
-    {
-        question: "How much does interior design cost?",
-        answer: "The cost varies greatly depending on the scope of the project, materials chosen, and the size of the space. We provide transparent pricing and detailed quotes after the initial consultation. We offer solutions for various budget ranges."
-    },
-    {
-        question: "How long does a project typically take?",
-        answer: "A typical project timeline can range from a few weeks for a single room to a few months for a full home interior. After understanding your requirements, we provide a detailed project timeline."
+async function getContent() {
+    const supabase = createClient();
+    const { data: page } = await supabase
+        .from('pages')
+        .select('*, sections(*)')
+        .eq('slug', 'customer-stories')
+        .single();
+    
+    if (!page) {
+        return null;
     }
-];
+    
+    const content: { [key: string]: any } = {};
+    for (const section of page.sections) {
+        const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
+        content[sectionKey] = {
+            ...section.content,
+            visible: section.visible,
+            title: section.title,
+        };
+    }
+    
+    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+}
 
-const FeaturedStory = ({ story }: { story: typeof stories[0] }) => (
+const FeaturedStory = ({ story, buttonText }: { story: any, buttonText: string }) => (
     <section className="bg-secondary mb-16 md:mb-24">
         <div className="container mx-auto px-4 py-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -124,7 +69,7 @@ const FeaturedStory = ({ story }: { story: typeof stories[0] }) => (
                     </div>
                      <Button asChild size="lg">
                         <Link href={`/customer-stories/${story.slug}`}>
-                            Read Full Story <ArrowRight className="ml-2 h-5 w-5" />
+                            {buttonText} <ArrowRight className="ml-2 h-5 w-5" />
                         </Link>
                     </Button>
                 </div>
@@ -134,26 +79,36 @@ const FeaturedStory = ({ story }: { story: typeof stories[0] }) => (
 );
 
 
-export default function CustomerStoriesPage() {
-  const [featuredStory, ...otherStories] = stories;
+export default async function CustomerStoriesPage() {
+  const pageContent = await getContent();
+
+  if (!pageContent) {
+    notFound();
+  }
+
+  const { header, featuredStory, moreStories, workGallery, partners, faq } = pageContent;
+  const [featured, ...otherStories] = moreStories.stories;
 
   return (
     <div className="bg-background">
+        {header.visible && (
         <div className="py-16 md:py-24 text-center">
              <div className="container mx-auto px-4">
-                 <h1 className="text-4xl md:text-5xl font-bold">Customer Stories</h1>
+                 <h1 className="text-4xl md:text-5xl font-bold">{header.title}</h1>
                  <p className="text-lg text-muted-foreground mt-2 max-w-3xl mx-auto">
-                    Read about the journeys we've shared with our clients to create their dream homes.
+                    {header.subtitle}
                  </p>
              </div>
         </div>
+        )}
 
-        {featuredStory && <FeaturedStory story={featuredStory} />}
+        {featuredStory.visible && <FeaturedStory story={featured} buttonText={featuredStory.buttonText} />}
 
+        {moreStories.visible && (
         <div className="container mx-auto px-4 pb-16 md:pb-24">
-             <h2 className="text-3xl font-bold text-center mb-12">More Stories</h2>
+             <h2 className="text-3xl font-bold text-center mb-12">{moreStories.title}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {otherStories.map((story) => (
+                {otherStories.map((story: any) => (
                     <Link href={`/customer-stories/${story.slug}`} key={story.slug} className="group block">
                     <Card className="h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-xl bg-card">
                         <div className="relative h-60">
@@ -191,17 +146,19 @@ export default function CustomerStoriesPage() {
                 ))}
             </div>
         </div>
+        )}
 
       {/* Work Gallery Section */}
+      {workGallery.visible && (
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Our Work Gallery</h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">A glimpse into the spaces we've transformed.</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.title}</h2>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.subtitle}</p>
           </div>
           <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
             <CarouselContent className="-ml-2 sm:-ml-4">
-              {workGallery.map((item, index) => (
+              {workGallery.items.map((item: any, index: number) => (
                 <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/3">
                   <Card className="overflow-hidden group">
                     <div className="relative aspect-video">
@@ -220,20 +177,22 @@ export default function CustomerStoriesPage() {
           </Carousel>
         </div>
       </section>
+      )}
 
       {/* Partners Section */}
+      {partners.visible && (
       <section className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                   <div className="flex justify-center items-center mb-2">
                       <div className="border-t border-primary w-12"></div>
-                      <p className="text-sm text-primary font-bold tracking-widest mx-4">MEET OUR PARTNERS</p>
+                      <p className="text-sm text-primary font-bold tracking-widest mx-4">{partners.subtitle}</p>
                       <div className="border-t border-primary w-12"></div>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-bold">Our Partners</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold">{partners.title}</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
-                  {partners.map((partner) => (
+                  {partners.items.map((partner: any) => (
                       <div key={partner.name} className="flex justify-center">
                           <Image
                               src={partner.logoSrc}
@@ -248,17 +207,19 @@ export default function CustomerStoriesPage() {
               </div>
           </div>
       </section>
+      )}
 
       {/* FAQ Section */}
+      {faq.visible && (
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
-            <p className="text-lg text-muted-foreground mt-2">Have questions? We have answers.</p>
+            <h2 className="text-3xl md:text-4xl font-bold">{faq.title}</h2>
+            <p className="text-lg text-muted-foreground mt-2">{faq.subtitle}</p>
           </div>
           <div className="max-w-3xl mx-auto">
             <Accordion type="single" collapsible className="w-full">
-              {faqItems.map((item, index) => (
+              {faq.items.map((item: any, index: number) => (
                 <AccordionItem key={index} value={`item-${index + 1}`}>
                   <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
                   <AccordionContent className="text-muted-foreground">
@@ -270,6 +231,7 @@ export default function CustomerStoriesPage() {
           </div>
         </div>
       </section>
+      )}
     </div>
   );
 }
