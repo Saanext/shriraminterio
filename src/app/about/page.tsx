@@ -48,7 +48,7 @@ export default async function AboutUsPage() {
                   src={aboutContent.hero.backgroundImage}
                   alt="A modern, well-lit office interior"
                   data-ai-hint="modern office interior"
-                  layout="fill"
+                  fill
                   objectFit="cover"
                   className="absolute inset-0 z-0 brightness-50"
                 />
@@ -194,7 +194,7 @@ export default async function AboutUsPage() {
                         {aboutContent.team.members.map((member: any) => (
                             <Card key={member.name} className="overflow-hidden group h-full flex flex-col">
                                 <div className="relative aspect-[4/5]">
-                                    <Image src={member.image} alt={member.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" className="transition-transform duration-500 group-hover:scale-105" />
+                                    <Image src={member.image} alt={member.name} fill objectFit="cover" data-ai-hint="person portrait" className="transition-transform duration-500 group-hover:scale-105" />
                                 </div>
                                 <CardContent className="p-6 bg-secondary flex-grow flex flex-col text-center">
                                     <CardTitle>{member.name}</CardTitle>

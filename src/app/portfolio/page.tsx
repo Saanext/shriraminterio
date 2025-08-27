@@ -69,7 +69,7 @@ export default async function PortfolioPage() {
                         <Image
                         src={project.imageSrc}
                         alt={project.title}
-                        layout="fill"
+                        fill
                         objectFit="cover"
                         className="transition-transform duration-500 group-hover:scale-105"
                         data-ai-hint={project.dataAiHint}

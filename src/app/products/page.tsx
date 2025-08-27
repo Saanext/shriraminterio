@@ -71,7 +71,7 @@ export default function ProductsPage() {
                   <Image
                     src={product.imageSrc}
                     alt={product.name}
-                    layout="fill"
+                    fill
                     objectFit="cover"
                     className="transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint={product.dataAiHint}

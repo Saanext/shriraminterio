@@ -15,6 +15,10 @@ async function getStory(slug: string) {
         .eq('slug', slug)
         .single();
     
+    if (!story) {
+        notFound();
+    }
+    
     return story;
 }
 
@@ -33,7 +37,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
         <Image
           src={story.image}
           alt={story.title}
-          layout="fill"
+          fill
           objectFit="cover"
           className="absolute inset-0 z-0 brightness-50"
           data-ai-hint={story.dataAiHint}
@@ -66,7 +70,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
               <Image 
                 src={story.clientImage} 
                 alt={story.author} 
-                layout="fill"
+                fill
                 objectFit="cover"
                 data-ai-hint="smiling person"
               />
@@ -117,7 +121,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
                   <Image
                     src={photo.src}
                     alt={photo.alt}
-                    layout="fill"
+                    fill
                     objectFit="cover"
                     className="transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint={photo.dataAiHint}

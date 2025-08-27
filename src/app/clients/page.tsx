@@ -59,7 +59,7 @@ export default async function ClientsPage() {
               <Image 
                 src={featuredTestimonial.image} 
                 alt={featuredTestimonial.name} 
-                layout="fill"
+                fill
                 objectFit="cover"
                 data-ai-hint="smiling man"
               />
@@ -112,7 +112,7 @@ export default async function ClientsPage() {
                         <Image
                           src={video.imageSrc}
                           alt={video.name}
-                          layout="fill"
+                          fill
                           objectFit="cover"
                           className="transition-transform duration-500 group-hover:scale-105"
                           data-ai-hint={video.dataAiHint}

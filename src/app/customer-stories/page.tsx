@@ -21,9 +21,11 @@ async function getContent() {
         .single();
     
     if (!page) {
-        return null;
+        notFound();
     }
     
+    const { data: stories } = await supabase.from('stories').select('*');
+
     const content: { [key: string]: any } = {};
     for (const section of page.sections) {
         const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
@@ -33,6 +35,7 @@ async function getContent() {
             title: section.title,
         };
     }
+    content.moreStories.stories = stories;
     
     return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
 }
@@ -45,7 +48,7 @@ const FeaturedStory = ({ story, buttonText }: { story: any, buttonText: string }
                     <Image 
                         src={story.image}
                         alt={story.title}
-                        layout="fill"
+                        fill
                         objectFit="cover"
                         data-ai-hint={story.dataAiHint}
                     />
@@ -119,7 +122,7 @@ export default async function CustomerStoriesPage() {
                         <Image
                             src={story.image}
                             alt={story.title}
-                            layout="fill"
+                            fill
                             objectFit="cover"
                             className="transition-transform duration-500 group-hover:scale-105"
                             data-ai-hint={story.dataAiHint}
@@ -166,7 +169,7 @@ export default async function CustomerStoriesPage() {
                 <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/3">
                   <Card className="overflow-hidden group">
                     <div className="relative aspect-video">
-                      <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
+                      <Image src={item.image} alt={item.title} fill objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                        <CardContent className="p-4 absolute bottom-0 left-0">
                         <h3 className="text-lg font-bold text-white text-shadow-md">{item.title}</h3>
