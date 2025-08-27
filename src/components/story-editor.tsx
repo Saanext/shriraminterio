@@ -288,5 +288,3 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     </Form>
   );
 }
-
-    
