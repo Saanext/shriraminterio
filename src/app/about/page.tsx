@@ -128,13 +128,13 @@ export default function AboutUsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                         <div className="p-6">
                             <Eye className="h-12 w-12 text-primary mx-auto mb-4" />
-                            <h3 className="text-2xl font-bold mb-2">{aboutContent.missionVision.visionTitle}</h3>
-                            <p className="text-muted-foreground">{aboutContent.missionVision.visionText}</p>
+                            <h3 className="text-2xl font-bold mb-2">{aboutContent.mission_vision.visionTitle}</h3>
+                            <p className="text-muted-foreground">{aboutContent.mission_vision.visionText}</p>
                         </div>
                         <div className="p-6">
                             <Target className="h-12 w-12 text-primary mx-auto mb-4" />
-                            <h3 className="text-2xl font-bold mb-2">{aboutContent.missionVision.missionTitle}</h3>
-                            <p className="text-muted-foreground">{aboutContent.missionVision.missionText}</p>
+                            <h3 className="text-2xl font-bold mb-2">{aboutContent.mission_vision.missionTitle}</h3>
+                            <p className="text-muted-foreground">{aboutContent.mission_vision.missionText}</p>
                         </div>
                     </div>
                 </div>
