@@ -65,7 +65,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         if (!file) return;
 
         setIsUploading(true);
-        const { toast: uploadToast } = toast({
+        const { id, update } = toast({
             title: 'Uploading image...',
             description: 'Please wait while the image is being uploaded.',
         });
@@ -75,7 +75,8 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
 
         setIsUploading(false);
         if (error) {
-            uploadToast({
+            update({
+                id,
                 title: 'Upload failed',
                 description: error.message,
                 variant: 'destructive',
@@ -85,7 +86,8 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
 
         const { data: { publicUrl } } = supabase.storage.from('public').getPublicUrl(fileName);
         handleFieldChange(sectionIndex, fieldKey, publicUrl);
-        uploadToast({
+        update({
+            id,
             title: 'Upload successful!',
             description: 'The image has been uploaded and the URL updated.',
         });
