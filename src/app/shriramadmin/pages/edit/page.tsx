@@ -10,12 +10,13 @@ import { Label } from "@/components/ui/label";
 import { NAV_ITEMS } from '@/lib/constants';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
-import { Upload, Eye, EyeOff } from 'lucide-react';
+import { Upload, Eye, EyeOff, ShieldAlert } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
 import { Skeleton } from '@/components/ui/skeleton';
 import { createClient } from '@/lib/supabase/client';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 function EditPageImpl() {
     const { toast } = useToast();
@@ -24,10 +25,12 @@ function EditPageImpl() {
     
     const [pageData, setPageData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [sections, setSections] = useState<any[]>([]);
 
     const fetchPageData = async () => {
         setLoading(true);
+        setError(null);
         const supabase = createClient();
         const { data, error } = await supabase
             .from('pages')
@@ -37,11 +40,11 @@ function EditPageImpl() {
 
         if (error || !data) {
             console.error('Error fetching page data:', error);
-            toast({
-                title: "Error",
-                description: "Could not load page data. Please try again.",
-                variant: 'destructive'
-            });
+            if (error?.message.includes('security policies')) {
+                 setError("Your database has Row Level Security (RLS) enabled. Please create a policy to allow read access to the 'pages' and 'sections' tables for non-authenticated users.");
+            } else {
+                 setError("Could not load page data. Please ensure the page exists and the database is reachable.");
+            }
             setPageData(null);
             setSections([]);
         } else {
@@ -174,6 +177,21 @@ function EditPageImpl() {
         )
     }
 
+    if (error) {
+        return (
+             <Alert variant="destructive">
+                <ShieldAlert className="h-4 w-4" />
+                <AlertTitle>Database Error</AlertTitle>
+                <AlertDescription>
+                   {error}
+                   <div className="mt-4">
+                     <Button onClick={fetchPageData}>Retry</Button>
+                   </div>
+                </AlertDescription>
+            </Alert>
+        )
+    }
+
     if (!pageData) {
         return (
             <div>
@@ -266,3 +284,5 @@ export default function EditPage() {
         </Suspense>
     )
 }
+
+    
