@@ -8,11 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
-import { Eye, EyeOff, ShieldAlert } from 'lucide-react';
+import { Eye, EyeOff, ShieldAlert, Upload } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { createClient } from '@/lib/supabase/client';
 
 type PageEditorProps = {
     initialPageData: any;
@@ -21,12 +22,15 @@ type PageEditorProps = {
 
 export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
     const { toast } = useToast();
+    const supabase = createClient();
     
     const [pageData, setPageData] = useState<any>(initialPageData);
     const [error, setError] = useState<string | null>(null);
     const [sections, setSections] = useState<any[]>(initialPageData?.sections || []);
     const [metaTitle, setMetaTitle] = useState(initialPageData?.meta_title || '');
     const [metaDescription, setMetaDescription] = useState(initialPageData?.meta_description || '');
+    const [isUploading, setIsUploading] = useState(false);
+
 
     useEffect(() => {
         if (!initialPageData) {
@@ -57,6 +61,36 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         setSections(newSections);
     };
 
+    const handleImageUpload = async (file: File, sectionIndex: number, fieldKey: string) => {
+        if (!file) return;
+
+        setIsUploading(true);
+        const { toast: uploadToast } = toast({
+            title: 'Uploading image...',
+            description: 'Please wait while the image is being uploaded.',
+        });
+
+        const fileName = `${Date.now()}-${file.name}`;
+        const { data, error } = await supabase.storage.from('public').upload(fileName, file);
+
+        setIsUploading(false);
+        if (error) {
+            uploadToast({
+                title: 'Upload failed',
+                description: error.message,
+                variant: 'destructive',
+            });
+            return;
+        }
+
+        const { data: { publicUrl } } = supabase.storage.from('public').getPublicUrl(fileName);
+        handleFieldChange(sectionIndex, fieldKey, publicUrl);
+        uploadToast({
+            title: 'Upload successful!',
+            description: 'The image has been uploaded and the URL updated.',
+        });
+    };
+
     const handleSaveChanges = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         
@@ -79,6 +113,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
     const renderField = (sectionIndex: number, fieldKey: string, field: any) => {
         const id = `section-${sectionIndex}-field-${fieldKey}`;
         const value = sections[sectionIndex].content[fieldKey] || '';
+        const uploadId = `section-${sectionIndex}-upload-${fieldKey}`;
 
         switch(field.type) {
             case 'text':
@@ -87,9 +122,30 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                 return <Textarea id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
             case 'image':
                 return (
-                    <div className="flex items-center gap-4">
-                        {value && <img src={value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />}
-                        <Input id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} />
+                    <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-4">
+                            {value && <img src={value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />}
+                            <Input id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
+                        </div>
+                        <div>
+                            <Button asChild variant="outline" size="sm">
+                                <Label htmlFor={uploadId} className="cursor-pointer">
+                                    <Upload className="mr-2 h-4 w-4" />
+                                    Upload Image
+                                </Label>
+                            </Button>
+                            <Input 
+                                id={uploadId} 
+                                type="file" 
+                                className="sr-only" 
+                                accept="image/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if(file) handleImageUpload(file, sectionIndex, fieldKey);
+                                }} 
+                                disabled={isUploading}
+                            />
+                        </div>
                     </div>
                 );
             case 'repeater':
@@ -165,11 +221,11 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <Label htmlFor="page-title">Page Title</Label>
-                                <Input id="page-title" defaultValue={pageData.title} disabled />
+                                <Input id="page-title" value={pageData.title} disabled />
                             </div>
                              <div className="space-y-2">
                                 <Label htmlFor="page-slug">Slug</Label>
-                                <Input id="page-slug" defaultValue={pageData.slug} disabled />
+                                <Input id="page-slug" value={pageData.slug} disabled />
                             </div>
                         </div>
                         <div className="space-y-2">
