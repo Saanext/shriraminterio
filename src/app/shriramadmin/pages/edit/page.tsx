@@ -15,10 +15,7 @@ import { Upload, Eye, EyeOff } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
-import { getPageStructure } from '@/lib/page-content';
-
-// This forces the page to be rendered dynamically
-export const dynamic = 'force-dynamic';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function EditPageImpl() {
     const { toast } = useToast();
@@ -26,27 +23,35 @@ function EditPageImpl() {
     const pageSlug = searchParams.get('page') || '';
     
     const [pageStructure, setPageStructure] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      // Since getPageStructure is now a client-side utility
-      // that fetches data, we call it in an effect.
-      // This is a temporary solution until we move this to a proper API route.
       const fetchStructure = async () => {
-         // This is a hacky way to re-fetch the data, in a real app this would be an API call.
-        const structure = await fetch('/api/get-page-structure').then(res => res.json());
-        setPageStructure(structure.data);
+        try {
+            setLoading(true);
+            const response = await fetch('/api/get-page-structure');
+            if (!response.ok) {
+                throw new Error('Failed to fetch page structure');
+            }
+            const structure = await response.json();
+            setPageStructure(structure);
+        } catch (error) {
+            console.error(error);
+            toast({
+                title: "Error",
+                description: "Could not load page structure. Please try again.",
+                variant: 'destructive'
+            });
+        } finally {
+            setLoading(false);
+        }
       }
-      // fetchStructure();
-      // For now, let's just get it directly.
-       const structure = getPageStructure();
-       setPageStructure(structure);
-
-    }, [pageSlug]);
+      fetchStructure();
+    }, [pageSlug, toast]);
 
 
     const allNavItems = [...NAV_ITEMS, ...NAV_ITEMS.flatMap(item => item.subItems || [])];
     
-    // Handle nested product pages
     let pageKey = `/${pageSlug}`;
     if (pageSlug.startsWith('products/')) {
         pageKey = `/${pageSlug}`;
@@ -84,6 +89,42 @@ function EditPageImpl() {
             });
         }
     };
+
+    if (loading) {
+        return (
+             <div>
+                <div className="flex justify-between items-center mb-8">
+                     <Skeleton className="h-9 w-64" />
+                    <div className="flex gap-4">
+                        <Skeleton className="h-10 w-24" />
+                        <Skeleton className="h-10 w-32" />
+                    </div>
+                </div>
+                <div className="space-y-8">
+                    <Card>
+                        <CardHeader>
+                            <Skeleton className="h-6 w-48" />
+                            <Skeleton className="h-4 w-80 mt-2" />
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-20 w-full" />
+                        </CardContent>
+                    </Card>
+                     <Card>
+                        <CardHeader>
+                            <Skeleton className="h-6 w-48" />
+                            <Skeleton className="h-4 w-80 mt-2" />
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <Skeleton className="h-10 w-full" />
+                            <Skeleton className="h-20 w-full" />
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        )
+    }
 
 
     if (!structure && !pageData) {

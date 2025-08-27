@@ -7,7 +7,7 @@ import path from 'path';
 
 // This is a hack to get the file path to the data file.
 // We can't use `process.cwd()` because it doesn't work in the edge runtime.
-const dataFilePath = path.join(path.dirname(new URL(import.meta.url).pathname), 'page-structure.json');
+const dataFilePath = path.join(process.cwd(), 'src', 'lib', 'page-structure.json');
 
 
 const pageStructureData = {
@@ -286,7 +286,7 @@ const pageStructureData = {
                 title: 'Hero Section',
                 visible: true,
                 fields: {
-                    backgroundImage: { label: 'Background Image', value: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib-rb-4.1.0&q=80&w=1080', type: 'image' },
+                    backgroundImage: { label: 'Background Image', value: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbnRlcmlvcnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080', type: 'image' },
                     title: { label: 'Title', value: 'How It Works', type: 'text' },
                     subtitle: { label: 'Subtitle', value: 'Your seamless journey from concept to reality.', type: 'text' },
                 }
@@ -649,21 +649,34 @@ const pageStructureData = {
     },
 };
 
-// Since we are reading the file, we need to make sure it's created if it doesn't exist
-if (!fs.existsSync(dataFilePath)) {
-    fs.writeFileSync(dataFilePath, JSON.stringify(pageStructureData, null, 2));
+let pageStructureCache: any = null;
+
+function loadPageStructure() {
+    if (!fs.existsSync(dataFilePath)) {
+        fs.writeFileSync(dataFilePath, JSON.stringify(pageStructureData, null, 2));
+        pageStructureCache = pageStructureData;
+    } else {
+        try {
+            const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
+            pageStructureCache = JSON.parse(fileContent);
+        } catch (e) {
+            console.error("Error reading or parsing page structure data:", e);
+            // Fallback to initial data if file is corrupted or unreadable
+            pageStructureCache = pageStructureData;
+        }
+    }
 }
+
+// Load the structure on server start
+loadPageStructure();
 
 // Public interface to get page structure
 export function getPageStructure() {
-    try {
-        const fileContent = fs.readFileSync(dataFilePath, 'utf-8');
-        return JSON.parse(fileContent);
-    } catch (e) {
-        console.error("Error reading page structure data:", e);
-        // Fallback to initial data if file is corrupted or unreadable
-        return pageStructureData;
+    // In a development environment, always reload for fresh data.
+    if (process.env.NODE_ENV === 'development') {
+        loadPageStructure();
     }
+    return pageStructureCache;
 }
 
 // Public interface to get transformed content for a specific page
@@ -673,12 +686,17 @@ export function getContent(page: keyof typeof pageStructureData) {
         return null;
     }
     
-    return structure.sections.reduce((acc: any, section: any) => {
+    const content = structure.sections.reduce((acc: any, section: any) => {
         const fields = Object.entries(section.fields).reduce((fieldAcc: any, [key, value]: [string, any]) => {
             fieldAcc[key] = value.items || value.value;
             return fieldAcc;
         }, {} as any);
-        acc[section.type] = { ...fields, title: section.title, visible: section.visible };
+        
+        const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
+
+        acc[sectionKey] = { ...fields, title: section.title, visible: section.visible };
         return acc;
     }, {} as any);
+
+    return { ...content, meta: { title: structure.metaTitle, description: structure.metaDescription } };
 }
