@@ -48,7 +48,7 @@ export default async function PagesManagementPage() {
                             {pages.map((page) => (
                                 <TableRow key={page.slug}>
                                     <TableCell className="font-medium">{page.title}</TableCell>
-                                    <TableCell>/{page.slug}</TableCell>
+                                    <TableCell>/{page.slug === 'home' ? '' : page.slug}</TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
