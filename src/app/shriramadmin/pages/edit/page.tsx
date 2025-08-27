@@ -2,7 +2,7 @@
 
 'use client';
 
-import { Suspense, useState, useRef } from 'react';
+import { Suspense, useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,9 @@ import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
 import { Upload, Eye, EyeOff } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
-import { pageStructure } from '@/lib/page-content';
 import { useToast } from '@/hooks/use-toast';
+import { savePageContent } from './actions';
+import { getPageStructure } from '@/lib/page-content';
 
 // This forces the page to be rendered dynamically
 export const dynamic = 'force-dynamic';
@@ -23,6 +24,26 @@ function EditPageImpl() {
     const { toast } = useToast();
     const searchParams = useSearchParams();
     const pageSlug = searchParams.get('page') || '';
+    
+    const [pageStructure, setPageStructure] = useState<any>(null);
+
+    useEffect(() => {
+      // Since getPageStructure is now a client-side utility
+      // that fetches data, we call it in an effect.
+      // This is a temporary solution until we move this to a proper API route.
+      const fetchStructure = async () => {
+         // This is a hacky way to re-fetch the data, in a real app this would be an API call.
+        const structure = await fetch('/api/get-page-structure').then(res => res.json());
+        setPageStructure(structure.data);
+      }
+      // fetchStructure();
+      // For now, let's just get it directly.
+       const structure = getPageStructure();
+       setPageStructure(structure);
+
+    }, [pageSlug]);
+
+
     const allNavItems = [...NAV_ITEMS, ...NAV_ITEMS.flatMap(item => item.subItems || [])];
     
     // Handle nested product pages
@@ -33,7 +54,7 @@ function EditPageImpl() {
         pageKey = `/${pageSlug}`;
     }
 
-    const structure = (pageStructure as any)[pageKey.substring(1).replace(/-/g, '_') || 'home'];
+    const structure = pageStructure ? (pageStructure as any)[pageKey.substring(1).replace(/-/g, '_') || 'home'] : null;
     const pageData = allNavItems.find(p => p.href === pageKey);
 
     const title = structure?.title || pageData?.label || "Page"
@@ -43,21 +64,25 @@ function EditPageImpl() {
     const handleSaveChanges = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         
-        // In a real application, you would gather form data and send it to a server action.
-        // For this prototype, we'll simulate the save and show a success message.
-        
-        // const formData = new FormData(formRef.current!);
-        // const data = Object.fromEntries(formData.entries());
-        // console.log("Saving data:", data);
+        if (!formRef.current) return;
 
-        // Here would be your server action call, e.g.:
-        // const result = await savePageContent(pageSlug, data);
-        // if (result.success) { ... }
+        const formData = new FormData(formRef.current);
+        const data = Object.fromEntries(formData.entries());
+
+        const result = await savePageContent(pageSlug, data);
         
-        toast({
-            title: "Changes Saved!",
-            description: "Your page content has been successfully updated.",
-        });
+        if (result.success) {
+            toast({
+                title: "Changes Saved!",
+                description: "Your page content has been successfully updated.",
+            });
+        } else {
+             toast({
+                title: "Error",
+                description: result.error || "There was an error saving the content.",
+                variant: 'destructive'
+            });
+        }
     };
 
 
@@ -73,8 +98,8 @@ function EditPageImpl() {
         )
     }
     
-    const renderField = (section: any, field: any, key: string) => {
-        const id = `${section.type}-${key}`;
+    const renderField = (section: any, field: any, key: string, parents: string[] = []) => {
+        const id = [...parents, section.type, key].join('-');
         switch(field.type) {
             case 'text':
                 return <Input name={id} id={id} defaultValue={field.value} />;
@@ -84,7 +109,8 @@ function EditPageImpl() {
                 return (
                     <div className="flex items-center gap-4">
                         <img src={field.value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />
-                        <Input type="hidden" name={id} defaultValue={field.value} />
+                        <Input type="hidden" name={`${id}-value`} defaultValue={field.value} />
+                         <Input type="file" name={`${id}-file`} className="max-w-xs"/>
                         <Button variant="outline" type="button">
                             <Upload className="mr-2 h-4 w-4"/>
                             Change Image
@@ -95,7 +121,7 @@ function EditPageImpl() {
                 return (
                      <div className="space-y-4 p-4 border rounded-md">
                         {field.items.map((item: any, itemIndex: number) => (
-                           <Card key={itemIndex} className="p-4">
+                           <Card key={itemIndex} className="p-4 bg-muted/50">
                              <CardContent className="space-y-4 p-0">
                                 {Object.keys(item).map(itemKey => (
                                      <div key={itemKey} className="space-y-2">
@@ -135,20 +161,20 @@ function EditPageImpl() {
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <Label htmlFor="page-title">Page Title</Label>
-                                    <Input id="page-title" name="page-title" defaultValue={pageData?.label || title} />
+                                    <Input id="page-title" name="meta-title" defaultValue={pageData?.label || title} />
                                 </div>
                                  <div className="space-y-2">
                                     <Label htmlFor="page-slug">Slug</Label>
-                                    <Input id="page-slug" name="page-slug" defaultValue={pageData?.href || `/${pageSlug}`} />
+                                    <Input id="page-slug" name="meta-slug" defaultValue={pageData?.href || `/${pageSlug}`} />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="meta-title">Meta Title</Label>
-                                <Input id="meta-title" name="meta-title" defaultValue={structure?.metaTitle} />
+                                <Input id="meta-title" name="meta-metaTitle" defaultValue={structure?.metaTitle} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="meta-description">Meta Description</Label>
-                                <Textarea id="meta-description" name="meta-description" defaultValue={structure?.metaDescription} rows={3} />
+                                <Textarea id="meta-description" name="meta-metaDescription" defaultValue={structure?.metaDescription} rows={3} />
                             </div>
                         </CardContent>
                     </Card>
@@ -161,18 +187,18 @@ function EditPageImpl() {
                                     {section.fields && <CardDescription>Edit the content for this section.</CardDescription>}
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <Label htmlFor={`section-visible-${index}`} className="text-sm text-muted-foreground">
+                                    <Label htmlFor={`sections-${index}-visible`} className="text-sm text-muted-foreground">
                                         {section.visible ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
                                     </Label>
-                                    <Switch name={`section-visible-${index}`} id={`section-visible-${index}`} defaultChecked={section.visible} />
+                                    <Switch name={`sections-${index}-visible`} id={`sections-${index}-visible`} defaultChecked={section.visible} />
                                 </div>
                             </CardHeader>
                              {section.fields && (
                                 <CardContent className="space-y-6">
                                     {Object.entries(section.fields).map(([key, field]: [string, any]) => (
                                         <div key={key} className="space-y-2">
-                                            <Label htmlFor={`${section.type}-${key}`}>{field.label}</Label>
-                                            {renderField(section, field, key)}
+                                            <Label htmlFor={`sections-${index}-fields-${key}`}>{field.label}</Label>
+                                            {renderField(section, field, key, [`sections`, `${index}`, 'fields'])}
                                         </div>
                                     ))}
                                 </CardContent>

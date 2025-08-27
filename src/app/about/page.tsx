@@ -1,12 +1,13 @@
 
+
 import Image from 'next/image';
 import { Users, Target, Eye, Layers, IndianRupee, CalendarCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { pageContent } from '@/lib/page-content';
-
-const aboutContent = pageContent.about;
+import { getContent } from '@/lib/page-content';
 
 export default function AboutUsPage() {
+    const aboutContent = getContent('about');
+
     return (
         <div className="bg-background">
             {/* Hero Section */}
@@ -100,7 +101,7 @@ export default function AboutUsPage() {
                         <p className="text-lg text-muted-foreground mt-2">{aboutContent.values.subtitle}</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        {aboutContent.values.items.map((item, index) => (
+                        {aboutContent.values.items.map((item: any, index: number) => (
                             <Card key={index} className="p-6 text-center">
                                 {
                                     {
@@ -148,9 +149,9 @@ export default function AboutUsPage() {
                         <p className="text-lg text-muted-foreground mt-2">{aboutContent.team.subtitle}</p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {aboutContent.team.members.map((member) => (
+                        {aboutContent.team.members.map((member: any) => (
                             <Card key={member.name} className="overflow-hidden group h-full flex flex-col">
-                                <div className="relative aspect-square">
+                                <div className="relative aspect-[4/5]">
                                     <Image src={member.image} alt={member.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" className="transition-transform duration-500 group-hover:scale-105" />
                                 </div>
                                 <CardContent className="p-6 bg-secondary flex-grow flex flex-col text-center">
