@@ -5,11 +5,12 @@ import fs from 'fs';
 import path from 'path';
 import { getPageStructure } from '@/lib/page-content';
 import { revalidatePath } from 'next/cache';
-import { set, get, toPath, cloneDeep, isObject } from 'lodash';
+import { set, cloneDeep, isObject } from 'lodash';
 
 // Helper function to parse nested form data keys
 function parseKey(key: string): (string | number)[] {
-    return toPath(key);
+    // This regex is more robust for handling keys like 'sections.0.fields.items.0.title'
+    return key.split(/[\.\[\]]+/).filter(Boolean);
 }
 
 export async function savePageContent(pageSlug: string, data: Record<string, any>) {
@@ -17,6 +18,7 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
         const pageKey = pageSlug.replace(/-/g, '_') || 'home';
         
         const currentStructure = getPageStructure();
+        // Use cloneDeep to avoid modifying the cached version of the structure
         const pageContent = cloneDeep(currentStructure[pageKey]);
 
         if (!pageContent) {
@@ -27,15 +29,17 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
 
         // Reconstruct the object from the flat form data
         for (const [key, value] of Object.entries(data)) {
-            // Handle file inputs separately if needed, for now assuming URLs
-            if (key.endsWith('-file') && (value as File).size === 0) continue;
+            // Handle file inputs: skip empty file inputs
+            if (key.endsWith('.file') && (value as File).size === 0) continue;
             
-            const path = parseKey(key.replace(/-value$/, ''));
+            // The name from the form field is already the path we need.
+            const path = parseKey(key);
             set(newData, path, value);
         }
 
         // Deep merge the new data into the existing structure
         const mergeAndUpdate = (target: any, source: any) => {
+            if (!target || !source) return;
             Object.keys(source).forEach(key => {
                 if (isObject(source[key]) && !Array.isArray(source[key]) && isObject(target[key])) {
                     mergeAndUpdate(target[key], source[key]);
@@ -56,16 +60,7 @@ export async function savePageContent(pageSlug: string, data: Record<string, any
                 const newSectionData = newData.sections[index];
                 if (newSectionData) {
                     // Update visibility
-                    if (newSectionData.visible === 'on') {
-                        section.visible = true;
-                    } else {
-                        // Check if any field for this section was submitted.
-                        // The switch only sends a value when 'on', not when 'off'.
-                        const wasSubmitted = Object.keys(data).some(d => d.startsWith(`sections-${index}-`));
-                        if(wasSubmitted) {
-                            section.visible = false;
-                        }
-                    }
+                    section.visible = newSectionData.visible === 'on';
 
                     if (section.fields && newSectionData.fields) {
                         mergeAndUpdate(section.fields, newSectionData.fields);

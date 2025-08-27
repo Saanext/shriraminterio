@@ -156,8 +156,8 @@ function EditPageImpl() {
                 return (
                     <div className="flex items-center gap-4">
                         <img src={field.value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />
-                        <Input type="hidden" name={`${name}-value`} defaultValue={field.value} />
-                         <Input type="file" name={`${name}-file`} id={id} className="max-w-xs"/>
+                        <Input type="hidden" name={`${name}.value`} defaultValue={field.value} />
+                         <Input type="file" name={`${name}.file`} id={id} className="max-w-xs"/>
                         <Button variant="outline" type="button">
                             <Upload className="mr-2 h-4 w-4"/>
                             Change Image
@@ -173,7 +173,7 @@ function EditPageImpl() {
                                 {Object.keys(item).map(itemKey => (
                                      <div key={itemKey} className="space-y-2">
                                         <Label htmlFor={`${id}-${itemIndex}-${itemKey}`}>{itemKey.charAt(0).toUpperCase() + itemKey.slice(1)}</Label>
-                                        <Input name={`${name}.${itemIndex}.${itemKey}`} id={`${id}-${itemIndex}-${itemKey}`} defaultValue={item[itemKey]} />
+                                        <Input name={`${name}.items.${itemIndex}.${itemKey}`} id={`${id}-${itemIndex}-${itemKey}`} defaultValue={item[itemKey]} />
                                     </div>
                                 ))}
                              </CardContent>
