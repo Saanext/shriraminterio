@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 async function getPages() {
     const supabase = createClient();
-    const { data: pages, error } = await supabase.from('pages').select('title, slug');
+    const { data: pages, error } = await supabase.from('pages').select('title, slug').order('title');
     if (error) {
         console.error('Error fetching pages:', error);
         return [];
@@ -25,7 +25,7 @@ export default async function PagesManagementPage() {
         <div>
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold">Pages Management</h1>
-                <Button>
+                <Button disabled>
                     <FilePlus className="w-5 h-5 mr-2" />
                     Create New Page
                 </Button>
@@ -63,12 +63,12 @@ export default async function PagesManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem disabled>
                                                     <EyeOff className="mr-2 h-4 w-4" />
                                                     <span>Hide</span>
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem className="text-destructive">
+                                                <DropdownMenuItem className="text-destructive" disabled>
                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                     <span>Delete</span>
                                                 </DropdownMenuItem>
