@@ -1,144 +1,817 @@
 
--- Drop tables if they exist to start fresh
-DROP TABLE IF EXISTS "sections";
-DROP TABLE IF EXISTS "pages";
-DROP TABLE IF EXISTS "stories";
+-- Enable RLS
+ALTER TABLE pages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE sections ENABLE ROW LEVEL SECURITY;
 
--- Create the pages table
-CREATE TABLE "pages" (
-  "id" bigserial PRIMARY KEY,
-  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-  "title" text NOT NULL,
-  "slug" text NOT NULL UNIQUE,
-  "meta_title" text,
-  "meta_description" text
-);
-
--- Create the sections table
-CREATE TABLE "sections" (
-  "id" bigserial PRIMARY KEY,
-  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-  "page_id" bigint NOT NULL REFERENCES "pages" ("id") ON DELETE CASCADE,
-  "title" text NOT NULL,
-  "type" text NOT NULL,
-  "content" jsonb,
-  "content_structure" jsonb,
-  "visible" boolean NOT NULL DEFAULT true,
-  "order" integer NOT NULL DEFAULT 0
-);
-
--- Create the stories table for customer stories
-CREATE TABLE "stories" (
-  "id" bigserial PRIMARY KEY,
-  "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-  "slug" text NOT NULL UNIQUE,
-  "title" text NOT NULL,
-  "image" text,
-  "dataAiHint" text,
-  "category" text,
-  "author" text,
-  "authorAvatar" text,
-  "date" text,
-  "excerpt" text,
-  "clientImage" text,
-  "location" text,
-  "project" text,
-  "size" text,
-  "quote" text,
-  "content" text,
-  "gallery" jsonb
-);
-
--- Seed data for pages
-INSERT INTO "pages" ("title", "slug", "meta_title", "meta_description") VALUES
-('Home', 'home', 'Shriram Interio | Pune''s Premier Interior Designers', 'Discover bespoke interior designs for modular kitchens, wardrobes, and full homes in Pune with Shriram Interio. Your dream space awaits.'),
-('About Us', 'about', 'About Shriram Interio | Our Story & Team', 'Learn about Shriram Interio''s journey, our mission, vision, and the expert team dedicated to creating beautiful and functional living spaces.'),
-('Customer Stories', 'customer-stories', 'Customer Success Stories | Shriram Interio', 'Read inspiring stories from our happy clients. See how we transformed their houses into dream homes with our expert interior design services.'),
-('Clients', 'clients', 'Our Clients | Testimonials & Reviews', 'Hear directly from our clients. Read testimonials and watch video reviews from homeowners who trusted Shriram Interio with their design projects.'),
-('Services', 'services', 'Our Interior Design Services | Shriram Interio', 'Explore our comprehensive interior design services, including modular kitchens, wardrobes, full home interiors, and more.'),
-('Portfolio', 'portfolio', 'Interior Design Portfolio | Shriram Interio', 'Browse our portfolio of completed projects. See the quality and creativity of our work in kitchens, living areas, and bedrooms.'),
-('How It Works', 'how-it-works', 'Our Design Process | From Concept to Completion', 'Understand our seamless 6-step design process that takes your vision from initial consultation to final installation with transparency and expertise.'),
-('Contact', 'contact', 'Contact Shriram Interio | Get In Touch', 'Contact us for a free consultation. Find our address, phone number, and email to start your interior design journey.'),
-('Products', 'products', 'Our Products | Kitchens, Wardrobes & More', 'Discover our range of high-quality interior design products, including modular kitchens, custom wardrobes, and space-saving furniture.');
+-- Create policies
+CREATE POLICY "Allow public read access to pages" ON pages FOR SELECT USING (true);
+CREATE POLICY "Allow public read access to sections" ON sections FOR SELECT USING (true);
+CREATE POLICY "Allow public read access to stories" ON stories FOR SELECT USING (true);
+CREATE POLICY "Allow public read access on public bucket" ON storage.objects FOR SELECT USING (bucket_id = 'public');
+CREATE POLICY "Allow insert access on public bucket" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'public');
 
 
--- Seed data for sections
-DO $$
-DECLARE
-    home_page_id bigint;
-    about_page_id bigint;
-    stories_page_id bigint;
-    clients_page_id bigint;
-    services_page_id bigint;
-    portfolio_page_id bigint;
-    howitworks_page_id bigint;
-    contact_page_id bigint;
-    products_page_id bigint;
-BEGIN
-    -- Get page IDs
-    SELECT id INTO home_page_id FROM pages WHERE slug = 'home';
-    SELECT id INTO about_page_id FROM pages WHERE slug = 'about';
-    SELECT id INTO stories_page_id FROM pages WHERE slug = 'customer-stories';
-    SELECT id INTO clients_page_id FROM pages WHERE slug = 'clients';
-    SELECT id INTO services_page_id FROM pages WHERE slug = 'services';
-    SELECT id INTO portfolio_page_id FROM pages WHERE slug = 'portfolio';
-    SELECT id INTO howitworks_page_id FROM pages WHERE slug = 'how-it-works';
-    SELECT id INTO contact_page_id FROM pages WHERE slug = 'contact';
-    SELECT id INTO products_page_id FROM pages WHERE slug = 'products';
+-- Create Storage bucket
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('public', 'public', true)
+ON CONFLICT (id) DO NOTHING;
 
-    -- Home Page Sections
-    INSERT INTO "sections" ("page_id", "title", "type", "content", "content_structure", "order") VALUES
-    (home_page_id, 'Hero Section', 'hero', '{"title": "Transforming Houses into Dream Homes", "subtitle": "Pune''s leading interior design company for modular kitchens, wardrobes, and full home interiors.", "buttonText": "Explore Our Services", "videoUrl": "https://www.shriraminterio.com/wp-content/uploads/2024/05/10000000_1132049694776109_532975988143399435_n.mp4", "slides": [{"image": "https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"}, {"image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "textarea", "label": "Subtitle"}, "buttonText": {"type": "text", "label": "Button Text"}, "videoUrl": {"type": "text", "label": "Background Video URL"}, "slides": {"type": "repeater", "label": "Image Slides", "fields": {"image": {"type": "image", "label": "Image"}}}}', 0),
-    (home_page_id, 'Welcome', 'welcome', '{"paragraph1": "We specialize in crafting beautiful and functional modular kitchens and wardrobes. Our expert team combines creativity and precision to deliver personalized solutions that elevate your living space.", "paragraph2": "From initial design to final installation, we ensure a seamless and satisfying experience, turning your vision into reality.", "image": "/Designer.png"}', '{"paragraph1": {"type": "textarea", "label": "Paragraph 1"}, "paragraph2": {"type": "textarea", "label": "Paragraph 2"}, "image": {"type": "image", "label": "Image"}}', 1),
-    (home_page_id, 'About Company', 'about_company', '{"title": "We Are Shriram Interio", "text": "is a place where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we are a team of passionate creatives dedicated to curating spaces that resonate with your soul."}', '{"title": {"type": "text", "label": "Title"}, "text": {"type": "textarea", "label": "Text"}}', 2),
-    (home_page_id, 'Why Us', 'why_us', '{"title": "Why Shriram Interio?", "subtitle": "Your one-stop destination for complete home interiors.", "items": [{"title": "Expert Design Team", "description": "Talented designers who bring your vision to life."}, {"title": "Variety of Design Choices", "description": "A wide range of styles, materials, and finishes to suit your taste."}, {"title": "Affordable Design Fees", "description": "High-quality design that fits your budget without compromising on excellence."}, {"title": "On-Time Project Delivery", "description": "We respect your time and are committed to delivering projects as scheduled."}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Items", "fields": {"title": {"type": "text", "label": "Title"}, "description": {"type": "textarea", "label": "Description"}}}}', 3),
-    (home_page_id, 'Work Gallery', 'work_gallery', '{"title": "Our Work Gallery", "subtitle": "Explore our portfolio of stunning interior designs.", "items": [{"title": "L-Shape Modular Kitchen", "image": "/L-shape-kitchen.png", "hint": "modular kitchen"}, {"title": "U-Shape Modular Kitchen", "image": "/U-shape-kitchen.png", "hint": "u-shaped kitchen"}, {"title": "Island Modular Kitchen", "image": "/Island-Kitchen.png", "hint": "island kitchen"}, {"title": "Sliding Wardrobe", "image": "/SlidingWardrobe.jpg", "hint": "sliding wardrobe"}, {"title": "Hinged Wardrobe", "image": "/HingedWardrobe.jpg", "hint": "hinged wardrobe"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Gallery Items", "fields": {"title": {"type": "text", "label": "Title"}, "image": {"type": "image", "label": "Image"}, "hint": {"type": "text", "label": "AI Hint"}}}}', 4),
-    (home_page_id, 'Design At Your Comfort', 'comfort_design', '{"title": "Design At Your Comfort", "subtitle": "Our innovative approach to interior design brings the showroom to you.", "items": [{"title": "Live 3D Designs", "description": "Experience your future home with live 3D visualization sessions."}, {"title": "Contactless Experience", "description": "From discussion to design, enjoy a completely remote and safe process."}, {"title": "Instant Pricing", "description": "Get transparent, upfront pricing for your project with no hidden costs."}, {"title": "Expertise & Passion", "description": "Our team''s dedication and expertise ensure your dream home becomes a reality."}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Items", "fields": {"title": {"type": "text", "label": "Title"}, "description": {"type": "textarea", "label": "Description"}}}}', 5),
-    (home_page_id, 'What We Do', 'what_we_do', '{"title": "What We Do?", "subtitle": "Discover our range of best-selling and trending interior solutions.", "trendingItems": [{"name": "Two-toned Kitchen Cabinets", "image": "/kitchen.jpg", "hint": "kitchen cabinets"}, {"name": "Walk-in Wardrobes", "image": "/w1.jpg", "hint": "walk-in wardrobe"}, {"name": "Minimalist TV Units", "image": "/b2.jpg", "hint": "tv unit"}, {"name": "Compact Study Nooks", "image": "/b1.jpg", "hint": "study nook"}], "bestSellingKitchens": [{"name": "Classic L-Shape", "image": "/L-shape-kitchen.png", "hint": "l-shaped kitchen"}, {"name": "Modern U-Shape", "image": "/U-shape-kitchen.png", "hint": "u-shaped kitchen"}, {"name": "Spacious Island", "image": "/Island-Kitchen.png", "hint": "island kitchen"}, {"name": "Efficient Parallel", "image": "/kitchen-4.png", "hint": "parallel kitchen"}], "bestSellingWardrobes": [{"name": "Sleek Sliding Door", "image": "/SlidingWardrobe.jpg", "hint": "sliding wardrobe"}, {"name": "Elegant Hinged Door", "image": "/HingedWardrobe.jpg", "hint": "hinged wardrobe"}, {"name": "Luxurious Walk-in", "image": "/w1.jpg", "hint": "walk-in wardrobe"}, {"name": "Compact & Functional", "image": "/w2.jpg", "hint": "small wardrobe"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "trendingItems": {"type": "repeater", "label": "Trending Items"}, "bestSellingKitchens": {"type": "repeater", "label": "Best Selling Kitchens"}, "bestSellingWardrobes": {"type": "repeater", "label": "Best Selling Wardrobes"}}', 6),
-    (home_page_id, 'Testimonials', 'testimonials', '{"title": "Happy Customers", "subtitle": "Don''t just take our word for it. Hear from our delighted clients.", "buttonText": "Read All Customer Stories", "items": [{"name": "Rohan & Priya", "review": "Shriram Interio turned our small apartment into a spacious and beautiful home. Their attention to detail is commendable!", "image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwbWFufGVufDB8fHx8MTc1NTYyNDQyMnww&ixlib=rb-4.1.0&q=80&w=1080"}, {"name": "Anita Desai", "review": "The modular kitchen they designed is not only stunning but also incredibly functional. Cooking is a joy now!", "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwd29tYW58ZW58MHx8fHwxNzU1NjI0NDQyfDA&ixlib=rb-4.1.0&q=80&w=1080"}, {"name": "The Verma Family", "review": "The full home interior was handled professionally from start to finish. Highly recommended for their quality and service.", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "buttonText": {"type": "text", "label": "Button Text"}, "items": {"type": "repeater", "label": "Testimonials"}}', 7),
-    (home_page_id, 'FAQ', 'faq', '{"title": "Frequently Asked Questions", "subtitle": "Have questions? We have answers.", "items": [{"question": "What is the typical timeline for a project?", "answer": "A typical project timeline ranges from 4 to 8 weeks, depending on the scope and complexity. We provide a detailed schedule at the beginning of each project."}, {"question": "Do you offer a warranty on your work?", "answer": "Yes, we offer a one-year warranty on all our workmanship and materials, ensuring peace of mind for our clients."}, {"question": "Can I see my design in 3D before execution?", "answer": "Absolutely! We provide detailed 3D visualizations to help you see exactly how your space will look, allowing for changes before we begin manufacturing."}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "FAQ Items"}}', 8),
-    (home_page_id, 'Partners', 'partners', '{"title": "Our Trusted Partners", "subtitle": "BRANDS WE ARE ASSOCIATED WITH", "items": [{"name": "Hettich", "logoSrc": "/p1.png"}, {"name": "Hafele", "logoSrc": "/p2.png"}, {"name": "Faber", "logoSrc": "/p3.jpg"}, {"name": "Elica", "logoSrc": "/p4.png"}, {"name": "Greenply", "logoSrc": "/p5.jpg"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Partners"}}', 9);
-    
-    -- About Page Sections
-    INSERT INTO "sections" ("page_id", "title", "type", "content", "content_structure", "order") VALUES
-    (about_page_id, 'Hero', 'hero', '{"title": "About Shriram Interio", "subtitle": "Designing spaces that tell your story", "backgroundImage": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxpbnRlcmlvciUyMGRlc2lnbnxlbnwwfHx8fDE3NTU2MjM5NjR8MA&ixlib=rb-4.1.0&q=80&w=1080"}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "backgroundImage": {"type": "image", "label": "Background Image"}}', 0),
-    (about_page_id, 'Our Story', 'story', '{"heading": "Our Story", "subheading": "Crafting beautiful spaces since 2016.", "paragraph1": "SHRIRAM INTERIO is a place where design meets inspiration and innovation. Founded on the belief that exceptional design transforms lives, we are a team of passionate creatives dedicated to curating spaces that resonate with your soul.", "paragraph2": "Since our establishment in 2016, our journey began with a shared vision: to redefine interior design by infusing creativity, functionality, and a personalized touch into every project. Over the years, we''ve evolved, but our commitment to excellence remains unwavering.", "paragraph3": "Our portfolio is a testament to our versatility, showcasing a diverse range of projects from cozy residential interiors to dynamic commercial spaces. Each project is a unique story, a collaboration between our expertise and our clients'' aspirations.", "paragraph4": "At SHRIRAM INTERIO, we don''t just design spaces; we craft experiences. We invite you to explore our world of design and discover how we can bring your vision to life.", "image": "https://images.unsplash.com/photo-1572021335469-31706a17aaef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0ZWFtJTIwY29sbGFib3JhdGlvbnxlbnwwfHx8fDE3NTU2MjQyOTl8MA&ixlib=rb-4.1.0&q=80&w=1080"}', '{"heading": {"type": "text", "label": "Heading"}, "subheading": {"type": "text", "label": "Subheading"}, "paragraph1": {"type": "textarea", "label": "Paragraph 1"}, "paragraph2": {"type": "textarea", "label": "Paragraph 2"}, "paragraph3": {"type": "textarea", "label": "Paragraph 3"}, "paragraph4": {"type": "textarea", "label": "Paragraph 4"}, "image": {"type": "image", "label": "Image"}}', 1),
-    (about_page_id, 'Our Journey', 'journey', '{"heading": "Our Journey", "paragraph1": "Our journey is a narrative of passion, perseverance, and a relentless pursuit of perfection. From humble beginnings, we have grown into a reputable design firm, known for our innovative solutions and client-centric approach. We believe in the power of collaboration, working closely with our clients to understand their needs and translate their dreams into tangible, beautiful realities.", "paragraph2": "We have navigated the evolving landscape of design, embracing new technologies and trends while staying true to our core principles of quality and craftsmanship. Our team is our greatest asset, a collective of creative minds who bring a wealth of experience and a fresh perspective to every project.", "paragraph3": "Every space we design is a chapter in our story, a reflection of our commitment to creating environments that are not only aesthetically pleasing but also enhance the quality of life. We are proud of the relationships we have built and the trust we have earned.", "paragraph4": "As we look to the future, we are excited to continue our journey, pushing the boundaries of design and creating spaces that inspire and endure.", "image": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkZXNpZ24lMjBtb29kJTIwYm9hcmR8ZW58MHx8fHwxNzU1NjI0MzA3fDA&ixlib=rb-4.1.0&q=80&w=1080"}', '{"heading": {"type": "text", "label": "Heading"}, "paragraph1": {"type": "textarea", "label": "Paragraph 1"}, "paragraph2": {"type": "textarea", "label": "Paragraph 2"}, "paragraph3": {"type": "textarea", "label": "Paragraph 3"}, "paragraph4": {"type": "textarea", "label": "Paragraph 4"}, "image": {"type": "image", "label": "Image"}}', 2),
-    (about_page_id, 'Our Values', 'values', '{"title": "Our Core Values", "subtitle": "The principles that guide our work and define our character.", "items": [{"title": "Expert Design Team", "description": "Talented designers who bring your vision to life."}, {"title": "Variety of Design Choices", "description": "A wide range of styles, materials, and finishes to suit your taste."}, {"title": "Affordable Design Fees", "description": "High-quality design that fits your budget without compromising on excellence."}, {"title": "On-Time Project Delivery", "description": "We respect your time and are committed to delivering projects as scheduled."}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Values"}}', 3),
-    (about_page_id, 'Mission and Vision', 'mission_vision', '{"visionTitle": "Our Vision", "visionText": "To be the leading interior design firm in Pune, recognized for our creativity, innovation, and unwavering commitment to client satisfaction.", "missionTitle": "Our Mission", "missionText": "To create timeless, functional, and beautiful spaces that enhance the lives of our clients, through a collaborative and transparent design process."}', '{"visionTitle": {"type": "text", "label": "Vision Title"}, "visionText": {"type": "textarea", "label": "Vision Text"}, "missionTitle": {"type": "text", "label": "Mission Title"}, "missionText": {"type": "textarea", "label": "Mission Text"}}', 4),
-    (about_page_id, 'Meet the Team', 'team', '{"title": "Meet Our Team", "subtitle": "The creative minds behind our successful designs.", "members": [{"name": "Mr. Shriram", "role": "Founder & Lead Designer", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "bio": "With over a decade of experience, Mr. Shriram leads our team with a passion for innovative design and a commitment to excellence."}, {"name": "Priya Sharma", "role": "Project Manager", "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "bio": "Priya ensures every project runs smoothly, from initial concept to final handover, guaranteeing client satisfaction."}, {"name": "Amit Kumar", "role": "Senior Interior Designer", "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "bio": "Amit specializes in creating functional and aesthetically pleasing spaces, with a keen eye for detail and a love for modern design."}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "members": {"type": "repeater", "label": "Team Members"}}', 5);
-    
-    -- Customer Stories Page Sections
-    INSERT INTO "sections" ("page_id", "title", "type", "content", "content_structure", "order") VALUES
-    (stories_page_id, 'Header', 'header', '{"title": "Customer Stories", "subtitle": "Real stories from real homeowners. See how we have transformed their spaces and lives."}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "textarea", "label": "Subtitle"}}', 0),
-    (stories_page_id, 'Featured Story', 'featured_story', '{"buttonText": "Read Full Story"}', '{"buttonText": {"type": "text", "label": "Button Text"}}', 1),
-    (stories_page_id, 'More Stories', 'more_stories', '{"title": "More Inspiring Stories"}', '{"title": {"type": "text", "label": "Title"}}', 2),
-    (stories_page_id, 'Work Gallery', 'work_gallery', '{"title": "Our Work Gallery", "subtitle": "Explore our portfolio of stunning interior designs.", "items": [{"title": "L-Shape Modular Kitchen", "image": "/L-shape-kitchen.png", "hint": "modular kitchen"}, {"title": "U-Shape Modular Kitchen", "image": "/U-shape-kitchen.png", "hint": "u-shaped kitchen"}, {"title": "Island Modular Kitchen", "image": "/Island-Kitchen.png", "hint": "island kitchen"}, {"title": "Sliding Wardrobe", "image": "/SlidingWardrobe.jpg", "hint": "sliding wardrobe"}, {"title": "Hinged Wardrobe", "image": "/HingedWardrobe.jpg", "hint": "hinged wardrobe"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Gallery Items"}}', 3),
-    (stories_page_id, 'Partners', 'partners', '{"title": "Our Trusted Partners", "subtitle": "BRANDS WE ARE ASSOCIATED WITH", "items": [{"name": "Hettich", "logoSrc": "/p1.png"}, {"name": "Hafele", "logoSrc": "/p2.png"}, {"name": "Faber", "logoSrc": "/p3.jpg"}, {"name": "Elica", "logoSrc": "/p4.png"}, {"name": "Greenply", "logoSrc": "/p5.jpg"}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "Partners"}}', 4),
-    (stories_page_id, 'FAQ', 'faq', '{"title": "Frequently Asked Questions", "subtitle": "Have questions? We have answers.", "items": [{"question": "What is the typical timeline for a project?", "answer": "A typical project timeline ranges from 4 to 8 weeks, depending on the scope and complexity. We provide a detailed schedule at the beginning of each project."}, {"question": "Do you offer a warranty on your work?", "answer": "Yes, we offer a one-year warranty on all our workmanship and materials, ensuring peace of mind for our clients."}, {"question": "Can I see my design in 3D before execution?", "answer": "Absolutely! We provide detailed 3D visualizations to help you see exactly how your space will look, allowing for changes before we begin manufacturing."}]}', '{"title": {"type": "text", "label": "Title"}, "subtitle": {"type": "text", "label": "Subtitle"}, "items": {"type": "repeater", "label": "FAQ Items"}}', 5);
+-- Seed pages
+INSERT INTO pages (id, slug, title, meta_title, meta_description) VALUES
+(1, 'home', 'Home', 'Shriram Interio Digital | Modular Kitchen & Home Interior Design Pune', 'Pune''s leading interior design company for modular kitchens, wardrobes, and full home interiors. Get a free quote for your dream home renovation.'),
+(2, 'about', 'About Us', 'About Shriram Interio | Our Story, Mission & Team', 'Learn about Shriram Interio''s journey, our design philosophy, and the expert team dedicated to creating beautiful and functional living spaces in Pune.'),
+(3, 'customer-stories', 'Customer Stories', 'Customer Stories & Project Showcases | Shriram Interio', 'Explore detailed stories of our completed projects. See before-and-after galleries and read about our clients'' experiences with our interior design services.'),
+(4, 'clients', 'Clients', 'Our Valued Clients | Testimonials & Reviews', 'See what our clients have to say about their experience with Shriram Interio. Read testimonials and watch video reviews from satisfied homeowners in Pune.'),
+(5, 'services', 'Services', 'Our Interior Design Services | Shriram Interio Pune', 'Discover our comprehensive range of interior design services, from modular kitchens and wardrobes to full home interiors and exterior design.'),
+(6, 'portfolio', 'Portfolio', 'Interior Design Portfolio | Shriram Interio Projects', 'Browse our portfolio of stunning interior design projects in Pune. Get inspired by our work on kitchens, living areas, bedrooms, and more.'),
+(7, 'how-it-works', 'How It Works', 'Our Design Process | From Consultation to Completion', 'Learn about our simple, transparent 5-step process for bringing your interior design dreams to life, from initial consultation to final handover.'),
+(8, 'contact', 'Contact', 'Contact Us | Get in Touch with Shriram Interio', 'Contact Shriram Interio for a free consultation. Find our address, phone number, and email to start your home interior project in Pune.'),
+(9, 'products', 'Products', 'Our Products', 'Discover our wide range of products for your home interior needs.'),
+(10, 'product-kitchen', 'product-kitchen', 'Modular Kitchens', 'Explore our modular kitchen designs.'),
+(11, 'product-wardrobe', 'product-wardrobe', 'Wardrobes', 'Discover our custom wardrobe solutions.'),
+(12, 'product-living-room', 'product-living-room', 'Living Room Furniture', 'Furnish your living space with our stylish designs.'),
+(13, 'product-bedroom', 'product-bedroom', 'Bedroom Furniture', 'Create your dream bedroom with our furniture.'),
+(14, 'product-bathroom', 'product-bathroom', 'Bathroom Fittings', 'High-quality fittings for modern bathrooms.'),
+(15, 'product-home-office', 'product-home-office', 'Home Office Setup', 'Create a productive and stylish home office.'),
+(16, 'product-space-saving-furniture', 'product-space-saving-furniture', 'Space-Saving Furniture', 'Maximize your space with our innovative furniture solutions.')
+ON CONFLICT (id) DO UPDATE SET
+slug = EXCLUDED.slug,
+title = EXCLUDED.title,
+meta_title = EXCLUDED.meta_title,
+meta_description = EXCLUDED.meta_description;
 
-    -- Clients Page Sections
-    INSERT INTO "sections" ("page_id", "title", "type", "content", "content_structure", "order") VALUES
-    (clients_page_id, 'Featured Testimonial', 'featured_testimonial', '{"image": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwbWFufGVufDB8fHx8MTc1NTYyNDQyMnww&ixlib=rb-4.1.0&q=80&w=1080", "location": "Pune", "project": "Full Home Interior", "size": "3 BHK", "quote": "The team at Shriram Interio exceeded all our expectations. The design was flawless, and the execution was even better.", "name": "Rohan Sharma", "review": "From the initial consultation to the final handover, the process was seamless. The team was professional, attentive, and incredibly skilled. They transformed our house into a home we truly love. We couldn''t be happier with the result and would recommend Shriram Interio to anyone looking for top-quality interior design."}', '{"image": {"type": "image"}, "location": {"type": "text"}, "project": {"type": "text"}, "size": {"type": "text"}, "quote": {"type": "textarea"}, "name": {"type": "text"}, "review": {"type": "textarea"}}', 0),
-    (clients_page_id, 'Video Testimonials', 'video_testimonials', '{"title": "What Our Clients Say", "subtitle": "Watch our clients share their experiences with Shriram Interio.", "videos": [{"videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "imageSrc": "https://images.unsplash.com/photo-1521119989659-a83eee488004?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "name": "Priya & Sameer", "location": "Koregaon Park, Pune", "review": "Our kitchen is the heart of our home, and Shriram made it perfect.", "dataAiHint": "happy couple"}, {"videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "imageSrc": "https://images.unsplash.com/photo-1580489944761-15a19d654956?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "name": "Anjali Mehta", "location": "Baner, Pune", "review": "The wardrobe design maximized my space beautifully. I''m so happy!", "dataAiHint": "smiling woman"}, {"videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ", "imageSrc": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "name": "Vikram Singh", "location": "Hinjewadi, Pune", "review": "A truly professional and creative team. They delivered on time and on budget.", "dataAiHint": "man portrait"}]}', '{"title": {"type": "text"}, "subtitle": {"type": "text"}, "videos": {"type": "repeater"}}', 1),
-    (clients_page_id, 'Text Testimonials', 'text_testimonials', '{"title": "More Happy Clients", "subtitle": "Read what our customers have to say about their experience.", "testimonials": [{"name": "Sunita Patil", "review": "Excellent service and brilliant design ideas. My living room has been completely transformed!", "image": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "avatar": "SP"}, {"name": "Rajesh Kumar", "review": "The team was very patient and incorporated all my ideas into the design. The final result is fantastic.", "image": "https://images.unsplash.com/photo-1552058544-f2b08422138a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZW9wbGUlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NTU2MjQzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080", "avatar": "RK"}, {"name": "Meera Iyer", "review": "I love my new bedroom! It''s so serene and exactly what I wanted. Thank you, Shriram Interio!", "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWlsaW5nJTIwd29tYW58ZW58MHx8fHwxNzU1NjI0NDQyfDA&ixlib=rb-4.1.0&q=80&w=1080", "avatar": "MI"}]}', '{"title": {"type": "text"}, "subtitle": {"type": "text"}, "testimonials": {"type": "repeater"}}', 2);
-    
-    -- Services Page Sections
-    INSERT INTO "sections" ("page_id", "title", "type", "content", "content_structure", "order") VALUES
-    (services_page_id, 'Header', 'header', '{"title": "Our Services", "subtitle": "Comprehensive design solutions tailored to your lifestyle and needs."}', '{"title": {"type": "text"}, "subtitle": {"type": "textarea"}}', 0),
-    (services_page_id, 'Our Services', 'our_services', '{"services": [{"title": "Modular Kitchen Design", "description": "Creating efficient, beautiful kitchens that are the heart of the home."}, {"title": "Wardrobe & Storage Solutions", "description": "Custom wardrobes and storage units that maximize space and style."}, {"title": "Bedroom Interiors", "description": "Designing peaceful and personal sanctuaries for rest and relaxation."}, {"title": "Living Area Design", "description": "Crafting welcoming and functional living spaces for family and friends."}, {"title": "Exterior Design Services", "description": "Enhancing your home''s curb appeal with thoughtful exterior design."}, {"title": "Full Home Interiors", "description": "A complete, end-to-end solution for a cohesive and harmonious home."}]}', '{"services": {"type": "repeater"}}', 1),
-    (services_page_id, 'Detailed Services', 'detailed_services', '{"services": [{"href": "/products/kitchen", "imageSrc": "https://images.unsplash.com/photo-1559554704-0f74b35a8718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080", "title": "Modular Kitchens", "dataAiHint": "modern kitchen"}, {"href": "/products/wardrobe", "imageSrc": "https://images.unsplash.com/photo-1614631446501-abcf76949eca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080", "title": "Custom Wardrobes", "dataAiHint": "modern wardrobe"}, {"href": "/products/living-room", "imageSrc": "/b2.jpg", "title": "Living Room Design", "dataAiHint": "living room"}]}', '{"services": {"type": "repeater"}}', 2);
-    
-    -- Portfolio Page Sections
-    INSERT INTO "sections" ("page_id", "title", "type", "content", "content_structure", "order") VALUES
-    (portfolio_page_id, 'Projects Gallery', 'projects_gallery', '{"projects": [{"id": 1, "title": "Modern Minimalist Kitchen", "category": "Kitchens", "imageSrc": "https://images.unsplash.com/photo-1559554704-0f74b35a8718?w=800", "dataAiHint": "minimalist kitchen"}, {"id": 2, "title": "Cozy Scandinavian Living Room", "category": "Living Areas", "imageSrc": "https://images.unsplash.com/photo-1615873968403-89e068629265?w=800", "dataAiHint": "scandinavian living room"}, {"id": 3, "title": "Elegant Walk-in Wardrobe", "category": "Wardrobes", "imageSrc": "https://images.unsplash.com/photo-1614631446501-abcf76949eca?w=800", "dataAiHint": "walk-in wardrobe"}, {"id": 4, "title": "Industrial Chic Home Office", "category": "Home Office", "imageSrc": "https://images.unsplash.com/photo-1554224324-49033481e25e?w=800", "dataAiHint": "industrial office"}, {"id": 5, "title": "Luxury Master Bedroom", "category": "Bedrooms", "imageSrc": "https://images.unsplash.com/photo-1617098900591-3f90928e8c54?w=800", "dataAiHint": "luxury bedroom"}, {"id": 6, "title": "Sleek U-Shaped Kitchen", "category": "Kitchens", "imageSrc": "https://images.unsplash.com/photo-1585261450736-67d578ff00b4?w=800", "dataAiHint": "u-shaped kitchen"}]}', '{"projects": {"type": "repeater"}}', 0),
-    (portfolio_page_id, 'Partners', 'partners', '{"title": "Our Trusted Partners", "subtitle": "BRANDS WE ARE ASSOCIATED WITH", "items": [{"name": "Hettich", "logoSrc": "/p1.png"}, {"name": "Hafele", "logoSrc": "/p2.png"}, {"name": "Faber", "logoSrc": "/p3.jpg"}, {"name": "Elica", "logoSrc": "/p4.png"}, {"name": "Greenply", "logoSrc": "/p5.jpg"}]}', '{"title": {"type": "text"}, "subtitle": {"type": "text"}, "items": {"type": "repeater"}}', 1);
 
-    -- Other page sections can be added here following the same pattern
-    -- For now, the structure is in place for all pages.
+-- Seed sections for all pages
+-- HOME PAGE
+INSERT INTO sections (page_id, type, title, content, content_structure, "order", visible) VALUES
+((SELECT id FROM pages WHERE slug = 'home'), 'hero', 'Hero', $$
+{
+    "title": "Modern Interior Design Studio",
+    "subtitle": "We create stunning and functional modular kitchens, wardrobes, and full home interiors in Pune. Let us bring your vision to life.",
+    "buttonText": "Explore Our Services",
+    "videoUrl": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-video.mp4",
+    "slides": [
+        { "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-1.jpg" },
+        { "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-2.jpg" },
+        { "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-3.jpg" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "buttonText": { "type": "text", "label": "Button Text" },
+    "videoUrl": { "type": "text", "label": "Background Video URL" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'welcome', 'Welcome', $$
+{
+    "paragraph1": "At Shriram Interio, we believe that great design has the power to transform not just spaces, but lives. We are a passionate team of creative designers and skilled craftsmen dedicated to creating stunning modular kitchens, wardrobes, and full home interiors that are both beautiful and highly functional.",
+    "paragraph2": "Based in Pune, we have been turning our clients'' dreams into reality since 2016. Our journey is fueled by a commitment to quality, innovation, and a personalized approach that ensures every project is a true reflection of the people who live there.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/welcome.jpg"
+}
+$$, $$
+{
+    "paragraph1": { "type": "textarea", "label": "Paragraph 1" },
+    "paragraph2": { "type": "textarea", "label": "Paragraph 2" },
+    "image": { "type": "image", "label": "Image" }
+}
+$$, 2, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'about_company', 'About Company', $$
+{
+    "title": "Inspiring & Functional Design",
+    "text": "is dedicated to creating stunning modular kitchens, wardrobes, and full home interiors that are both beautiful and highly functional. We believe that great design has the power to transform not just spaces, but lives. Our team''s dedication and passion shine through in every detail."
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "text": { "type": "textarea", "label": "Text" }
+}
+$$, 3, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'why_us', 'Why Us', $$
+{
+    "title": "Why Shriram Interio?",
+    "subtitle": "Your dream home is just a step away. Here’s why we are the right choice for you.",
+    "items": [
+        { "title": "Expert Design Team", "description": "Our team of experienced designers works with you to bring your vision to life." },
+        { "title": "Variety of Design Choices", "description": "Choose from a wide range of styles, materials, and finishes to suit your taste." },
+        { "title": "Affordable Design Fees", "description": "We offer competitive pricing without compromising on quality or service." },
+        { "title": "On-Time Project Delivery", "description": "We value your time and ensure timely completion of all our projects." }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 4, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'work_gallery', 'Work Gallery', $$
+{
+    "title": "Our Work Gallery",
+    "subtitle": "Explore our portfolio of beautifully designed and executed projects.",
+    "items": [
+        { "title": "Modern Living Room", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-1.jpg", "hint": "living room" },
+        { "title": "Elegant Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-2.jpg", "hint": "elegant kitchen" },
+        { "title": "Cozy Bedroom", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-3.jpg", "hint": "cozy bedroom" },
+        { "title": "Stylish Wardrobe", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-4.jpg", "hint": "stylish wardrobe" },
+        { "title": "Functional Study Area", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-5.jpg", "hint": "study area" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 5, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'comfort_design', 'Comfort Design', $$
+{
+    "title": "Design at Your Comfort",
+    "subtitle": "We make the design process easy and accessible for you.",
+    "items": [
+        { "title": "Live 3D Designs", "description": "Visualize your space with our live 3D rendering technology." },
+        { "title": "Contactless Experience", "description": "From design to delivery, experience a completely contactless process." },
+        { "title": "Instant Pricing", "description": "Get transparent and instant pricing for your project with no hidden costs." },
+        { "title": "Expertise & Passion", "description": "Our team''s dedication and passion shine through in every detail." }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 6, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'what_we_do', 'What We Do', $$
+{
+    "title": "What We Do",
+    "subtitle": "Discover our range of products and find what suits your style.",
+    "trendingItems": [
+        { "name": "L-Shaped Modular Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/trending-1.jpg", "hint": "l-shaped kitchen" },
+        { "name": "Sliding Door Wardrobe", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/trending-2.jpg", "hint": "sliding wardrobe" },
+        { "name": "Minimalist TV Unit", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/trending-3.jpg", "hint": "tv unit" },
+        { "name": "Modern Crockery Unit", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/trending-4.jpg", "hint": "crockery unit" }
+    ],
+    "bestSellingKitchens": [
+        { "name": "U-Shaped Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/kitchen-1.jpg", "hint": "u-shaped kitchen" },
+        { "name": "Island Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/kitchen-2.jpg", "hint": "island kitchen" },
+        { "name": "Parallel Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/kitchen-3.jpg", "hint": "parallel kitchen" },
+        { "name": "Straight Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/kitchen-4.png", "hint": "straight kitchen" }
+    ],
+    "bestSellingWardrobes": [
+        { "name": "Hinged Wardrobe", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/wardrobe-1.jpg", "hint": "hinged wardrobe" },
+        { "name": "Walk-in Wardrobe", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/wardrobe-2.jpg", "hint": "walk-in wardrobe" },
+        { "name": "Wardrobe with Mirror", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/wardrobe-3.jpg", "hint": "mirrored wardrobe" },
+        { "name": "Freestanding Wardrobe", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/wardrobe-4.jpg", "hint": "freestanding wardrobe" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" }
+}
+$$, 7, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'testimonials', 'Testimonials', $$
+{
+    "title": "Happy Clients",
+    "subtitle": "Don''t just take our word for it. Here’s what our clients have to say.",
+    "buttonText": "View All Testimonials",
+    "items": [
+        { "name": "Rohan Sharma", "review": "Shriram Interio transformed our home! The team was professional, creative, and delivered beyond our expectations. Highly recommended!", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-1.jpg" },
+        { "name": "Priya Mehta", "review": "The modular kitchen is a dream come true. Flawless execution and premium quality materials. The design process was so smooth.", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-2.jpg" },
+        { "name": "Amit Deshpande", "review": "Excellent service from start to finish. They understood our needs perfectly and created a space that is both beautiful and functional.", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-3.jpg" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "buttonText": { "type": "text", "label": "Button Text" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 8, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'faq', 'FAQ', $$
+{
+    "title": "Frequently Asked Questions",
+    "subtitle": "Have questions? We have answers.",
+    "items": [
+        { "question": "What is the typical timeline for a project?", "answer": "A typical project, like a modular kitchen or wardrobe, takes about 4-6 weeks from design approval to installation. Full home interiors can take 8-12 weeks depending on the scope." },
+        { "question": "Do you provide a warranty?", "answer": "Yes, we provide a 5-year warranty on all our modular products against any manufacturing defects. We also offer after-sales support to ensure your satisfaction." },
+        { "question": "Can I see the materials before finalizing?", "answer": "Absolutely! We have a wide range of material samples at our showroom. We encourage you to visit and experience the quality and finish of our products firsthand." },
+        { "question": "What are the payment terms?", "answer": "We typically have a phased payment plan. It starts with a booking amount, followed by payments at different stages of the project like design finalization, production, and post-installation." }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 9, true),
+((SELECT id FROM pages WHERE slug = 'home'), 'partners', 'Partners', $$
+{
+    "title": "Our Trusted Partners",
+    "subtitle": "QUALITY YOU CAN TRUST",
+    "items": [
+        { "name": "Partner 1", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-1.png" },
+        { "name": "Partner 2", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-2.png" },
+        { "name": "Partner 3", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-3.png" },
+        { "name": "Partner 4", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-4.png" },
+        { "name": "Partner 5", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-5.png" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 10, true),
 
-END $$;
+-- ABOUT US PAGE
+((SELECT id FROM pages WHERE slug = 'about'), 'hero', 'Hero', $$
+{
+  "title": "About Shriram Interio",
+  "subtitle": "Crafting beautiful spaces since 2016",
+  "backgroundImage": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/about-hero.jpg"
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "backgroundImage": { "type": "image", "label": "Background Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'about'), 'story', 'Story', $$
+{
+  "heading": "Our Story",
+  "subheading": "A Journey of Passion and Design",
+  "paragraph1": "SHRIRAM INTERIO began in 2016 with a shared vision: to redefine interior design by infusing creativity, functionality, and a personalized touch into every project. What started as a small, passionate team has grown into a leading interior design firm in Pune, known for our commitment to excellence.",
+  "paragraph2": "Our journey is one of continuous learning and adaptation. We stay at the forefront of design trends, materials, and technology to ensure we are always offering our clients the very best. We believe every space has a story to tell, and our mission is to help you write it.",
+  "paragraph3": "From humble beginnings, we have completed hundreds of projects, each one a testament to our dedication and craftsmanship. Our portfolio is a diverse collection of dreams we have helped realize.",
+  "paragraph4": "We are more than just designers; we are creators of experience, dedicated to making your dream home a tangible reality.",
+  "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/about-story.jpg"
+}
+$$, $$
+{
+  "heading": { "type": "text", "label": "Heading" },
+  "subheading": { "type": "text", "label": "Subheading" },
+  "paragraph1": { "type": "textarea", "label": "Paragraph 1" },
+  "paragraph2": { "type": "textarea", "label": "Paragraph 2" },
+  "paragraph3": { "type": "textarea", "label": "Paragraph 3" },
+  "paragraph4": { "type": "textarea", "label": "Paragraph 4" },
+  "image": { "type": "image", "label": "Image" }
+}
+$$, 2, true),
+((SELECT id FROM pages WHERE slug = 'about'), 'journey', 'Journey', $$
+{
+    "heading": "Our Journey",
+    "paragraph1": "Our journey has been one of growth, learning, and unwavering commitment to our clients. We have navigated the evolving landscape of interior design, embracing new technologies and sustainable practices to deliver spaces that are not only beautiful but also responsible.",
+    "paragraph2": "Each project has been a stepping stone, teaching us invaluable lessons and helping us refine our process. The challenges we''ve faced have only strengthened our resolve to deliver perfection.",
+    "paragraph3": "We are proud of the relationships we have built with our clients, partners, and vendors. These partnerships are the bedrock of our success and continue to inspire us.",
+    "paragraph4": "Looking ahead, we are excited to continue pushing the boundaries of design and creating spaces that inspire and delight for years to come.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/about-journey.jpg"
+}
+$$, $$
+{
+    "heading": { "type": "text", "label": "Heading" },
+    "paragraph1": { "type": "textarea", "label": "Paragraph 1" },
+    "paragraph2": { "type": "textarea", "label": "Paragraph 2" },
+    "paragraph3": { "type": "textarea", "label": "Paragraph 3" },
+    "paragraph4": { "type": "textarea", "label": "Paragraph 4" },
+    "image": { "type": "image", "label": "Image" }
+}
+$$, 3, true),
+((SELECT id FROM pages WHERE slug = 'about'), 'values', 'Values', $$
+{
+    "title": "Our Core Values",
+    "subtitle": "The principles that guide us in everything we do.",
+    "items": [
+        { "title": "Expert Design Team", "description": "Our team of experienced designers works with you to bring your vision to life." },
+        { "title": "Variety of Design Choices", "description": "Choose from a wide range of styles, materials, and finishes to suit your taste." },
+        { "title": "Affordable Design Fees", "description": "We offer competitive pricing without compromising on quality or service." },
+        { "title": "On-Time Project Delivery", "description": "We value your time and ensure timely completion of all our projects." }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 4, true),
+((SELECT id FROM pages WHERE slug = 'about'), 'mission_vision', 'Mission & Vision', $$
+{
+  "missionTitle": "Our Mission",
+  "missionText": "To create exceptional living spaces through innovative design, superior craftsmanship, and a client-centric approach. We aim to exceed expectations and build lasting relationships based on trust and satisfaction.",
+  "visionTitle": "Our Vision",
+  "visionText": "To be Pune''s most trusted and sought-after interior design firm, known for our creativity, quality, and commitment to transforming houses into dream homes."
+}
+$$, $$
+{
+  "missionTitle": { "type": "text", "label": "Mission Title" },
+  "missionText": { "type": "textarea", "label": "Mission Text" },
+  "visionTitle": { "type": "text", "label": "Vision Title" },
+  "visionText": { "type": "textarea", "label": "Vision Text" }
+}
+$$, 5, true),
+((SELECT id FROM pages WHERE slug = 'about'), 'team', 'Team', $$
+{
+  "title": "Meet the Team",
+  "subtitle": "The creative minds behind Shriram Interio.",
+  "members": [
+    { "name": "Shriram P.", "role": "Founder & Lead Designer", "bio": "With over a decade of experience, Shriram leads the team with a passion for creating unique and functional spaces.", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/team-1.jpg" },
+    { "name": "Anjali K.", "role": "Project Manager", "bio": "Anjali ensures that every project is executed flawlessly, on time, and within budget, with meticulous attention to detail.", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/team-2.jpg" },
+    { "name": "Vikram S.", "role": "Head of Operations", "bio": "Vikram oversees the entire operations, from material procurement to final installation, ensuring quality at every step.", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/team-3.jpg" }
+  ]
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "members": { "type": "repeater", "label": "Team Members" }
+}
+$$, 6, true),
 
--- Seed data for stories
-INSERT INTO "stories" ("slug", "title", "image", "dataAiHint", "category", "author", "authorAvatar", "date", "excerpt", "clientImage", "location", "project", "size", "quote", "content", "gallery") VALUES
-('a-dream-kitchen-comes-to-life', 'A Dream Kitchen Comes to Life', 'https://images.unsplash.com/photo-1600566752355-709b0a11a783?w=800', 'modern kitchen', 'Kitchens', 'Priya Sharma', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100', 'May 15, 2024', 'See how we transformed a cramped, outdated kitchen into a spacious and modern culinary haven for the Sharma family.', 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400', 'Koregaon Park, Pune', 'Modular Kitchen', '200 sq.ft.', 'It feels like a completely new home. We finally have the kitchen of our dreams!', '<p>The Sharma family came to us with a common problem: a kitchen that was too small, too dark, and too outdated for their modern lifestyle. They dreamed of an open, airy space where they could cook, entertain, and create memories.</p><p>Our design team started by knocking down a non-structural wall to open up the kitchen to the dining area. We chose a light color palette with white cabinets, quartz countertops, and a soft blue backsplash to maximize the feeling of space and light. Smart storage solutions, like pull-out pantries and deep drawers, were integrated to keep countertops clutter-free. The project was completed in just 6 weeks, on time and within budget.</p>', '[{"src": "https://images.unsplash.com/photo-1600566752355-709b0a11a783?w=800", "alt": "Wide shot of the kitchen", "dataAiHint": "u-shaped kitchen"}, {"src": "https://images.unsplash.com/photo-1600585152220-401e679a1f86?w=800", "alt": "Kitchen storage solutions", "dataAiHint": "kitchen storage"}, {"src": "https://images.unsplash.com/photo-1556911220-bff31c812dba?w=800", "alt": "Countertop detail", "dataAiHint": "quartz countertop"}]');
+-- CUSTOMER STORIES PAGE
+((SELECT id FROM pages WHERE slug = 'customer-stories'), 'header', 'Header', $$
+{
+    "title": "Customer Stories",
+    "subtitle": "Discover the real-life stories behind our designs. See how we''ve transformed spaces and lives through creativity and collaboration."
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'customer-stories'), 'featured_story', 'Featured Story', $$
+{
+    "buttonText": "Read Full Story"
+}
+$$, $$
+{
+    "buttonText": { "type": "text", "label": "Button Text" }
+}
+$$, 2, true),
+((SELECT id FROM pages WHERE slug = 'customer-stories'), 'more_stories', 'More Stories', $$
+{
+    "title": "More Client Stories"
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" }
+}
+$$, 3, true),
+((SELECT id FROM pages WHERE slug = 'customer-stories'), 'work_gallery', 'Work Gallery', $$
+{
+    "title": "Our Work Gallery",
+    "subtitle": "Explore our portfolio of beautifully designed and executed projects.",
+    "items": [
+        { "title": "Modern Living Room", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-1.jpg", "hint": "living room" },
+        { "title": "Elegant Kitchen", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-2.jpg", "hint": "elegant kitchen" },
+        { "title": "Cozy Bedroom", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-3.jpg", "hint": "cozy bedroom" },
+        { "title": "Stylish Wardrobe", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-4.jpg", "hint": "stylish wardrobe" },
+        { "title": "Functional Study Area", "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/gallery-5.jpg", "hint": "study area" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 4, true),
+((SELECT id FROM pages WHERE slug = 'customer-stories'), 'partners', 'Partners', $$
+{
+    "title": "Our Trusted Partners",
+    "subtitle": "QUALITY YOU CAN TRUST",
+    "items": [
+        { "name": "Partner 1", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-1.png" },
+        { "name": "Partner 2", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-2.png" },
+        { "name": "Partner 3", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-3.png" },
+        { "name": "Partner 4", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-4.png" },
+        { "name": "Partner 5", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-5.png" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 5, true),
+((SELECT id FROM pages WHERE slug = 'customer-stories'), 'faq', 'FAQ', $$
+{
+    "title": "Frequently Asked Questions",
+    "subtitle": "Have questions? We have answers.",
+    "items": [
+        { "question": "What is the typical timeline for a project?", "answer": "A typical project, like a modular kitchen or wardrobe, takes about 4-6 weeks from design approval to installation. Full home interiors can take 8-12 weeks depending on the scope." },
+        { "question": "Do you provide a warranty?", "answer": "Yes, we provide a 5-year warranty on all our modular products against any manufacturing defects. We also offer after-sales support to ensure your satisfaction." },
+        { "question": "Can I see the materials before finalizing?", "answer": "Absolutely! We have a wide range of material samples at our showroom. We encourage you to visit and experience the quality and finish of our products firsthand." },
+        { "question": "What are the payment terms?", "answer": "We typically have a phased payment plan. It starts with a booking amount, followed by payments at different stages of the project like design finalization, production, and post-installation." }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 6, true),
+
+-- CLIENTS PAGE
+((SELECT id FROM pages WHERE slug = 'clients'), 'featured_testimonial', 'Featured Testimonial', $$
+{
+  "name": "Sameer Joshi",
+  "location": "Baner, Pune",
+  "project": "Full Home Interior",
+  "size": "3 BHK",
+  "quote": "An absolute pleasure to work with from start to finish.",
+  "review": "The team at Shriram Interio took our vague ideas and turned them into a stunning reality. Their attention to detail, commitment to quality, and transparent communication made the entire process stress-free. Our home feels like a personalized sanctuary now. We couldn''t be happier with the outcome and wholeheartedly recommend their services to anyone looking for top-notch interior design.",
+  "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-featured.jpg"
+}
+$$, $$
+{
+  "name": { "type": "text", "label": "Client Name" },
+  "location": { "type": "text", "label": "Location" },
+  "project": { "type": "text", "label": "Project Type" },
+  "size": { "type": "text", "label": "Property Size" },
+  "quote": { "type": "textarea", "label": "Highlight Quote" },
+  "review": { "type": "textarea", "label": "Full Review" },
+  "image": { "type": "image", "label": "Client Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'clients'), 'video_testimonials', 'Video Testimonials', $$
+{
+  "title": "Hear From Our Clients",
+  "subtitle": "Watch our clients share their experiences working with Shriram Interio.",
+  "videos": [
+    {
+      "name": "The Mehta Family",
+      "location": "Koregaon Park, Pune",
+      "review": "Our kitchen is now the heart of our home, thanks to the amazing team!",
+      "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/video-thumb-1.jpg",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "dataAiHint": "happy family kitchen"
+    },
+    {
+      "name": "Anika and Rohan",
+      "location": "Hinjewadi, Pune",
+      "review": "The wardrobe design maximized our space and looks so elegant.",
+      "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/video-thumb-2.jpg",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "dataAiHint": "couple bedroom"
+    },
+    {
+      "name": "Mr. Deshpande",
+      "location": "Aundh, Pune",
+      "review": "A truly professional and seamless experience for our full home interior.",
+      "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/video-thumb-3.jpg",
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "dataAiHint": "man living room"
+    }
+  ]
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "videos": { "type": "repeater", "label": "Videos" }
+}
+$$, 2, true),
+((SELECT id FROM pages WHERE slug = 'clients'), 'text_testimonials', 'Text Testimonials', $$
+{
+  "title": "What Our Clients Are Saying",
+  "subtitle": "Honest feedback from homeowners we''ve had the pleasure to work with.",
+  "testimonials": [
+    {
+      "review": "The quality of materials and the finishing is top-notch. Our home feels so luxurious now.",
+      "name": "Sneha Patil",
+      "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-1.jpg",
+      "avatar": "SP"
+    },
+    {
+      "review": "I was impressed with their design process. The 3D views helped me visualize everything perfectly.",
+      "name": "Rajesh Kumar",
+      "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-4.jpg",
+      "avatar": "RK"
+    },
+    {
+      "review": "On-time delivery as promised! A rare quality. The installation team was professional and efficient.",
+      "name": "Deepa Iyer",
+      "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-5.jpg",
+      "avatar": "DI"
+    },
+     {
+      "review": "They have a great variety of design choices. I found the perfect style that matched my personality.",
+      "name": "Aditya Singh",
+      "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-6.jpg",
+      "avatar": "AS"
+    },
+     {
+      "review": "The team is very responsive and accommodating. They listened to all my ideas and incorporated them beautifully.",
+      "name": "Fatima Khan",
+      "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-2.jpg",
+      "avatar": "FK"
+    },
+     {
+      "review": "Value for money! The quality you get for the price is unbeatable in the Pune market. Highly satisfied.",
+      "name": "Vikram Rathod",
+      "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-3.jpg",
+      "avatar": "VR"
+    }
+  ]
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "testimonials": { "type": "repeater", "label": "Testimonials" }
+}
+$$, 3, true),
+
+-- SERVICES PAGE
+((SELECT id FROM pages WHERE slug = 'services'), 'header', 'Header', $$
+{
+  "title": "Our Services",
+  "subtitle": "Comprehensive design solutions tailored to your lifestyle and budget."
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'services'), 'our_services', 'Our Services', $$
+{
+  "services": [
+    { "title": "Modular Kitchen Design", "description": "Creating functional and beautiful kitchens that are the heart of the home." },
+    { "title": "Wardrobe & Storage Solutions", "description": "Customized wardrobes and storage units to maximize space and style." },
+    { "title": "Bedroom Interiors", "description": "Designing serene and personal sanctuaries for rest and relaxation." },
+    { "title": "Living Area Design", "description": "Crafting welcoming and stylish living spaces for family and guests." },
+    { "title": "Exterior Design Services", "description": "Enhancing curb appeal with our expert exterior design solutions." },
+    { "title": "Full Home Interiors", "description": "A complete, end-to-end design service for your entire home." }
+  ]
+}
+$$, $$
+{
+  "services": { "type": "repeater", "label": "Services" }
+}
+$$, 2, true),
+((SELECT id FROM pages WHERE slug = 'services'), 'detailed_services', 'Detailed Services', $$
+{
+  "services": [
+    { "title": "Modular Kitchens", "href": "/products/kitchen", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/kitchen-card.jpg", "dataAiHint": "modular kitchen" },
+    { "title": "Wardrobes", "href": "/products/wardrobe", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/wardrobe-card.jpg", "dataAiHint": "bedroom wardrobe" },
+    { "title": "Living Room Interiors", "href": "/products/living-room", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/living-room-card.jpg", "dataAiHint": "modern living room" }
+  ]
+}
+$$, $$
+{
+  "services": { "type": "repeater", "label": "Services" }
+}
+$$, 3, true),
+
+-- PORTFOLIO PAGE
+((SELECT id FROM pages WHERE slug = 'portfolio'), 'projects_gallery', 'Projects Gallery', $$
+{
+  "projects": [
+    { "id": 1, "title": "Modern Minimalist Living", "category": "Living Areas", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/portfolio-1.jpg", "dataAiHint": "minimalist living room" },
+    { "id": 2, "title": "Elegant U-Shaped Kitchen", "category": "Kitchens", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/portfolio-2.jpg", "dataAiHint": "u-shaped kitchen" },
+    { "id": 3, "title": "Sleek Sliding Wardrobe", "category": "Wardrobes", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/portfolio-3.jpg", "dataAiHint": "sliding wardrobe" },
+    { "id": 4, "title": "Cozy & Compact Bedroom", "category": "Bedrooms", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/portfolio-4.jpg", "dataAiHint": "compact bedroom" },
+    { "id": 5, "title": "Vibrant Family Room", "category": "Living Areas", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/portfolio-5.jpg", "dataAiHint": "family living room" },
+    { "id": 6, "title": "High-Gloss Parallel Kitchen", "category": "Kitchens", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/portfolio-6.jpg", "dataAiHint": "glossy kitchen" }
+  ]
+}
+$$, $$
+{
+  "projects": { "type": "repeater", "label": "Projects" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'portfolio'), 'partners', 'Partners', $$
+{
+    "title": "Our Trusted Partners",
+    "subtitle": "QUALITY YOU CAN TRUST",
+    "items": [
+        { "name": "Partner 1", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-1.png" },
+        { "name": "Partner 2", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-2.png" },
+        { "name": "Partner 3", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-3.png" },
+        { "name": "Partner 4", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-4.png" },
+        { "name": "Partner 5", "logoSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/partner-5.png" }
+    ]
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Title" },
+    "subtitle": { "type": "textarea", "label": "Subtitle" },
+    "items": { "type": "repeater", "label": "Items" }
+}
+$$, 2, true),
+
+-- HOW IT WORKS PAGE
+((SELECT id FROM pages WHERE slug = 'how-it-works'), 'hero', 'Hero', $$
+{
+  "title": "Our Process",
+  "subtitle": "A simple, transparent, and collaborative journey to your dream home.",
+  "backgroundImage": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/process-hero.jpg"
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "backgroundImage": { "type": "image", "label": "Background Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'how-it-works'), 'process', 'Process', $$
+{
+  "title": "How It Works",
+  "subtitle": "Your dream home is just 5 simple steps away.",
+  "steps": [
+    { "icon": "Handshake", "title": "Consultation", "description": "We start with a free consultation to understand your needs, style, and budget. We listen to your ideas and provide our expert input." },
+    { "icon": "PencilRuler", "title": "Design & 3D Visualization", "description": "Our designers create a customized plan with 2D layouts and realistic 3D views, so you can see exactly how your space will look." },
+    { "icon": "MessageSquareQuote", "title": "Material Selection & Quotation", "description": "We help you choose the best materials and finishes. You''ll receive a detailed, transparent quotation with no hidden costs." },
+    { "icon": "Truck", "title": "Production & Delivery", "description": "Once approved, your custom interiors are manufactured at our state-of-the-art facility and delivered to your doorstep." },
+    { "icon": "ShieldCheck", "title": "Installation & Handover", "description": "Our professional team handles the installation with precision. We conduct a final quality check and hand over your brand new interiors, complete with a warranty." }
+  ]
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "steps": { "type": "repeater", "label": "Process Steps" }
+}
+$$, 2, true),
+((SELECT id FROM pages WHERE slug = 'how-it-works'), 'why_us', 'Why Us', $$
+{
+  "title": "Why Our Process Works",
+  "subtitle": "We have refined our process to be efficient, transparent, and client-focused.",
+  "benefits": [
+    { "icon": "ThumbsUp", "title": "Client-Centric", "description": "Your needs and vision are at the core of everything we do. We collaborate closely with you at every stage." },
+    { "icon": "Wallet", "title": "Transparent Pricing", "description": "No surprises. We provide detailed quotes and ensure you know what you''re paying for from the very beginning." },
+    { "icon": "Smile", "title": "Hassle-Free Experience", "description": "We manage the entire project, from design to execution, ensuring a smooth and stress-free journey for you." }
+  ]
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "benefits": { "type": "repeater", "label": "Benefits" }
+}
+$$, 3, true),
+((SELECT id FROM pages WHERE slug = 'how-it-works'), 'get_started', 'Get Started', $$
+{
+  "title": "Ready to Start Your Project?",
+  "subtitle": "Let''s create a space you''ll love. Schedule a free consultation with our design experts today.",
+  "buttonText": "Book Free Consultation"
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" },
+  "buttonText": { "type": "text", "label": "Button Text" }
+}
+$$, 4, true),
+
+-- PRODUCTS PAGE
+((SELECT id FROM pages WHERE slug = 'products'), 'header', 'Header', $$
+{
+  "title": "Our Products",
+  "subtitle": "Explore our curated range of high-quality home interior products."
+}
+$$, $$
+{
+  "title": { "type": "text", "label": "Title" },
+  "subtitle": { "type": "textarea", "label": "Subtitle" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'products'), 'product_list', 'Product List', $$
+{
+  "products": [
+    { "name": "Modular Kitchens", "href": "/products/kitchen", "description": "Ergonomic designs, premium finishes, and smart storage.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-kitchen.jpg", "dataAiHint": "modular kitchen" },
+    { "name": "Wardrobes", "href": "/products/wardrobe", "description": "Customized storage solutions that blend style and functionality.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-wardrobe.jpg", "dataAiHint": "modern wardrobe" },
+    { "name": "Living Room", "href": "/products/living-room", "description": "Stylish and comfortable furniture for your living space.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-living.jpg", "dataAiHint": "living room" },
+    { "name": "Bedroom", "href": "/products/bedroom", "description": "Create a serene and personal retreat with our bedroom furniture.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-bedroom.jpg", "dataAiHint": "cozy bedroom" },
+    { "name": "Bathroom", "href": "/products/bathroom", "description": "Modern fittings and vanities for a refreshing bathroom space.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-bathroom.jpg", "dataAiHint": "modern bathroom" },
+    { "name": "Home Office", "href": "/products/home-office", "description": "Productive and stylish workspaces tailored for your home.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-office.jpg", "dataAiHint": "home office" },
+    { "name": "Space Saving Furniture", "href": "/products/space-saving-furniture", "description": "Innovative solutions to maximize space in compact homes.", "imageSrc": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-space-saving.jpg", "dataAiHint": "space saving furniture" }
+  ]
+}
+$$, $$
+{
+  "products": { "type": "repeater", "label": "Products" }
+}
+$$, 2, true),
+-- Individual Product Pages
+((SELECT id FROM pages WHERE slug = 'product-living-room'), 'product_details', 'Product Details', $$
+{
+    "title": "Living Room Furniture",
+    "description": "Create a living room that is both inviting and stylish with our range of furniture. From comfortable sofas to elegant TV units, we offer everything you need to make your living space the heart of your home. Our designs focus on combining aesthetics with practicality, ensuring your living room is perfect for both relaxation and entertaining.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-living.jpg"
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Product Title" },
+    "description": { "type": "textarea", "label": "Product Description" },
+    "image": { "type": "image", "label": "Product Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'product-bedroom'), 'product_details', 'Product Details', $$
+{
+    "title": "Bedroom Furniture",
+    "description": "Transform your bedroom into a personal sanctuary with our collection of beds, side tables, and dressers. We focus on creating a tranquil and comfortable atmosphere, with furniture that is both beautiful and built to last. Choose from a variety of styles to match your personal taste and create the bedroom of your dreams.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-bedroom.jpg"
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Product Title" },
+    "description": { "type": "textarea", "label": "Product Description" },
+    "image": { "type": "image", "label": "Product Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'product-bathroom'), 'product_details', 'Product Details', $$
+{
+    "title": "Bathroom Fittings & Vanities",
+    "description": "Upgrade your bathroom with our modern and durable fittings and vanities. We offer a range of products that combine sleek design with functionality, helping you create a refreshing and organized bathroom space. Our high-quality materials ensure longevity and ease of maintenance.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-bathroom.jpg"
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Product Title" },
+    "description": { "type": "textarea", "label": "Product Description" },
+    "image": { "type": "image", "label": "Product Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'product-home-office'), 'product_details', 'Product Details', $$
+{
+    "title": "Home Office Furniture",
+    "description": "Design a home office that inspires productivity and comfort. Our range of desks, chairs, and storage solutions are designed to create an ergonomic and stylish workspace. Whether you have a dedicated room or a small corner, we have solutions to fit your needs.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-office.jpg"
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Product Title" },
+    "description": { "type": "textarea", "label": "Product Description" },
+    "image": { "type": "image", "label": "Product Image" }
+}
+$$, 1, true),
+((SELECT id FROM pages WHERE slug = 'product-space-saving-furniture'), 'product_details', 'Product Details', $$
+{
+    "title": "Space-Saving Furniture",
+    "description": "Make the most of every square foot with our innovative space-saving furniture. Ideal for modern apartments and compact homes, our collection includes wall-mounted desks, foldable dining tables, and sofa-cum-beds. Enjoy a clutter-free and functional living space without compromising on style.",
+    "image": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-space-saving.jpg"
+}
+$$, $$
+{
+    "title": { "type": "text", "label": "Product Title" },
+    "description": { "type": "textarea", "label": "Product Description" },
+    "image": { "type": "image", "label": "Product Image" }
+}
+$$, 1, true),
+
+-- NO EDITABLE CONTENT FOR CONTACT PAGE, IT IS STATIC
+((SELECT id FROM pages WHERE slug = 'contact'), 'static_content', 'Static Content', '{}'::jsonb, '{}'::jsonb, 1, true)
+
+ON CONFLICT (page_id, type) DO UPDATE SET
+title = EXCLUDED.title,
+content = EXCLUDED.content,
+content_structure = EXCLUDED.content_structure,
+"order" = EXCLUDED."order",
+visible = EXCLUDED.visible;
+
+-- Seed stories
+INSERT INTO stories (id, slug, title, category, date, author, authorAvatar, excerpt, image, dataAiHint, content, clientImage, location, project, size, quote, gallery) VALUES
+(1, 'modern-kitchen-makeover-pune', 'Modern Kitchen Makeover in Pune', 'Kitchens', 'June 15, 2024', 'Priya Mehta', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-2.jpg', 'See how we transformed a cramped kitchen into a spacious, modern culinary haven for the Mehta family in Koregaon Park.', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-1-main.jpg', 'modern kitchen', 'The Mehta family wanted a kitchen that was not only beautiful but also highly functional for their daily cooking needs. We completely redesigned the layout, incorporating an L-shaped counter, smart storage solutions, and high-end finishes. The result is a bright, airy, and efficient kitchen that has become the heart of their home.', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-2.jpg', 'Koregaon Park, Pune', 'Modular Kitchen', '250 sqft', 'Our kitchen is now our favorite part of the house!', '[
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-1-gallery-1.jpg", "alt": "Kitchen before renovation", "dataAiHint": "old kitchen"},
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-1-gallery-2.jpg", "alt": "Kitchen after renovation", "dataAiHint": "new kitchen"},
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-1-gallery-3.jpg", "alt": "Smart storage solution", "dataAiHint": "kitchen storage"}
+]'),
+(2, 'luxury-living-room-design', 'Luxury Living Room for the Sharma Family', 'Living Areas', 'May 28, 2024', 'Rohan Sharma', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-1.jpg', 'A complete overhaul of a living area in Baner, creating a luxurious and welcoming space for relaxation and entertainment.', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-2-main.jpg', 'luxury living room', 'The Sharmas wanted a living room that exuded elegance and comfort. Our design included a custom entertainment unit, plush seating, and sophisticated lighting. We used a neutral color palette with bold accents to create a timeless and inviting atmosphere. The project was completed with bespoke furniture and curated decor pieces.', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-1.jpg', 'Baner, Pune', 'Living Room Interior', '400 sqft', 'The team delivered a space that perfectly reflects our style.', '[
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-2-gallery-1.jpg", "alt": "Living room before", "dataAiHint": "outdated living room"},
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-2-gallery-2.jpg", "alt": "Living room after", "dataAiHint": "modern living room"},
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-2-gallery-3.jpg", "alt": "Custom entertainment unit", "dataAiHint": "tv unit design"}
+]'),
+(3, 'compact-bedroom-wardrobe-solution', 'Smart Wardrobe Solution for a Compact Bedroom', 'Wardrobes', 'June 05, 2024', 'Anika and Rohan', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-4.jpg', 'Maximizing storage in a compact bedroom in Hinjewadi with a custom-designed sliding wardrobe and study unit.', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-3-main.jpg', 'bedroom wardrobe', 'For this project, the challenge was to create ample storage without making the room feel cramped. We designed a floor-to-ceiling sliding wardrobe with a reflective finish to create an illusion of space. An integrated study nook was also incorporated, making the room multi-functional. The client was thrilled with the smart and stylish solution.', 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/testimonial-4.jpg', 'Hinjewadi, Pune', 'Wardrobe & Study Unit', '150 sqft', 'They made our small room feel so much bigger and more functional!', '[
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-3-gallery-1.jpg", "alt": "Bedroom before", "dataAiHint": "small bedroom"},
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-3-gallery-2.jpg", "alt": "Bedroom after with wardrobe", "dataAiHint": "bedroom sliding wardrobe"},
+  {"src": "https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/story-3-gallery-3.jpg", "alt": "Integrated study unit", "dataAiHint": "study nook"}
+]')
+ON CONFLICT (id) DO UPDATE SET
+slug = EXCLUDED.slug,
+title = EXCLUDED.title,
+category = EXCLUDED.category,
+date = EXCLUDED.date,
+author = EXCLUDED.author,
+authorAvatar = EXCLUDED.authorAvatar,
+excerpt = EXCLUDED.excerpt,
+image = EXCLUDED.image,
+dataAiHint = EXCLUDED.dataAiHint,
+content = EXCLUDED.content,
+clientImage = EXCLUDED.clientImage,
+location = EXCLUDED.location,
+project = EXCLUDED.project,
+size = EXCLUDED.size,
+quote = EXCLUDED.quote,
+gallery = EXCLUDED.gallery;
