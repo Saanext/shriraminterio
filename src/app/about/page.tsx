@@ -15,7 +15,7 @@ async function getContent() {
         .single();
     
     if (!page) {
-        return null;
+        notFound();
     }
     
     const content: { [key: string]: any } = {};

@@ -1,4 +1,5 @@
 
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CookingPot, Sofa, Paintbrush, Bed, Tv, Home, ArrowRight } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
@@ -31,7 +32,7 @@ async function getContent() {
         .single();
     
     if (!page) {
-        return null;
+        notFound();
     }
     
     const content: { [key: string]: any } = {};
