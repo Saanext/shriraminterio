@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -21,6 +22,10 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'placehold.co',
       },
+       {
+        protocol: 'https',
+        hostname: 'gzlakbpbhhxxpzbbifus.supabase.co',
+      }
     ],
   },
 };

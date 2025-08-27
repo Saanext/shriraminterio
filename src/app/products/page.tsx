@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
@@ -7,49 +8,49 @@ const products = [
   {
     name: 'Modular Kitchens',
     href: '/products/kitchen',
-    imageSrc: 'https://images.unsplash.com/photo-1559554704-0f74b35a8718?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2R1bGFyJTIwa2l0Y2hlbnxlbnwwfHx8fDE3NTU3MTUzMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-kitchen.jpg',
     dataAiHint: 'modern kitchen',
     description: 'Explore our stunning range of modular kitchens, designed for style and efficiency.',
   },
   {
     name: 'Wardrobes',
     href: '/products/wardrobe',
-    imageSrc: 'https://images.unsplash.com/photo-1614631446501-abcf76949eca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx3YXJkcm9iZXN8ZW58MHx8fHwxNzU1NzE1MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/product-wardrobe.jpg',
     dataAiHint: 'modern wardrobe',
     description: 'Discover custom wardrobe solutions that maximize space and complement your decor.',
   },
   {
     name: 'Bedroom',
     href: '/products/bedroom',
-    imageSrc: '/b1.jpg',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/b1.jpg',
     dataAiHint: 'modern bedroom',
     description: 'Create your dream sanctuary with our bespoke bedroom interior designs.',
   },
   {
     name: 'Living Room',
     href: '/products/living-room',
-    imageSrc: '/b2.jpg',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/b2.jpg',
     dataAiHint: 'living room',
     description: 'Design inviting and functional living spaces for family and friends.',
   },
   {
     name: 'Bathroom',
     href: '/products/bathroom',
-    imageSrc: '/bath.jpg',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/bath.jpg',
     dataAiHint: 'modern bathroom',
     description: 'Stylish and practical bathroom designs for a refreshing experience.',
   },
   {
     name: 'Space Saving Furniture',
     href: '/products/space-saving-furniture',
-    imageSrc: '/SlidingWardrobe.jpg',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/SlidingWardrobe.jpg',
     dataAiHint: 'space saving',
     description: 'Maximize your living area with our innovative and smart furniture solutions.',
   },
   {
     name: 'Home Office',
     href: '/products/home-office',
-    imageSrc: '/kitchen.jpg',
+    imageSrc: 'https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/kitchen.jpg',
     dataAiHint: 'home office',
     description: 'Productive and comfortable home office setups tailored to your needs.',
   },

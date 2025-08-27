@@ -54,12 +54,12 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                 loop
                 playsInline
                 className="absolute inset-0 w-full h-full object-cover brightness-50 z-0"
-                poster="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+                poster="https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-poster.jpg"
               >
                 <source src={hero.videoUrl} type="video/mp4" />
                 <source src={hero.videoUrl} type="video/webm" />
                 <img
-                  src="https://images.unsplash.com/photo-1554995207-c18c203602cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80"
+                  src="https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-poster.jpg"
                   alt="Hero background"
                   className="w-full h-full object-cover"
                 />
