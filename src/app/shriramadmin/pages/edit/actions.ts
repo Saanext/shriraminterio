@@ -21,11 +21,11 @@ export async function savePageContent(pageId: number, pageSlug: string, sections
     
     // 2. Update each section
     for (const section of sections) {
-      const { data, error } = await supabase
+      const { id, page_id, order, title, type, content_structure, ...contentToUpdate } = section;
+      const { error } = await supabase
         .from('sections')
-        .update({ content: section.content, visible: section.visible })
+        .update(contentToUpdate)
         .eq('id', section.id)
-        .eq('page_id', pageId)
       
       if (error) {
         console.error(`Error updating section ${section.id}:`, error)

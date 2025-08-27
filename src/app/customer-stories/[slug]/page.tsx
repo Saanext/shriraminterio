@@ -16,7 +16,7 @@ async function getStory(slug: string) {
         .single();
     
     if (!story) {
-        notFound();
+        return null;
     }
     
     return story;
@@ -135,4 +135,14 @@ export default async function StoryPage({ params }: { params: { slug: string } }
       </section>
     </div>
   );
+}
+
+// Generate static paths for stories that exist at build time
+export async function generateStaticParams() {
+    const supabase = createClient();
+    const { data: stories } = await supabase.from('stories').select('slug');
+
+    return stories?.map(({ slug }) => ({
+        slug,
+    })) || [];
 }

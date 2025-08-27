@@ -28,7 +28,7 @@ const storySchema = z.object({
   size: z.string().min(1),
   quote: z.string().min(1),
   content: z.string().min(1),
-  gallery: z.array(galleryItemSchema),
+  gallery: z.array(galleryItemSchema).optional(),
 });
 
 export async function saveStory(data: z.infer<typeof storySchema>) {

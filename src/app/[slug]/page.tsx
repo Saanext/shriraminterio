@@ -106,9 +106,9 @@ export default async function DynamicPage({ params }: { params: { slug: string }
 // Generate static paths for pages that exist at build time
 export async function generateStaticParams() {
     const supabase = createClient();
-    const { data: pages } = await supabase.from('pages').select('slug');
+    const { data: pages } = await supabase.from('pages').select('slug, parent_slug');
 
-    return pages?.map(({ slug }) => ({
-        slug,
-    })) || [];
+    return pages?.map(({ slug, parent_slug }) => ({
+        slug: parent_slug ? `${parent_slug}/${slug}` : slug,
+    })).filter(page => page.slug !== 'home') || [];
 }

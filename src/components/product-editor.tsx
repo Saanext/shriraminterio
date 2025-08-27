@@ -24,8 +24,8 @@ const productSchema = z.object({
   short_description: z.string().min(1, "Short description is required"),
   long_description: z.string().min(1, "Long description is required"),
   main_image: z.string().url("A valid main image URL is required"),
-  features: z.array(z.string()).optional().default([]),
-  gallery: z.array(z.string()).optional().default([]),
+  features: z.array(z.object({ value: z.string() })).optional().default([]),
+  gallery: z.array(z.object({ value: z.string() })).optional().default([]),
   amazon_link: z.string().url("A valid Amazon URL is required").optional().or(z.literal('')),
 });
 
@@ -39,7 +39,11 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
 
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues: initialData || {
+    defaultValues: initialData ? {
+        ...initialData,
+        features: (initialData.features || []).map(f => ({ value: (f as any).value || f })),
+        gallery: (initialData.gallery || []).map(g => ({ value: (g as any).value || g })),
+    } : {
       name: '',
       slug: '',
       short_description: '',
@@ -93,12 +97,16 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
     const file = e.target.files?.[0];
     if (file) {
       const url = await handleImageUpload(file);
-      if (url) appendGallery(url);
+      if (url) appendGallery({ value: url });
     }
   };
 
   const onSubmit = async (data: ProductFormValues) => {
-    const result = await saveProduct(data);
+    const result = await saveProduct({
+        ...data,
+        features: data.features?.map(f => f.value),
+        gallery: data.gallery?.map(g => g.value),
+    });
     if (result.success) {
       toast({ title: 'Product saved successfully!' });
       router.push('/shriramadmin/products');
@@ -155,13 +163,13 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
               <CardContent className="space-y-4">
                 {featureFields.map((field, index) => (
                   <div key={field.id} className="flex items-center gap-2">
-                    <FormField control={form.control} name={`features.${index}`} render={({ field }) => (
+                    <FormField control={form.control} name={`features.${index}.value`} render={({ field }) => (
                       <FormItem className="flex-grow"><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                     )} />
                     <Button type="button" variant="destructive" size="icon" onClick={() => removeFeature(index)}><Trash2 className="h-4 w-4" /></Button>
                   </div>
                 ))}
-                <Button type="button" variant="outline" size="sm" onClick={() => appendFeature('')}>Add Feature</Button>
+                <Button type="button" variant="outline" size="sm" onClick={() => appendFeature({ value: '' })}>Add Feature</Button>
               </CardContent>
             </Card>
           </div>
@@ -184,7 +192,7 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
                     <div className="space-y-4">
                         {galleryFields.map((field, index) => (
                             <div key={field.id} className="flex items-center gap-2">
-                                <Image src={form.getValues(`gallery.${index}`)} alt={`Gallery image ${index + 1}`} width={80} height={60} className="rounded-md object-cover" />
+                                <Image src={form.getValues(`gallery.${index}.value`)} alt={`Gallery image ${index + 1}`} width={80} height={60} className="rounded-md object-cover" />
                                 <Button type="button" variant="destructive" size="icon" onClick={() => removeGallery(index)}>
                                     <Trash2 className="h-4 w-4" />
                                 </Button>

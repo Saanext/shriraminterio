@@ -15,7 +15,7 @@ import { createPage } from './actions';
 
 const pageSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  slug: z.string().min(1, 'Slug is required').regex(/^[a-z0-9-]+$/, 'Slug must be lowercase and contain no spaces'),
+  slug: z.string().min(1, 'Slug is required').regex(/^[a-z0-9-/]+$/, 'Slug must be lowercase and contain no spaces or special characters'),
   template: z.string().min(1, 'Please select a template'),
 });
 
@@ -119,7 +119,7 @@ export default function NewPage() {
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="generic">Generic Page</SelectItem>
-                        <SelectItem value="product">Product Page</SelectItem>
+                        <SelectItem value="product">Product Details Page</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

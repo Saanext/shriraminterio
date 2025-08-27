@@ -40,16 +40,20 @@ const templates = {
 
 export async function createPage(values: z.infer<typeof pageSchema>) {
   const supabase = createClient();
+  const slugParts = values.slug.split('/');
+  const finalSlug = slugParts.pop();
+  const parentSlug = slugParts.join('/') || null;
 
   // 1. Check if slug already exists
   const { data: existingPage, error: fetchError } = await supabase
     .from('pages')
     .select('slug')
-    .eq('slug', values.slug)
+    .eq('slug', finalSlug)
+    .eq('parent_slug', parentSlug)
     .single();
 
   if (existingPage) {
-    return { success: false, error: 'A page with this slug already exists.' };
+    return { success: false, error: 'A page with this slug already exists at this level.' };
   }
 
   // 2. Insert the new page
@@ -57,10 +61,10 @@ export async function createPage(values: z.infer<typeof pageSchema>) {
     .from('pages')
     .insert({
       title: values.title,
-      slug: values.slug,
+      slug: finalSlug,
       meta_title: values.title,
       meta_description: `Learn more about ${values.title}`,
-      parent_slug: values.template === 'product' ? 'products' : null
+      parent_slug: values.template === 'product' ? 'products' : parentSlug
     })
     .select('id')
     .single();

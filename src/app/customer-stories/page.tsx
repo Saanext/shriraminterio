@@ -1,5 +1,4 @@
 
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
@@ -21,10 +20,10 @@ async function getContent() {
         .single();
     
     if (!page) {
-        notFound();
+        return { content: null, stories: [] };
     }
     
-    const { data: stories } = await supabase.from('stories').select('*');
+    const { data: stories } = await supabase.from('stories').select('*').order('date', { ascending: false });
 
     const content: { [key: string]: any } = {};
     for (const section of page.sections) {
@@ -35,9 +34,8 @@ async function getContent() {
             title: section.title,
         };
     }
-    content.moreStories.stories = stories;
     
-    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+    return { content: { ...content, meta: { title: page.meta_title, description: page.meta_description } }, stories: stories || [] };
 }
 
 const FeaturedStory = ({ story, buttonText }: { story: any, buttonText: string }) => (
@@ -83,14 +81,14 @@ const FeaturedStory = ({ story, buttonText }: { story: any, buttonText: string }
 
 
 export default async function CustomerStoriesPage() {
-  const pageContent = await getContent();
+  const { content: pageContent, stories } = await getContent();
 
   if (!pageContent) {
     notFound();
   }
 
   const { header, featuredStory, moreStories, workGallery, partners, faq } = pageContent;
-  const stories = moreStories?.stories || [];
+  
   const [featured, ...otherStories] = stories;
   const galleryItems = workGallery?.items || [];
   const partnerItems = partners?.items || [];

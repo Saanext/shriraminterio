@@ -61,7 +61,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         setSections(newSections);
     };
 
-    const handleImageUpload = async (file: File, sectionIndex: number, fieldKey: string) => {
+    const handleImageUpload = async (file: File, sectionIndex: number, fieldKey: string, itemIndex?: number, itemFieldKey?: string) => {
         if (!file) return;
 
         setIsUploading(true);
@@ -85,7 +85,13 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         }
 
         const { data: { publicUrl } } = supabase.storage.from('public').getPublicUrl(fileName);
-        handleFieldChange(sectionIndex, fieldKey, publicUrl);
+        
+        if (itemIndex !== undefined && itemFieldKey) {
+            handleRepeaterChange(sectionIndex, fieldKey, itemIndex, itemFieldKey, publicUrl);
+        } else {
+            handleFieldChange(sectionIndex, fieldKey, publicUrl);
+        }
+
         update({
             id,
             title: 'Upload successful!',
@@ -112,22 +118,23 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         }
     };
     
-    const renderField = (sectionIndex: number, fieldKey: string, field: any) => {
-        const id = `section-${sectionIndex}-field-${fieldKey}`;
-        const value = sections[sectionIndex].content[fieldKey] || '';
-        const uploadId = `section-${sectionIndex}-upload-${fieldKey}`;
+    const renderField = (sectionIndex: number, fieldKey: string, field: any, itemIndex?: number, itemValue?: any) => {
+        const id = `section-${sectionIndex}-field-${fieldKey}` + (itemIndex !== undefined ? `-${itemIndex}` : '');
+        const value = itemIndex !== undefined ? itemValue : sections[sectionIndex].content[fieldKey] || '';
+        const uploadId = `section-${sectionIndex}-upload-${fieldKey}`+ (itemIndex !== undefined ? `-${itemIndex}` : '');
+        const isRepeaterField = itemIndex !== undefined;
 
         switch(field.type) {
             case 'text':
-                return <Input id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} />;
+                return <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, fieldKey, itemIndex!, field.label.toLowerCase(), e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} />;
             case 'textarea':
-                return <Textarea id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
+                return <Textarea id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, fieldKey, itemIndex!, field.label.toLowerCase(), e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
             case 'image':
                 return (
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-4">
                             {value && <img src={value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />}
-                            <Input id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
+                            <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, fieldKey, itemIndex!, field.label.toLowerCase(), e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
                         </div>
                         <div>
                             <Button asChild variant="outline" size="sm">
@@ -143,7 +150,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if(file) handleImageUpload(file, sectionIndex, fieldKey);
+                                    if(file) handleImageUpload(file, sectionIndex, fieldKey, isRepeaterField ? itemIndex : undefined, isRepeaterField ? field.label.toLowerCase() : undefined);
                                 }} 
                                 disabled={isUploading}
                             />
@@ -155,15 +162,12 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                      <div className="space-y-4 p-4 border rounded-md">
                         {(sections[sectionIndex].content[fieldKey] || []).map((item: any, itemIndex: number) => (
                            <Card key={itemIndex} className="p-4 bg-muted/50">
-                             <CardContent className="space-y-4 p-0">
-                                {Object.keys(item).map(itemFieldKey => (
+                             <CardHeader><CardTitle>Item {itemIndex + 1}</CardTitle></CardHeader>
+                             <CardContent className="space-y-4 p-0 pt-4">
+                                {Object.keys(field.fields).map(itemFieldKey => (
                                      <div key={itemFieldKey} className="space-y-2">
-                                        <Label htmlFor={`${id}-${itemIndex}-${itemFieldKey}`}>{itemFieldKey.charAt(0).toUpperCase() + itemFieldKey.slice(1)}</Label>
-                                        <Input 
-                                            id={`${id}-${itemIndex}-${itemFieldKey}`} 
-                                            value={item[itemFieldKey]}
-                                            onChange={(e) => handleRepeaterChange(sectionIndex, fieldKey, itemIndex, itemFieldKey, e.target.value)}
-                                        />
+                                        <Label htmlFor={`${id}-${itemIndex}-${itemFieldKey}`}>{field.fields[itemFieldKey].label}</Label>
+                                        {renderField(sectionIndex, fieldKey, field.fields[itemFieldKey], itemIndex, item[itemFieldKey])}
                                     </div>
                                 ))}
                              </CardContent>

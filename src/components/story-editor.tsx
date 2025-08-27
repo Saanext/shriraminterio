@@ -7,10 +7,9 @@ import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
@@ -19,7 +18,7 @@ import { Upload, Trash2 } from 'lucide-react';
 import { saveStory } from './story-actions';
 
 const galleryItemSchema = z.object({
-  src: z.string().url(),
+  src: z.string().url("A valid image URL is required"),
   alt: z.string().min(1, "Alt text is required"),
   dataAiHint: z.string().optional(),
 });
@@ -41,7 +40,7 @@ const storySchema = z.object({
   size: z.string().min(1, "Project size is required"),
   quote: z.string().min(1, "Quote is required"),
   content: z.string().min(1, "Content is required"),
-  gallery: z.array(galleryItemSchema),
+  gallery: z.array(galleryItemSchema).optional().default([]),
 });
 
 type StoryFormValues = z.infer<typeof storySchema>;
@@ -104,18 +103,18 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     if (file) {
         const url = await handleImageUpload(file);
         if (url) {
-            form.setValue(field, url, { shouldValidate: true });
+            form.setValue(field as any, url, { shouldValidate: true });
         }
     }
   };
   
-  const handleGalleryFileChange = (index: number) => async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGalleryFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-        const url = await handleImageUpload(file);
-        if (url) {
-            form.setValue(`gallery.${index}.src`, url, { shouldValidate: true });
-        }
+      const url = await handleImageUpload(file);
+      if (url) {
+        append({ src: url, alt: '', dataAiHint: '' });
+      }
     }
   };
 
@@ -124,13 +123,18 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     if (result.success) {
       toast({ title: 'Story saved successfully!' });
       router.push('/shriramadmin/stories');
-      router.refresh(); // To reflect changes in the list
+      router.refresh();
     } else {
       toast({ title: 'Error saving story', description: result.error, variant: 'destructive' });
     }
   };
 
   const isNew = !initialData;
+
+  const title = form.watch('title');
+  if (title && !form.formState.dirtyFields.slug) {
+      form.setValue('slug', title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+  }
 
   return (
     <Form {...form}>
@@ -148,25 +152,13 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
               <CardHeader><CardTitle>Story Details</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <FormField control={form.control} name="title" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <FormItem><FormLabel>Title</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField control={form.control} name="slug" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Slug</FormLabel>
-                    <FormControl><Input {...field} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <FormItem><FormLabel>Slug</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                  <FormField control={form.control} name="content" render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Content (HTML)</FormLabel>
-                    <FormControl><Textarea {...field} rows={15} /></FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <FormItem><FormLabel>Content (HTML)</FormLabel><FormControl><Textarea {...field} rows={15} /></FormControl><FormMessage /></FormItem>
                 )} />
               </CardContent>
             </Card>
@@ -202,35 +194,33 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
 
             <Card>
                 <CardHeader>
-                    <div className="flex justify-between items-center">
-                        <CardTitle>Project Gallery</CardTitle>
-                        <Button type="button" variant="outline" size="sm" onClick={() => append({ src: '', alt: '', dataAiHint: '' })}>Add Gallery Image</Button>
-                    </div>
+                    <CardTitle>Project Gallery</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    {fields.map((field, index) => (
-                        <Card key={field.id} className="p-4 bg-muted/50">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <FormField control={form.control} name={`gallery.${index}.src`} render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Image</FormLabel>
-                                    {field.value && <Image src={field.value} alt="Gallery item" width={80} height={80} className="rounded-md object-cover" />}
-                                    <FormControl><Input type="file" accept="image/*" onChange={handleGalleryFileChange(index)} /></FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                                )} />
-                                <FormField control={form.control} name={`gallery.${index}.alt`} render={({ field }) => (
-                                <FormItem><FormLabel>Alt Text</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-                                )} />
-                                <FormField control={form.control} name={`gallery.${index}.dataAiHint`} render={({ field }) => (
-                                <FormItem><FormLabel>AI Hint</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-                                )} />
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {fields.map((field, index) => (
+                            <div key={field.id} className="relative">
+                                <Image src={field.src} alt={field.alt} width={150} height={150} className="rounded-md object-cover" />
+                                <Button type="button" variant="destructive" size="icon" className="absolute top-1 right-1 h-6 w-6" onClick={() => remove(index)}>
+                                    <Trash2 className="h-4 w-4"/>
+                                </Button>
                             </div>
-                            <Button type="button" variant="destructive" size="sm" className="mt-4" onClick={() => remove(index)}>
-                                <Trash2 className="mr-2 h-4 w-4"/>Remove
-                            </Button>
-                        </Card>
-                    ))}
+                        ))}
+                    </div>
+                    <div className="relative mt-2">
+                       <Button asChild variant="outline" size="sm" className="w-full">
+                        <label htmlFor="gallery-upload" className="cursor-pointer">
+                            <Upload className="mr-2 h-4 w-4" /> Upload Gallery Image
+                        </label>
+                       </Button>
+                       <Input 
+                        id="gallery-upload"
+                        type="file" 
+                        className="sr-only" 
+                        accept="image/*"
+                        onChange={handleGalleryFileChange}
+                       />
+                    </div>
                 </CardContent>
             </Card>
 
