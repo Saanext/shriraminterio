@@ -529,7 +529,7 @@
             "type": "textarea"
           },
           "story": {
-            "heading": "Welcome to Shriram Interio deepak",
+            "heading": "Welcome to Shriram Interio",
             "subheading": "Since we started work in 2016",
             "image": {
               "value": "/r1.jpg",
@@ -678,7 +678,7 @@
           },
           "mission_vision": {
             "visionTitle": "Our Vision",
-            "visionText": "To be the most trusted and creative interior design firm in Maharashtra, known for our innovative solutions and unwavering commitment to quality.",
+            "visionText": "To be the most trusted and creative interior design firm in Maharashtra, known for our innovative solutions and unwavering commitment to quality. deeepak",
             "missionTitle": "Our Mission",
             "missionText": "To create beautiful, functional, and personal living spaces by listening to our clients, embracing creativity, and delivering excellence in every detail."
           }
