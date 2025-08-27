@@ -1,19 +1,25 @@
 
 
-'use client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { NAV_ITEMS } from '@/lib/constants';
+import { createClient } from '@/lib/supabase/server';
 import { FilePlus, MoreVertical, Pencil, Trash2, EyeOff } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 
-export default function PagesManagementPage() {
-    const allPages = [
-        ...NAV_ITEMS,
-        ...(NAV_ITEMS.find(item => item.href === '/about')?.subItems || []),
-    ];
+async function getPages() {
+    const supabase = createClient();
+    const { data: pages, error } = await supabase.from('pages').select('title, slug');
+    if (error) {
+        console.error('Error fetching pages:', error);
+        return [];
+    }
+    return pages;
+}
+
+export default async function PagesManagementPage() {
+    const pages = await getPages();
 
     return (
         <div>
@@ -39,10 +45,10 @@ export default function PagesManagementPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {allPages.map((page) => (
-                                <TableRow key={page.href}>
-                                    <TableCell className="font-medium">{page.label}</TableCell>
-                                    <TableCell>{page.href}</TableCell>
+                            {pages.map((page) => (
+                                <TableRow key={page.slug}>
+                                    <TableCell className="font-medium">{page.title}</TableCell>
+                                    <TableCell>/{page.slug}</TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
@@ -52,7 +58,7 @@ export default function PagesManagementPage() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
-                                                    <Link href={`/shriramadmin/pages/edit?page=${page.href.slice(1)}`}>
+                                                    <Link href={`/shriramadmin/pages/edit?page=${page.slug}`}>
                                                         <Pencil className="mr-2 h-4 w-4" />
                                                         <span>Edit</span>
                                                     </Link>
