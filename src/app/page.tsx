@@ -1,5 +1,4 @@
 
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -9,13 +8,40 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Video, Smartphone, IndianRupee, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { getContent } from '@/lib/page-content';
+import { createClient } from '@/lib/supabase/server';
+import { notFound } from 'next/navigation';
 
-export default function Home() {
-  const pageContent = getContent('home');
+async function getContent() {
+    const supabase = createClient();
+    const { data: page } = await supabase
+        .from('pages')
+        .select('*, sections(*)')
+        .eq('slug', 'home')
+        .single();
+    
+    if (!page) {
+        return null;
+    }
+    
+    const content: { [key: string]: any } = {};
+    for (const section of page.sections) {
+        const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
+        content[sectionKey] = {
+            ...section.content,
+            visible: section.visible,
+            title: section.title,
+        };
+    }
+    
+    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+}
+
+
+export default async function Home() {
+  const pageContent = await getContent();
 
   if (!pageContent) {
-    return <div>Loading...</div>;
+    notFound();
   }
 
   const { 

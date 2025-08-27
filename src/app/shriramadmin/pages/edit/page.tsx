@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { Suspense, useState, useRef, useEffect } from 'react';
@@ -16,79 +15,75 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
 import { Skeleton } from '@/components/ui/skeleton';
+import { createClient } from '@/lib/supabase/client';
 
 function EditPageImpl() {
     const { toast } = useToast();
     const searchParams = useSearchParams();
-    const pageSlug = searchParams.get('page') || '';
+    const pageSlug = searchParams.get('page') || 'home';
     
-    const [pageStructure, setPageStructure] = useState<any>(null);
+    const [pageData, setPageData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [sections, setSections] = useState<any[]>([]);
 
-    const fetchStructure = async () => {
-      try {
-          setLoading(true);
-          const response = await fetch('/api/get-page-structure');
-          if (!response.ok) {
-              throw new Error('Failed to fetch page structure');
-          }
-          const structure = await response.json();
-          setPageStructure(structure);
-      } catch (error) {
-          console.error(error);
-          toast({
-              title: "Error",
-              description: "Could not load page structure. Please try again.",
-              variant: 'destructive'
-          });
-      } finally {
-          setLoading(false);
-      }
-    }
+    const fetchPageData = async () => {
+        setLoading(true);
+        const supabase = createClient();
+        const { data, error } = await supabase
+            .from('pages')
+            .select('*, sections(*)')
+            .eq('slug', pageSlug)
+            .single();
+
+        if (error || !data) {
+            console.error('Error fetching page data:', error);
+            toast({
+                title: "Error",
+                description: "Could not load page data. Please try again.",
+                variant: 'destructive'
+            });
+            setPageData(null);
+            setSections([]);
+        } else {
+            setPageData(data);
+            setSections(data.sections.sort((a, b) => a.order - b.order));
+        }
+        setLoading(false);
+    };
 
     useEffect(() => {
-      fetchStructure();
+        fetchPageData();
     }, [pageSlug, toast]);
 
-
-    const allNavItems = [...NAV_ITEMS, ...NAV_ITEMS.flatMap(item => item.subItems || [])];
+    const handleFieldChange = (sectionIndex: number, fieldKey: string, value: any) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].content[fieldKey] = value;
+        setSections(newSections);
+    };
     
-    let pageKey = `/${pageSlug}`;
-    if (pageSlug.startsWith('products/')) {
-        pageKey = `/${pageSlug}`;
-    } else if (pageSlug.startsWith('customer-stories/')) {
-        pageKey = `/${pageSlug}`;
+    const handleRepeaterChange = (sectionIndex: number, fieldKey: string, itemIndex: number, itemFieldKey: string, value: any) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].content[fieldKey][itemIndex][itemFieldKey] = value;
+        setSections(newSections);
     }
-
-    const structureKey = pageKey.substring(1).replace(/-/g, '_') || 'home';
-    const structure = pageStructure ? (pageStructure as any)[structureKey] : null;
-    const pageData = allNavItems.find(p => p.href === pageKey);
-
-    const title = structure?.title || pageData?.label || "Page"
     
-    const formRef = useRef<HTMLFormElement>(null);
+    const handleVisibilityChange = (sectionIndex: number, checked: boolean) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].visible = checked;
+        setSections(newSections);
+    };
 
     const handleSaveChanges = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         
-        if (!formRef.current) return;
-
-        const formData = new FormData(formRef.current);
-        
-        // This conversion handles simple cases, but complex forms (especially with files)
-        // are better handled by passing formData directly if the action supports it.
-        // For this action, we expect a plain object.
-        const data = Object.fromEntries(formData.entries());
-
-        const result = await savePageContent(pageSlug, data);
+        const result = await savePageContent(pageSlug, sections);
         
         if (result.success) {
             toast({
                 title: "Changes Saved!",
                 description: "Your page content has been successfully updated.",
             });
-            // Refetch data to show the latest saved content in the form
-            fetchStructure();
+            fetchPageData();
         } else {
              toast({
                 title: "Error",
@@ -97,6 +92,51 @@ function EditPageImpl() {
             });
         }
     };
+    
+    const renderField = (sectionIndex: number, fieldKey: string, field: any) => {
+        const id = `section-${sectionIndex}-field-${fieldKey}`;
+        const value = sections[sectionIndex].content[fieldKey] || '';
+
+        switch(field.type) {
+            case 'text':
+                return <Input id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} />;
+            case 'textarea':
+                return <Textarea id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
+            case 'image':
+                 // This part needs a proper implementation for image uploads to Supabase storage.
+                 // For now, it's a text input for the URL.
+                return (
+                    <div className="flex items-center gap-4">
+                        <img src={value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />
+                        <Input id={id} value={value} onChange={(e) => handleFieldChange(sectionIndex, fieldKey, e.target.value)} />
+                    </div>
+                );
+            case 'repeater':
+                return (
+                     <div className="space-y-4 p-4 border rounded-md">
+                        {(sections[sectionIndex].content[fieldKey] || []).map((item: any, itemIndex: number) => (
+                           <Card key={itemIndex} className="p-4 bg-muted/50">
+                             <CardContent className="space-y-4 p-0">
+                                {Object.keys(item).map(itemFieldKey => (
+                                     <div key={itemFieldKey} className="space-y-2">
+                                        <Label htmlFor={`${id}-${itemIndex}-${itemFieldKey}`}>{itemFieldKey.charAt(0).toUpperCase() + itemFieldKey.slice(1)}</Label>
+                                        <Input 
+                                            id={`${id}-${itemIndex}-${itemFieldKey}`} 
+                                            value={item[itemFieldKey]}
+                                            onChange={(e) => handleRepeaterChange(sectionIndex, fieldKey, itemIndex, itemFieldKey, e.target.value)}
+                                        />
+                                    </div>
+                                ))}
+                             </CardContent>
+                           </Card>
+                        ))}
+                         <Button variant="outline" size="sm" type="button">Add New</Button>
+                    </div>
+                );
+            default:
+                return null;
+        }
+    }
 
     if (loading) {
         return (
@@ -134,8 +174,7 @@ function EditPageImpl() {
         )
     }
 
-
-    if (!structure && !pageData) {
+    if (!pageData) {
         return (
             <div>
                 <h1 className="text-3xl font-bold mb-8">Page Not Found</h1>
@@ -146,128 +185,76 @@ function EditPageImpl() {
             </div>
         )
     }
-    
-    const renderField = (field: any, fieldKey: string, parents: string[] = []) => {
-        const id = [...parents, fieldKey].join('-');
-        const name = [...parents, fieldKey].join('.');
-        
-        switch(field.type) {
-            case 'text':
-                return <Input name={name} id={id} defaultValue={field.value} />;
-            case 'textarea':
-                return <Textarea name={name} id={id} defaultValue={field.value} rows={5}/>;
-            case 'image':
-                return (
-                    <div className="flex items-center gap-4">
-                        <img src={field.value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />
-                        <Input type="hidden" name={`${name}.value`} defaultValue={field.value} />
-                         <Input type="file" name={`${name}.file`} id={id} className="max-w-xs"/>
-                        <Button variant="outline" type="button">
-                            <Upload className="mr-2 h-4 w-4"/>
-                            Change Image
-                        </Button>
-                    </div>
-                );
-            case 'repeater':
-                return (
-                     <div className="space-y-4 p-4 border rounded-md">
-                        {field.items.map((item: any, itemIndex: number) => (
-                           <Card key={itemIndex} className="p-4 bg-muted/50">
-                             <CardContent className="space-y-4 p-0">
-                                {Object.keys(item).map(itemKey => (
-                                     <div key={itemKey} className="space-y-2">
-                                        <Label htmlFor={`${id}-${itemIndex}-${itemKey}`}>{itemKey.charAt(0).toUpperCase() + itemKey.slice(1)}</Label>
-                                        <Input name={`${name}.items.${itemIndex}.${itemKey}`} id={`${id}-${itemIndex}-${itemKey}`} defaultValue={item[itemKey]} />
-                                    </div>
-                                ))}
-                             </CardContent>
-                           </Card>
-                        ))}
-                         <Button variant="outline" size="sm" type="button">Add New</Button>
-                    </div>
-                );
-            default:
-                return null;
-        }
-    }
 
     return (
         <div>
-            <form ref={formRef}>
-                <div className="flex justify-between items-center mb-8">
-                     <h1 className="text-3xl font-bold">Edit Page: {title}</h1>
-                    <div className="flex gap-4">
-                        <Button variant="outline" type="button">Preview</Button>
-                        <Button onClick={handleSaveChanges}>Save Changes</Button>
-                    </div>
+            <div className="flex justify-between items-center mb-8">
+                 <h1 className="text-3xl font-bold">Edit Page: {pageData.title}</h1>
+                <div className="flex gap-4">
+                    <Button variant="outline" asChild>
+                        <Link href={pageSlug === 'home' ? '/' : `/${pageSlug}`} target="_blank">Preview</Link>
+                    </Button>
+                    <Button onClick={handleSaveChanges}>Save Changes</Button>
                 </div>
+            </div>
+            
+            <div className="space-y-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Page Settings</CardTitle>
+                        <CardDescription>Manage SEO settings and page metadata.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="page-title">Page Title</Label>
+                                <Input id="page-title" value={pageData.title} disabled />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="page-slug">Slug</Label>
+                                <Input id="page-slug" value={pageData.slug} disabled />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="meta-title">Meta Title</Label>
+                            <Input id="meta-title" value={pageData.meta_title || ''} />
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="meta-description">Meta Description</Label>
+                            <Textarea id="meta-description" value={pageData.meta_description || ''} rows={3} />
+                        </div>
+                    </CardContent>
+                </Card>
 
-                <div className="space-y-8">
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>Page Settings</CardTitle>
-                            <CardDescription>Manage SEO settings and page metadata.</CardDescription>
+                {sections.map((section, index) => (
+                    <Card key={section.id}>
+                        <CardHeader className="flex flex-row items-center justify-between">
+                            <div>
+                                <CardTitle>{section.title}</CardTitle>
+                                <CardDescription>{section.type} section</CardDescription>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor={`section-${index}-visible`} className="text-sm text-muted-foreground">
+                                    {section.visible ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
+                                </Label>
+                                <Switch 
+                                    id={`section-${index}-visible`}
+                                    checked={section.visible}
+                                    onCheckedChange={(checked) => handleVisibilityChange(index, checked)}
+                                />
+                            </div>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <Label htmlFor="page-title">Page Title</Label>
-                                    <Input id="page-title" name="meta.title" defaultValue={pageData?.label || title} />
+                            {Object.entries(section.content_structure || {}).map(([key, field]: [string, any]) => (
+                                <div key={key} className="space-y-2">
+                                    <Label htmlFor={`section-${index}-field-${key}`}>{field.label}</Label>
+                                    {renderField(index, key, field)}
                                 </div>
-                                 <div className="space-y-2">
-                                    <Label htmlFor="page-slug">Slug</Label>
-                                    <Input id="page-slug" name="meta.slug" defaultValue={pageData?.href || `/${pageSlug}`} />
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="meta-title">Meta Title</Label>
-                                <Input id="meta-title" name="meta.metaTitle" defaultValue={structure?.metaTitle} />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="meta-description">Meta Description</Label>
-                                <Textarea id="meta-description" name="meta.metaDescription" defaultValue={structure?.metaDescription} rows={3} />
-                            </div>
+                            ))}
                         </CardContent>
                     </Card>
-
-                    {structure ? structure.sections.map((section: any, index: number) => (
-                        <Card key={index}>
-                            <CardHeader className="flex flex-row items-center justify-between">
-                                <div>
-                                    <CardTitle>{section.title}</CardTitle>
-                                    {section.fields && <CardDescription>Edit the content for this section.</CardDescription>}
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <Label htmlFor={`sections-${index}-visible`} className="text-sm text-muted-foreground">
-                                        {section.visible ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
-                                    </Label>
-                                    <Switch name={`sections.${index}.visible`} id={`sections-${index}-visible`} defaultChecked={section.visible} />
-                                </div>
-                            </CardHeader>
-                             {section.fields && (
-                                <CardContent className="space-y-6">
-                                    {Object.entries(section.fields).map(([key, field]: [string, any]) => (
-                                        <div key={key} className="space-y-2">
-                                            <Label htmlFor={`sections-${index}-fields-${key}`}>{field.label}</Label>
-                                            {renderField(field, key, ['sections', `${index}`, 'fields'])}
-                                        </div>
-                                    ))}
-                                </CardContent>
-                             )}
-                        </Card>
-                    )) : (
-                         <Card>
-                            <CardHeader>
-                                <CardTitle>Page Content</CardTitle>
-                                <CardDescription>This page does not have a structured editor yet.</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <Textarea rows={15} placeholder="Raw content can be edited here." />
-                            </CardContent>
-                        </Card>
-                    )}
-                </div>
-            </form>
+                ))}
+            </div>
         </div>
     );
 }

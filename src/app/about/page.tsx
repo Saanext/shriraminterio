@@ -3,13 +3,40 @@
 import Image from 'next/image';
 import { Users, Target, Eye, Layers, IndianRupee, CalendarCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getContent } from '@/lib/page-content';
+import { createClient } from '@/lib/supabase/server';
+import { notFound } from 'next/navigation';
 
-export default function AboutUsPage() {
-    const aboutContent = getContent('about');
+async function getContent() {
+    const supabase = createClient();
+    const { data: page } = await supabase
+        .from('pages')
+        .select('*, sections(*)')
+        .eq('slug', 'about')
+        .single();
+    
+    if (!page) {
+        return null;
+    }
+    
+    const content: { [key: string]: any } = {};
+    for (const section of page.sections) {
+        const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
+        content[sectionKey] = {
+            ...section.content,
+            visible: section.visible,
+            title: section.title,
+        };
+    }
+    
+    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+}
+
+
+export default async function AboutUsPage() {
+    const aboutContent = await getContent();
 
     if (!aboutContent) {
-        return <div>Loading...</div>; // Or a proper loading state
+        notFound();
     }
     
     return (
@@ -183,3 +210,4 @@ export default function AboutUsPage() {
         </div>
     );
 }
+
