@@ -100,18 +100,9 @@ export function Header() {
               )
             )}
           </nav>
-          <div className="p-4 mt-auto">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button className="w-full">Get a Quote</Button>
-              </SheetTrigger>
-              <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>Get a Free Quote</SheetTitle>
-                </SheetHeader>
-                <GetAQuoteForm />
-              </SheetContent>
-            </Sheet>
+          <div className="p-4 mt-auto border-t space-y-2">
+            <Button className="w-full">Login</Button>
+            <Button variant="outline" className="w-full">Sign Up</Button>
           </div>
         </div>
       </SheetContent>
@@ -220,22 +211,15 @@ export function Header() {
         {/* Desktop Navigation - Center */}
         {isMounted && !isMobile && renderDesktopMenu()}
         
-        {/* Get a Quote Button - Right Corner */}
+        {/* Auth Buttons - Right Corner */}
         <div className="ml-auto flex items-center">
           {isMounted && isMobile ? (
             renderMobileMenu()
           ) : (
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button>Get a Quote</Button>
-              </SheetTrigger>
-              <SheetContent className="w-full sm:max-w-lg overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle>Get a Free Quote</SheetTitle>
-                </SheetHeader>
-                <GetAQuoteForm />
-              </SheetContent>
-            </Sheet>
+            <div className="flex items-center gap-2">
+              <Button variant="ghost">Login</Button>
+              <Button>Sign Up</Button>
+            </div>
           )}
         </div>
       </div>

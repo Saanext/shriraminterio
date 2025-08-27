@@ -31,5 +31,4 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Services', href: '/services', icon: Wrench },
   { label: 'Portfolio', href: '/portfolio', icon: GalleryHorizontal },
   { label: 'Contact', href: '/contact', icon: Phone },
-  { label: 'Appointment', href: '/appointment', icon: CalendarPlus },
 ];
