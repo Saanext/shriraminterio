@@ -24,7 +24,8 @@ async function getPageContent(slug: string) {
 export default async function DynamicPage({ params }: { params: { slug: string } }) {
     // Exclude special routes from this dynamic page handler
     const excludedSlugs = ['shriramadmin', 'login', 'auth'];
-    if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
+    const slugRoot = params.slug.split('/')[0];
+    if (excludedSlugs.includes(slugRoot)) {
         notFound();
     }
         
