@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -119,9 +119,12 @@ export function ProductEditor({ initialData }: { initialData: any | null }) {
   const isNew = !initialData;
   
   const name = form.watch('name');
-  if (name && !form.formState.dirtyFields.slug) {
-      form.setValue('slug', name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
-  }
+  
+  useEffect(() => {
+    if (name && !form.formState.dirtyFields.slug) {
+        form.setValue('slug', name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+    }
+  }, [name, form.setValue, form.formState.dirtyFields.slug]);
 
 
   return (

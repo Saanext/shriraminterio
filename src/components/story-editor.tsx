@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -141,9 +141,12 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
   const isNew = !initialData;
 
   const title = form.watch('title');
-  if (title && !form.formState.dirtyFields.slug) {
-      form.setValue('slug', title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
-  }
+  
+  useEffect(() => {
+    if (title && !form.formState.dirtyFields.slug) {
+        form.setValue('slug', title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+    }
+  }, [title, form.setValue, form.formState.dirtyFields.slug]);
 
   return (
     <Form {...form}>
@@ -212,6 +215,9 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
                                 <div className="relative aspect-square">
                                     {field.src && <Image src={field.src} alt={field.alt || `Gallery Image ${index + 1}`} layout="fill" className="rounded-md object-cover" />}
                                 </div>
+                                <FormField control={form.control} name={`gallery.${index}.src`} render={({ field }) => (
+                                    <FormItem className="w-full"><FormControl><Input placeholder="Image URL" {...field} /></FormControl><FormMessage /></FormItem>
+                                )} />
                                 <FormField control={form.control} name={`gallery.${index}.alt`} render={({ field }) => (
                                     <FormItem className="w-full"><FormControl><Input placeholder="Alt text" {...field} /></FormControl><FormMessage /></FormItem>
                                 )} />
