@@ -35,12 +35,12 @@ export function StoryDeleteAction({ storyId, children }: { storyId: number; chil
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                 <div
-                    className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-destructive"
-                    onClick={(e) => e.preventDefault()}
-                 >
+                <DropdownMenuItem
+                    onSelect={(e) => e.preventDefault()}
+                    className="text-destructive focus:text-destructive"
+                >
                     {children}
-                 </div>
+                </DropdownMenuItem>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
