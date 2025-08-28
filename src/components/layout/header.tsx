@@ -148,8 +148,9 @@ export function Header() {
             )}
           </nav>
           <div className="p-4 mt-auto border-t space-y-2">
-            <Button className="w-full">Login</Button>
-            <Button variant="outline" className="w-full">Sign Up</Button>
+             <Button asChild className="w-full">
+                <Link href="/get-a-quote" onClick={() => setIsMobileMenuOpen(false)}>Get Quote</Link>
+            </Button>
           </div>
         </div>
       </SheetContent>
@@ -260,8 +261,9 @@ export function Header() {
             renderMobileMenu()
           ) : (
             <div className="flex items-center gap-2">
-              <Button variant="ghost">Login</Button>
-              <Button>Sign Up</Button>
+              <Button asChild>
+                <Link href="/get-a-quote">Get Quote</Link>
+              </Button>
             </div>
           )}
         </div>
