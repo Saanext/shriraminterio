@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useQuoteSidebar } from '@/components/quote-sidebar-provider';
+import { useEffect, useState } from 'react';
 
 
 // Generic Component to render a section based on its type
@@ -89,8 +90,7 @@ async function getPageContent(slug: string) {
     return page;
 }
 
-export default function DynamicPage({ pageContent, params }: { pageContent: any, params: { slug: string } }) {
-
+function DynamicPageClient({ pageContent }: { pageContent: any }) {
     return (
         <div>
             {pageContent.sections.map((section: any) => (
@@ -100,6 +100,34 @@ export default function DynamicPage({ pageContent, params }: { pageContent: any,
     );
 }
 
+export default function DynamicPage({ params }: { params: { slug: string } }) {
+    const [pageContent, setPageContent] = useState<any>(null);
+
+    useEffect(() => {
+        // Exclude special routes from this dynamic page handler
+        const excludedSlugs = ['shriramadmin', 'login', 'auth'];
+        if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
+            notFound();
+        }
+        
+        async function loadPageContent() {
+            const content = await getPageContent(params.slug);
+            if (!content) {
+                notFound();
+            }
+            setPageContent(content);
+        }
+        loadPageContent();
+
+    }, [params.slug])
+
+    if (!pageContent) {
+        return <div>Loading...</div>
+    }
+
+    return <DynamicPageClient pageContent={pageContent} />;
+}
+
 export async function generateStaticParams() {
     const supabase = createBrowserClient();
     const { data: pages } = await supabase.from('pages').select('slug, parent_slug');
@@ -107,25 +135,4 @@ export async function generateStaticParams() {
     return pages?.map(({ slug, parent_slug }) => ({
         slug: parent_slug ? `${parent_slug}/${slug}` : slug,
     })).filter(page => page.slug !== 'home') || [];
-}
-
-export async function getStaticProps({ params }: { params: { slug: string } }) {
-    // Exclude special routes from this dynamic page handler
-    const excludedSlugs = ['shriramadmin', 'login', 'auth'];
-    if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
-        return { notFound: true };
-    }
-    
-    const pageContent = await getPageContent(params.slug);
-
-    if (!pageContent) {
-        return { notFound: true };
-    }
-
-    return {
-        props: {
-            pageContent
-        },
-        revalidate: 60 // Revalidate every 60 seconds
-    };
 }

@@ -18,7 +18,7 @@ async function getStory(slug: string) {
         .single();
     
     if (!story) {
-        return null;
+        notFound();
     }
     
     return story;
@@ -27,10 +27,6 @@ async function getStory(slug: string) {
 
 export default async function StoryPage({ params }: { params: { slug: string } }) {
   const story = await getStory(params.slug);
-
-  if (!story) {
-    notFound();
-  }
 
   return (
     <div className="bg-background">

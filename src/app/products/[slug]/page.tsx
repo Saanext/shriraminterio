@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { CheckCircle, ShoppingCart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useQuoteSidebar } from '@/components/quote-sidebar-provider';
+import { useEffect, useState } from 'react';
 
 async function getProduct(slug: string) {
   const supabase = createServerClient();
@@ -26,11 +27,10 @@ async function getProduct(slug: string) {
   return product;
 }
 
-export default function ProductDetailPage({ product }: { product: any }) {
+function ProductDetailClient({ product }: { product: any }) {
   const { setIsOpen } = useQuoteSidebar();
 
   if (!product) {
-    // This should be handled by getStaticProps, but as a fallback
     notFound();
   }
 
@@ -99,6 +99,27 @@ export default function ProductDetailPage({ product }: { product: any }) {
   );
 }
 
+export default function ProductDetailPage({ params }: { params: { slug: string }}) {
+  const [product, setProduct] = useState<any>(null);
+  
+  useEffect(() => {
+    async function loadProduct() {
+        const productData = await getProduct(params.slug);
+        if (!productData) {
+            notFound();
+        }
+        setProduct(productData);
+    }
+    loadProduct();
+  }, [params.slug]);
+
+  if(!product) {
+    return <div>Loading...</div>
+  }
+
+  return <ProductDetailClient product={product} />
+}
+
 export async function generateStaticParams() {
     const supabase = createBrowserClient();
     const { data: products } = await supabase.from('products').select('slug');
@@ -106,21 +127,4 @@ export async function generateStaticParams() {
     return products?.map(({ slug }) => ({
         slug,
     })) || [];
-}
-
-export async function getStaticProps({ params }: { params: { slug: string }}) {
-    const product = await getProduct(params.slug);
-
-    if (!product) {
-        return {
-            notFound: true,
-        };
-    }
-
-    return {
-        props: {
-            product,
-        },
-        revalidate: 60, // Revalidate every 60 seconds
-    };
 }
