@@ -3,41 +3,33 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Download, Settings, Trash2 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
+import { format } from 'date-fns';
 
-const sampleSubmissions = [
-    {
-        name: 'Rohan Sharma',
-        email: 'rohan.sharma@example.com',
-        phone: '+91 9876543210',
-        service: 'Full Home Interiors',
-        date: '2024-06-10',
-        floorplan: '2 BHK',
-        items: 'Kitchen, Wardrobe',
-        purpose: 'New Home'
-    },
-    {
-        name: 'Priya Mehta',
-        email: 'priya.mehta@example.com',
-        phone: '+91 9876543211',
-        service: 'Modular Kitchen',
-        date: '2024-06-11',
-        floorplan: '3 BHK',
-        items: 'Kitchen',
-        purpose: 'Renovation'
-    },
-];
+async function getSubmissions() {
+    const supabase = createClient();
+    const { data, error } = await supabase.from('quotes').select('*').order('created_at', { ascending: false });
+    if (error) {
+        console.error("Error fetching quotes:", error);
+        return [];
+    }
+    return data;
+}
 
-export default function QuoteManagementPage() {
+
+export default async function QuoteManagementPage() {
+    const submissions = await getSubmissions();
+
     return (
         <div>
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold">"Get Quote" Form Management</h1>
                 <div className="flex gap-2">
-                    <Button variant="outline">
+                    <Button variant="outline" disabled>
                         <Settings className="w-5 h-5 mr-2" />
                         Customize Form
                     </Button>
-                    <Button>
+                    <Button disabled>
                         <Download className="w-5 h-5 mr-2" />
                         Export Submissions
                     </Button>
@@ -52,28 +44,28 @@ export default function QuoteManagementPage() {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead>Date</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Email</TableHead>
                                 <TableHead>Phone</TableHead>
                                 <TableHead>Floorplan</TableHead>
-                                <TableHead>Items</TableHead>
                                 <TableHead>Purpose</TableHead>
-                                <TableHead>Date</TableHead>
+                                <TableHead>Message</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {sampleSubmissions.map((submission) => (
-                                <TableRow key={submission.email}>
+                            {submissions.map((submission) => (
+                                <TableRow key={submission.id}>
+                                     <TableCell>{format(new Date(submission.created_at), 'PPP')}</TableCell>
                                     <TableCell className="font-medium">{submission.name}</TableCell>
                                     <TableCell>{submission.email}</TableCell>
                                     <TableCell>{submission.phone}</TableCell>
                                     <TableCell>{submission.floorplan}</TableCell>
-                                    <TableCell>{submission.items}</TableCell>
                                     <TableCell>{submission.purpose}</TableCell>
-                                    <TableCell>{submission.date}</TableCell>
+                                    <TableCell className="max-w-xs truncate">{submission.message}</TableCell>
                                     <TableCell className="text-right">
-                                        <Button variant="ghost" size="icon">
+                                        <Button variant="ghost" size="icon" disabled>
                                             <Trash2 className="h-4 w-4 text-destructive" />
                                         </Button>
                                     </TableCell>

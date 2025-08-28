@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,9 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { saveQuote } from './quote-actions';
+import { useQuoteSidebar } from "./quote-sidebar-provider";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -41,17 +42,9 @@ const formSchema = z.object({
   message: z.string().optional(),
 });
 
-const formItems = [
-    { id: "kitchen", label: "Kitchen" },
-    { id: "bed", label: "Bed" },
-    { id: "wardrobe", label: "Wardrobe" },
-    { id: "studyUnit", label: "Study Unit" },
-    { id: "entertainmentUnit", label: "Entertainment Unit" },
-    { id: "crockeryUnit", label: "Crockery Unit" },
-]
-
 export function GetAQuoteForm() {
     const { toast } = useToast();
+    const { setIsOpen } = useQuoteSidebar();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -59,16 +52,28 @@ export function GetAQuoteForm() {
             name: "",
             email: "",
             phone: "",
+            floorplan: "",
+            purpose: "",
+            message: "",
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        toast({
-            title: "Quote Request Submitted!",
-            description: "Thank you for your request. We will get back to you shortly.",
-        });
-        form.reset();
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const result = await saveQuote(values);
+        if (result.success) {
+            toast({
+                title: "Quote Request Submitted!",
+                description: "Thank you for your request. We will get back to you shortly.",
+            });
+            form.reset();
+            setIsOpen(false);
+        } else {
+            toast({
+                title: 'Error',
+                description: result.error,
+                variant: 'destructive',
+            });
+        }
     }
 
     return (
@@ -182,7 +187,9 @@ export function GetAQuoteForm() {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" size="lg" className="w-full">Submit</Button>
+                <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Submitting...' : 'Submit'}
+                </Button>
             </form>
         </Form>
     );
