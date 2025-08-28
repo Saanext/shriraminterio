@@ -1,5 +1,6 @@
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient as createServerClient } from '@/lib/supabase/server';
+import { createClient as createBrowserClient } from '@/lib/supabase/client';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -65,7 +66,7 @@ const HeroSection = ({ content }: { content: any }) => (
 
 
 async function getPageContent(slug: string) {
-    const supabase = createClient();
+    const supabase = createServerClient();
     const { data: page } = await supabase
         .from('pages')
         .select('*, sections(*)')
@@ -105,7 +106,7 @@ export default async function DynamicPage({ params }: { params: { slug: string }
 
 // Generate static paths for pages that exist at build time
 export async function generateStaticParams() {
-    const supabase = createClient();
+    const supabase = createBrowserClient();
     const { data: pages } = await supabase.from('pages').select('slug, parent_slug');
 
     return pages?.map(({ slug, parent_slug }) => ({

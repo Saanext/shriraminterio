@@ -5,10 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { CalendarDays, Tag, User, MapPin, Building, Bed } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { createClient } from '@/lib/supabase/server';
+import { createClient as createServerClient } from '@/lib/supabase/server';
+import { createClient as createBrowserClient } from '@/lib/supabase/client';
+
 
 async function getStory(slug: string) {
-    const supabase = createClient();
+    const supabase = createServerClient();
     const { data: story } = await supabase
         .from('stories')
         .select('*')
@@ -149,7 +151,7 @@ export default async function StoryPage({ params }: { params: { slug: string } }
 
 // Generate static paths for stories that exist at build time
 export async function generateStaticParams() {
-    const supabase = createClient();
+    const supabase = createBrowserClient();
     const { data: stories } = await supabase.from('stories').select('slug');
 
     return stories?.map(({ slug }) => ({

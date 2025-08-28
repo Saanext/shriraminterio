@@ -1,7 +1,8 @@
 
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { createClient as createServerClient } from '@/lib/supabase/server';
+import { createClient as createBrowserClient } from '@/lib/supabase/client';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ import { CheckCircle, ShoppingCart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 async function getProduct(slug: string) {
-  const supabase = createClient();
+  const supabase = createServerClient();
   const { data: product, error } = await supabase
     .from('products')
     .select('*')
@@ -96,7 +97,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 
 // Generate static paths for products that exist at build time
 export async function generateStaticParams() {
-    const supabase = createClient();
+    const supabase = createBrowserClient();
     const { data: products } = await supabase.from('products').select('slug');
 
     return products?.map(({ slug }) => ({

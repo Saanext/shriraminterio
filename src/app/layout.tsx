@@ -28,8 +28,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className={`${playfairDisplay.variable} ${comfortaa.variable}`}>
-      <head>
-      </head>
       <body className="font-body antialiased">
         <WebLayout>
           {children}
