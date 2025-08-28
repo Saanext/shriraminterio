@@ -283,24 +283,18 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               </div>
             </TabsContent>
             <TabsContent value="wardrobes">
-               <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
-                <CarouselContent className="-ml-2 sm:-ml-4">
+               <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                   {bestSellingWardrobes.map((item: any, index: number) => (
-                    <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/4">
-                       <Card className="overflow-hidden">
-                        <div className="relative aspect-[3/4]">
-                           <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
-                        </div>
-                        <CardContent className="p-3 sm:p-4">
-                           <h3 className="text-sm sm:text-base lg:text-lg font-bold leading-tight">{item.name}</h3>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
+                    <Card key={index} className="overflow-hidden">
+                      <div className="relative aspect-[3/4]">
+                         <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
+                      </div>
+                      <CardContent className="p-3 sm:p-4">
+                         <h3 className="text-sm sm:text-base lg:text-lg font-bold leading-tight">{item.name}</h3>
+                      </CardContent>
+                    </Card>
                   ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-2 sm:left-4" />
-                <CarouselNext className="right-2 sm:right-4" />
-              </Carousel>
+              </div>
             </TabsContent>
           </Tabs>
         </div>
