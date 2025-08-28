@@ -1,4 +1,6 @@
 
+'use client';
+
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
 import { notFound } from 'next/navigation';
@@ -6,6 +8,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useQuoteSidebar } from '@/components/quote-sidebar-provider';
+
 
 // Generic Component to render a section based on its type
 const SectionRenderer = ({ section }: { section: any }) => {
@@ -21,31 +25,34 @@ const SectionRenderer = ({ section }: { section: any }) => {
 };
 
 // Specific component for 'product_details' section
-const ProductDetailsSection = ({ content }: { content: any }) => (
-    <div className="container mx-auto px-4 py-16">
-        <Card>
-            <CardHeader>
-                <CardTitle className="text-3xl text-center">{content.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center">
-                <Image
-                    src={content.image}
-                    alt={content.title}
-                    data-ai-hint="product image"
-                    width={600}
-                    height={400}
-                    className="rounded-lg shadow-lg mx-auto mb-8"
-                />
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                    {content.description}
-                </p>
-                <Button asChild size="lg">
-                    <Link href="/get-a-quote">Get a Free Quote</Link>
-                </Button>
-            </CardContent>
-        </Card>
-    </div>
-);
+const ProductDetailsSection = ({ content }: { content: any }) => {
+    const { setIsOpen } = useQuoteSidebar();
+    return (
+        <div className="container mx-auto px-4 py-16">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="text-3xl text-center">{content.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                    <Image
+                        src={content.image}
+                        alt={content.title}
+                        data-ai-hint="product image"
+                        width={600}
+                        height={400}
+                        className="rounded-lg shadow-lg mx-auto mb-8"
+                    />
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+                        {content.description}
+                    </p>
+                    <Button onClick={() => setIsOpen(true)} size="lg">
+                        Get a Free Quote
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
+    );
+}
 
 const HeroSection = ({ content }: { content: any }) => (
     <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
@@ -82,29 +89,17 @@ async function getPageContent(slug: string) {
     return page;
 }
 
-export default async function DynamicPage({ params }: { params: { slug: string } }) {
-    // Exclude special routes from this dynamic page handler
-    const excludedSlugs = ['shriramadmin', 'login', 'auth'];
-    if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
-        notFound();
-    }
-    
-    const pageContent = await getPageContent(params.slug);
-
-    if (!pageContent) {
-        notFound();
-    }
+export default function DynamicPage({ pageContent, params }: { pageContent: any, params: { slug: string } }) {
 
     return (
         <div>
-            {pageContent.sections.map(section => (
+            {pageContent.sections.map((section: any) => (
                 section.visible ? <SectionRenderer key={section.id} section={section} /> : null
             ))}
         </div>
     );
 }
 
-// Generate static paths for pages that exist at build time
 export async function generateStaticParams() {
     const supabase = createBrowserClient();
     const { data: pages } = await supabase.from('pages').select('slug, parent_slug');
@@ -112,4 +107,25 @@ export async function generateStaticParams() {
     return pages?.map(({ slug, parent_slug }) => ({
         slug: parent_slug ? `${parent_slug}/${slug}` : slug,
     })).filter(page => page.slug !== 'home') || [];
+}
+
+export async function getStaticProps({ params }: { params: { slug: string } }) {
+    // Exclude special routes from this dynamic page handler
+    const excludedSlugs = ['shriramadmin', 'login', 'auth'];
+    if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
+        return { notFound: true };
+    }
+    
+    const pageContent = await getPageContent(params.slug);
+
+    if (!pageContent) {
+        return { notFound: true };
+    }
+
+    return {
+        props: {
+            pageContent
+        },
+        revalidate: 60 // Revalidate every 60 seconds
+    };
 }

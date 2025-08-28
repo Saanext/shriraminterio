@@ -14,6 +14,7 @@ import { motion } from 'framer-motion';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { createClient } from '@/lib/supabase/client';
+import { useQuoteSidebar } from '@/components/quote-sidebar-provider';
 
 const iconMap: { [key: string]: LucideIcon } = {
     'home': Home,
@@ -38,6 +39,7 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [navItems, setNavItems] = useState<NavItem[]>([]);
+  const { setIsOpen } = useQuoteSidebar();
   
   const isMobile = useIsMobile();
   
@@ -148,8 +150,8 @@ export function Header() {
             )}
           </nav>
           <div className="p-4 mt-auto border-t space-y-2">
-             <Button asChild className="w-full">
-                <Link href="/get-a-quote" onClick={() => setIsMobileMenuOpen(false)}>Get Quote</Link>
+             <Button className="w-full" onClick={() => { setIsOpen(true); setIsMobileMenuOpen(false); }}>
+                Get Quote
             </Button>
           </div>
         </div>
@@ -261,9 +263,7 @@ export function Header() {
             renderMobileMenu()
           ) : (
             <div className="flex items-center gap-2">
-              <Button asChild>
-                <Link href="/get-a-quote">Get Quote</Link>
-              </Button>
+              <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
             </div>
           )}
         </div>

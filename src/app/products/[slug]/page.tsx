@@ -1,4 +1,6 @@
 
+'use client';
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { createClient as createServerClient } from '@/lib/supabase/server';
@@ -8,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle, ShoppingCart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useQuoteSidebar } from '@/components/quote-sidebar-provider';
 
 async function getProduct(slug: string) {
   const supabase = createServerClient();
@@ -23,10 +26,11 @@ async function getProduct(slug: string) {
   return product;
 }
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const product = await getProduct(params.slug);
+export default function ProductDetailPage({ product }: { product: any }) {
+  const { setIsOpen } = useQuoteSidebar();
 
   if (!product) {
+    // This should be handled by getStaticProps, but as a fallback
     notFound();
   }
 
@@ -39,7 +43,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
           <div>
             <Carousel className="w-full">
               <CarouselContent>
-                {galleryImages.map((image, index) => (
+                {galleryImages.map((image: any, index: number) => (
                   <CarouselItem key={index}>
                     <Card className="overflow-hidden">
                       <CardContent className="flex aspect-video items-center justify-center p-0">
@@ -77,8 +81,8 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
               </ul>
             </div>
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg">
-                <Link href="/get-a-quote">Get a Free Quote</Link>
+              <Button onClick={() => setIsOpen(true)} size="lg">
+                Get a Free Quote
               </Button>
               {product.amazon_link && (
                 <Button asChild size="lg" variant="outline">
@@ -95,7 +99,6 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
   );
 }
 
-// Generate static paths for products that exist at build time
 export async function generateStaticParams() {
     const supabase = createBrowserClient();
     const { data: products } = await supabase.from('products').select('slug');
@@ -103,4 +106,21 @@ export async function generateStaticParams() {
     return products?.map(({ slug }) => ({
         slug,
     })) || [];
+}
+
+export async function getStaticProps({ params }: { params: { slug: string }}) {
+    const product = await getProduct(params.slug);
+
+    if (!product) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return {
+        props: {
+            product,
+        },
+        revalidate: 60, // Revalidate every 60 seconds
+    };
 }
