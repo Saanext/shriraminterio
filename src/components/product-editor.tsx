@@ -31,7 +31,7 @@ const productSchema = z.object({
 
 type ProductFormValues = z.infer<typeof productSchema>;
 
-export function ProductEditor({ initialData }: { initialData: ProductFormValues | null }) {
+export function ProductEditor({ initialData }: { initialData: any | null }) {
   const router = useRouter();
   const { toast } = useToast();
   const supabase = createClient();
@@ -41,8 +41,8 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
     resolver: zodResolver(productSchema),
     defaultValues: initialData ? {
         ...initialData,
-        features: (initialData.features || []).map(f => ({ value: (f as any).value || f })),
-        gallery: (initialData.gallery || []).map(g => ({ value: (g as any).value || g })),
+        features: (initialData.features || []).map((f: string) => ({ value: f })),
+        gallery: (initialData.gallery || []).map((g: string) => ({ value: g })),
     } : {
       name: '',
       slug: '',
@@ -104,8 +104,8 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
   const onSubmit = async (data: ProductFormValues) => {
     const result = await saveProduct({
         ...data,
-        features: data.features?.map(f => f.value),
-        gallery: data.gallery?.map(g => g.value),
+        features: (data.features || []).map(f => f.value),
+        gallery: (data.gallery || []).map(g => g.value),
     });
     if (result.success) {
       toast({ title: 'Product saved successfully!' });
@@ -119,8 +119,7 @@ export function ProductEditor({ initialData }: { initialData: ProductFormValues 
   const isNew = !initialData;
   
   const name = form.watch('name');
-  const slug = form.watch('slug');
-  if (name && !slug && !form.formState.dirtyFields.slug) {
+  if (name && !form.formState.dirtyFields.slug) {
       form.setValue('slug', name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
   }
 
