@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, ChevronDown, LucideIcon, Home, Info, BookText, ShoppingCart, GanttChartSquare, Wrench, GalleryHorizontal, Phone } from 'lucide-react';
+import { Menu, ChevronDown, LucideIcon, Home, Info, BookText, ShoppingCart, GanttChartSquare, Wrench, GalleryHorizontal, Phone, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -25,6 +25,7 @@ const iconMap: { [key: string]: LucideIcon } = {
     'services': Wrench,
     'portfolio': GalleryHorizontal,
     'contact': Phone,
+    'clients': Users
 };
 
 type NavItem = {
@@ -57,7 +58,7 @@ export function Header() {
             return;
         }
         
-        const items: NavItem[] = data
+        let items: NavItem[] = data
             .filter(item => !item.parent_slug)
             .map(item => ({
                 title: item.title,
@@ -71,6 +72,27 @@ export function Header() {
                         icon: iconMap[sub.slug] || Home
                     }))
             }));
+        
+        // Manual restructuring for "About Us" dropdown
+        const aboutUsItem = items.find(item => item.slug === '/about');
+        const customerStoriesItem = items.find(item => item.slug === '/customer-stories');
+        const clientsItem = items.find(item => item.slug === '/clients');
+
+        if (aboutUsItem) {
+            if (!aboutUsItem.subItems) {
+                aboutUsItem.subItems = [];
+            }
+            if (customerStoriesItem) {
+                aboutUsItem.subItems.push({ ...customerStoriesItem, title: "Customer Stories" });
+            }
+            if (clientsItem) {
+                aboutUsItem.subItems.push({ ...clientsItem, title: "Our Clients" });
+            }
+
+            // Filter out the items that were moved
+            items = items.filter(item => item.slug !== '/customer-stories' && item.slug !== '/clients');
+        }
+
         setNavItems(items);
     };
     fetchNavItems();
