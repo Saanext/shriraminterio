@@ -26,6 +26,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { saveAppointment } from "./appointment-actions";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -37,15 +38,6 @@ const formSchema = z.object({
   purpose: z.string({ required_error: "Please select a purpose." }),
   message: z.string().optional(),
 });
-
-const formItems = [
-    { id: "kitchen", label: "Kitchen" },
-    { id: "bed", label: "Bed" },
-    { id: "wardrobe", label: "Wardrobe" },
-    { id: "studyUnit", label: "Study Unit" },
-    { id: "entertainmentUnit", label: "Entertainment Unit" },
-    { id: "crockeryUnit", label: "Crockery Unit" },
-];
 
 const purposeOptions = [
     { id: "new-home", label: "New Home Interior", icon: <Home className="h-8 w-8 mb-2" /> },
@@ -101,13 +93,21 @@ export function AppointmentForm() {
     };
     const prevStep = () => setCurrentStep(prev => prev - 1);
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
-        setCurrentStep(prev => prev + 1);
-        toast({
-            title: "Appointment Request Submitted!",
-            description: "Thank you! We'll be in touch shortly to confirm.",
-        });
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const result = await saveAppointment(values);
+        if (result.success) {
+            setCurrentStep(prev => prev + 1);
+            toast({
+                title: "Appointment Request Submitted!",
+                description: "Thank you! We'll be in touch shortly to confirm.",
+            });
+        } else {
+             toast({
+                title: 'Error',
+                description: result.error,
+                variant: 'destructive',
+            });
+        }
     }
     
     const progress = (currentStep / totalSteps) * 100;
@@ -309,8 +309,8 @@ export function AppointmentForm() {
                         </Button>
                     )}
                     {currentStep === totalSteps -1 && (
-                        <Button type="submit" size="lg" className="w-full">
-                            Book Appointment
+                        <Button type="submit" size="lg" className="w-full" disabled={form.formState.isSubmitting}>
+                            {form.formState.isSubmitting ? 'Booking...' : 'Book Appointment'}
                         </Button>
                     )}
                 </div>
