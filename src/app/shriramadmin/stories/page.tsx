@@ -7,6 +7,7 @@ import { FilePlus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import Image from 'next/image';
+import { StoryDeleteAction } from '@/components/story-delete-action';
 
 async function getStories() {
     const supabase = createClient();
@@ -73,10 +74,10 @@ export default async function StoriesManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-destructive" disabled>
+                                                <StoryDeleteAction storyId={story.id}>
                                                     <Trash2 className="mr-2 h-4 w-4" />
                                                     <span>Delete</span>
-                                                </DropdownMenuItem>
+                                                </StoryDeleteAction>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>

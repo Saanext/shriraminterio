@@ -58,3 +58,19 @@ export async function saveStory(data: z.infer<typeof storySchema>) {
     return { success: false, error: error.message };
   }
 }
+
+export async function deleteStory(storyId: number) {
+    const supabase = createClient();
+    try {
+        const { error } = await supabase.from('stories').delete().eq('id', storyId);
+        if (error) throw error;
+
+        revalidatePath('/shriramadmin/stories');
+        revalidatePath('/customer-stories');
+
+        return { success: true, error: null };
+    } catch (error: any) {
+        console.error('Error deleting story:', error);
+        return { success: false, error: error.message };
+    }
+}
