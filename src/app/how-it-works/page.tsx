@@ -157,6 +157,7 @@ export default function HowItWorksPage() {
                   ...section.content,
                   visible: section.visible,
                   title: section.title,
+                  content: section.content
               };
           }
           setContent(pageContent);
@@ -186,7 +187,7 @@ export default function HowItWorksPage() {
       {hero.visible && (
       <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
         <Image
-          src={hero.backgroundImage}
+          src={hero.content.backgroundImage}
           alt="A team of interior designers collaborating on a project"
           data-ai-hint="design team collaboration"
           layout="fill"
@@ -194,8 +195,8 @@ export default function HowItWorksPage() {
           className="absolute inset-0 z-0 brightness-50"
         />
         <div className="relative z-10 p-4">
-          <h1 className="text-4xl md:text-6xl font-bold text-shadow-lg">{hero.title}</h1>
-          <p className="mt-2 text-lg md:text-xl text-primary-foreground/90">{hero.subtitle}</p>
+          <h1 className="text-4xl md:text-6xl font-bold text-shadow-lg">{hero.content.title}</h1>
+          <p className="mt-2 text-lg md:text-xl text-primary-foreground/90">{hero.content.subtitle}</p>
         </div>
       </section>
       )}
