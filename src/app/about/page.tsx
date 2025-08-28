@@ -25,6 +25,7 @@ async function getContent() {
             ...section.content,
             visible: section.visible,
             title: section.title,
+            content: section.content,
         };
     }
     
@@ -45,7 +46,7 @@ export default async function AboutUsPage() {
             {aboutContent.hero.visible && (
             <section className="relative w-full h-[50vh] flex items-center justify-center text-center text-white">
                 <Image
-                  src={aboutContent.hero.backgroundImage}
+                  src={aboutContent.hero.content.backgroundImage}
                   alt="A modern, well-lit office interior"
                   data-ai-hint="modern office interior"
                   fill
@@ -53,8 +54,8 @@ export default async function AboutUsPage() {
                   className="absolute inset-0 z-0 brightness-50"
                 />
                 <div className="relative z-10 p-4">
-                    <h1 className="text-4xl md:text-6xl font-bold text-shadow-lg">{aboutContent.hero.title}</h1>
-                    <p className="mt-2 text-lg md:text-xl text-primary-foreground/90">{aboutContent.hero.subtitle}</p>
+                    <h1 className="text-4xl md:text-6xl font-bold text-shadow-lg">{aboutContent.hero.content.title}</h1>
+                    <p className="mt-2 text-lg md:text-xl text-primary-foreground/90">{aboutContent.hero.content.subtitle}</p>
                 </div>
             </section>
             )}
