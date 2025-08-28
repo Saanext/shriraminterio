@@ -5,7 +5,6 @@ import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { PageTransition } from "@/components/page-transition";
 import { usePathname } from "next/navigation";
-import { QuoteSidebarProvider } from '@/components/quote-sidebar-provider';
 import { QuoteSidebar } from '@/components/quote-sidebar';
 
 
@@ -22,17 +21,15 @@ export function SiteLayout({
     }
 
     return (
-        <QuoteSidebarProvider>
-            <div className="flex flex-col min-h-screen">
-                <Header />
-                <main className="flex-grow pt-20">
-                    <PageTransition>
-                        {children}
-                    </PageTransition>
-                </main>
-                <Footer />
-                <QuoteSidebar />
-            </div>
-        </QuoteSidebarProvider>
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow pt-20">
+                <PageTransition>
+                    {children}
+                </PageTransition>
+            </main>
+            <Footer />
+            <QuoteSidebar />
+        </div>
     );
 }

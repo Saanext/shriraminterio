@@ -15,6 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { deleteProduct } from "./product-actions";
 import { useRouter } from "next/navigation";
+import { DropdownMenuItem } from "./ui/dropdown-menu";
 
 export function ProductDeleteAction({ productId, children }: { productId: number; children: React.ReactNode }) {
     const { toast } = useToast();
@@ -33,7 +34,9 @@ export function ProductDeleteAction({ productId, children }: { productId: number
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                {children}
+                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    {children}
+                 </DropdownMenuItem>
             </AlertDialogTrigger>
             <AlertDialogContent>
                 <AlertDialogHeader>
@@ -45,7 +48,7 @@ export function ProductDeleteAction({ productId, children }: { productId: number
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+                <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">Continue</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -1,8 +1,10 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import WebLayout from './(web)/layout';
 import { Playfair_Display, Comfortaa } from 'next/font/google';
+import { SiteLayout } from '@/components/site-layout';
+import { QuoteSidebarProvider } from '@/components/quote-sidebar-provider';
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -29,9 +31,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${playfairDisplay.variable} ${comfortaa.variable}`}>
       <body className="font-body antialiased">
-        <WebLayout>
-          {children}
-        </WebLayout>
+        <QuoteSidebarProvider>
+          <SiteLayout>
+            {children}
+          </SiteLayout>
+        </QuoteSidebarProvider>
         <Toaster />
       </body>
     </html>
