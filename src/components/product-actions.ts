@@ -45,3 +45,19 @@ export async function saveProduct(data: z.infer<typeof productSchema>) {
     return { success: false, error: error.message };
   }
 }
+
+export async function deleteProduct(productId: number) {
+    const supabase = createClient();
+    try {
+        const { error } = await supabase.from('products').delete().eq('id', productId);
+        if (error) throw error;
+
+        revalidatePath('/shriramadmin/products');
+        revalidatePath('/products');
+
+        return { success: true, error: null };
+    } catch (error: any) {
+        console.error('Error deleting product:', error);
+        return { success: false, error: error.message };
+    }
+}

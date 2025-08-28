@@ -7,6 +7,7 @@ import { FilePlus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ProductDeleteAction } from '@/components/product-delete-action';
 
 async function getProducts() {
     const supabase = createClient();
@@ -69,10 +70,12 @@ export default async function ProductsManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-destructive" disabled>
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    <span>Delete</span>
-                                                </DropdownMenuItem>
+                                                <ProductDeleteAction productId={product.id}>
+                                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-destructive">
+                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                        <span>Delete</span>
+                                                    </DropdownMenuItem>
+                                                </ProductDeleteAction>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
