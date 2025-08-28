@@ -28,16 +28,16 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
     partners 
   } = pageContent;
 
-  const expertise = comfortDesign.items;
-  const whyShriramInterio = whyUs.items;
-  const testimonialsItems = testimonials.items;
-  const trendingItems = whatWeDo.trendingItems;
-  const bestSellingKitchens = whatWeDo.bestSellingKitchens;
-  const bestSellingWardrobes = whatWeDo.bestSellingWardrobes;
-  const workGalleryItems = workGallery.items;
-  const partnersItems = partners.items;
-  const faqItems = faq.items;
-  const heroSlides = hero.slides;
+  const expertise = comfortDesign.content.items;
+  const whyShriramInterio = whyUs.content.items;
+  const testimonialsItems = testimonials.content.items;
+  const trendingItems = whatWeDo.content.trendingItems;
+  const bestSellingKitchens = whatWeDo.content.bestSellingKitchens;
+  const bestSellingWardrobes = whatWeDo.content.bestSellingWardrobes;
+  const workGalleryItems = workGallery.content.items;
+  const partnersItems = partners.content.items;
+  const faqItems = faq.content.items;
+  const heroSlides = hero.content.slides;
 
   return (
     <div>
@@ -56,8 +56,8 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                 className="absolute inset-0 w-full h-full object-cover brightness-50 z-0"
                 poster="https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-poster.jpg"
               >
-                <source src={hero.videoUrl} type="video/mp4" />
-                <source src={hero.videoUrl} type="video/webm" />
+                <source src={hero.content.videoUrl} type="video/mp4" />
+                <source src={hero.content.videoUrl} type="video/webm" />
                 <img
                   src="https://gzlakbpbhhxxpzbbifus.supabase.co/storage/v1/object/public/public/hero-poster.jpg"
                   alt="Hero background"
@@ -81,13 +81,13 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="absolute inset-0 z-10 flex items-center justify-center text-center text-white px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-shadow-lg font-headline leading-tight">
-              {hero.title}
+              {hero.content.title}
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base md:text-lg lg:text-xl font-body px-2">
-              {hero.subtitle}
+              {hero.content.subtitle}
             </p>
             <Button asChild size="lg" className="mt-6 sm:mt-8 transition-transform transform hover:scale-105 text-sm sm:text-base">
-              <Link href="/services">{hero.buttonText}</Link>
+              <Link href="/services">{hero.content.buttonText}</Link>
             </Button>
           </div>
         </div>
@@ -104,15 +104,15 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                 Welcome to <span className="font-headline text-shadow-sm">Shriram Interio</span>
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
-                {welcome.paragraph1}
+                {welcome.content.paragraph1}
               </p>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                {welcome.paragraph2}
+                {welcome.content.paragraph2}
               </p>
             </div>
              <div className="order-1 lg:order-2">
               <Image
-                src={welcome.image}
+                src={welcome.content.image}
                 alt="Interior design sketch"
                 data-ai-hint="interior design sketch"
                 width={600}
@@ -131,7 +131,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{aboutCompany.title}</h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2">
-            <span className="font-headline text-shadow-sm">SHRIRAM INTERIO</span> — {aboutCompany.text}
+            <span className="font-headline text-shadow-sm">SHRIRAM INTERIO</span> — {aboutCompany.content.text}
           </p>
         </div>
       </section>
@@ -145,7 +145,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
                       {whyUs.title}
                     </h2>
-                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{whyUs.subtitle}</p>
+                    <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{whyUs.content.subtitle}</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                     {whyShriramInterio.map((item: any, index: number) => (
@@ -177,7 +177,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.title}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.subtitle}</p>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.content.subtitle}</p>
           </div>
           <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
             <CarouselContent className="-ml-2 sm:-ml-4">
@@ -208,7 +208,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4 sm:px-6">
            <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-2">{comfortDesign.title}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 max-w-3xl mx-auto leading-relaxed px-2">{comfortDesign.subtitle}</p>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 max-w-3xl mx-auto leading-relaxed px-2">{comfortDesign.content.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {expertise.map((item: any) => (
@@ -240,7 +240,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{whatWeDo.title}</h2>
-              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{whatWeDo.subtitle}</p>
+              <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{whatWeDo.content.subtitle}</p>
           </div>
           <Tabs defaultValue="trending" className="w-full">
             <TabsList className="flex flex-wrap h-auto justify-center mb-6 sm:mb-8 w-full">
@@ -313,7 +313,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{testimonials.title}</h2>
-            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{testimonials.subtitle}</p>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{testimonials.content.subtitle}</p>
           </div>
           <Carousel
             opts={{ align: 'start', loop: true }}
@@ -341,7 +341,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           </Carousel>
           <div className="text-center mt-8 sm:mt-12">
             <Button asChild size="default" className="text-sm sm:text-base">
-              <Link href="/clients">{testimonials.buttonText}</Link>
+              <Link href="/clients">{testimonials.content.buttonText}</Link>
             </Button>
           </div>
         </div>
@@ -354,7 +354,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold">{faq.title}</h2>
-            <p className="text-lg text-muted-foreground mt-2">{faq.subtitle}</p>
+            <p className="text-lg text-muted-foreground mt-2">{faq.content.subtitle}</p>
           </div>
           <div className="max-w-3xl mx-auto">
             <Accordion type="single" collapsible className="w-full">
@@ -379,7 +379,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               <div className="text-center mb-12">
                   <div className="flex justify-center items-center mb-2">
                       <div className="border-t border-primary w-12"></div>
-                      <p className="text-sm text-primary font-bold tracking-widest mx-4">{partners.subtitle}</p>
+                      <p className="text-sm text-primary font-bold tracking-widest mx-4">{partners.content.subtitle}</p>
                       <div className="border-t border-primary w-12"></div>
                   </div>
                   <h2 className="text-3xl md:text-4xl font-bold">{partners.title}</h2>

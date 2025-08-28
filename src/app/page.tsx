@@ -17,11 +17,10 @@ async function getContent() {
     
     const content: { [key: string]: any } = {};
     for (const section of page.sections) {
+        // Use section.type for the key, as it's more reliable than title
         const sectionKey = section.type.replace(/_([a-z])/g, (g: string) => g[1].toUpperCase());
         content[sectionKey] = {
-            ...section.content,
-            visible: section.visible,
-            title: section.title,
+            ...section, // Keep all section data
         };
     }
     
