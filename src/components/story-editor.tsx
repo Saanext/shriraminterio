@@ -53,7 +53,10 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
 
   const form = useForm<StoryFormValues>({
     resolver: zodResolver(storySchema),
-    defaultValues: initialData || {
+    defaultValues: initialData ? {
+      ...initialData,
+      gallery: Array.isArray(initialData.gallery) ? initialData.gallery : [],
+    } : {
       slug: '',
       title: '',
       image: '',
@@ -113,7 +116,13 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     if (file) {
       const url = await handleImageUpload(file);
       if (url) {
-        append({ src: url, alt: '', dataAiHint: '' });
+        // Find the index of the first gallery item that has no src to replace it.
+        const emptyIndex = form.getValues('gallery').findIndex(item => !item.src);
+        if (emptyIndex !== -1) {
+            form.setValue(`gallery.${emptyIndex}.src`, url, { shouldValidate: true });
+        } else {
+            append({ src: url, alt: '', dataAiHint: '' });
+        }
       }
     }
   };
@@ -199,16 +208,24 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {fields.map((field, index) => (
-                            <div key={field.id} className="relative">
-                                <Image src={field.src} alt={field.alt} width={150} height={150} className="rounded-md object-cover" />
-                                <Button type="button" variant="destructive" size="icon" className="absolute top-1 right-1 h-6 w-6" onClick={() => remove(index)}>
-                                    <Trash2 className="h-4 w-4"/>
+                            <div key={field.id} className="space-y-2">
+                                <div className="relative aspect-square">
+                                    {field.src && <Image src={field.src} alt={field.alt || `Gallery Image ${index + 1}`} layout="fill" className="rounded-md object-cover" />}
+                                </div>
+                                <FormField control={form.control} name={`gallery.${index}.alt`} render={({ field }) => (
+                                    <FormItem className="w-full"><FormControl><Input placeholder="Alt text" {...field} /></FormControl><FormMessage /></FormItem>
+                                )} />
+                                <FormField control={form.control} name={`gallery.${index}.dataAiHint`} render={({ field }) => (
+                                    <FormItem className="w-full"><FormControl><Input placeholder="AI Hint" {...field} /></FormControl><FormMessage /></FormItem>
+                                )} />
+                                <Button type="button" variant="destructive" size="sm" className="w-full" onClick={() => remove(index)}>
+                                    <Trash2 className="h-4 w-4 mr-2"/> Remove
                                 </Button>
                             </div>
                         ))}
                     </div>
                     <div className="relative mt-2">
-                       <Button asChild variant="outline" size="sm" className="w-full">
+                       <Button asChild variant="outline" size="sm">
                         <label htmlFor="gallery-upload" className="cursor-pointer">
                             <Upload className="mr-2 h-4 w-4" /> Upload Gallery Image
                         </label>
@@ -220,6 +237,9 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
                         accept="image/*"
                         onChange={handleGalleryFileChange}
                        />
+                       <Button type="button" variant="outline" size="sm" className="ml-2" onClick={() => append({ src: '', alt: '', dataAiHint: '' })}>
+                         Add URL
+                       </Button>
                     </div>
                 </CardContent>
             </Card>
