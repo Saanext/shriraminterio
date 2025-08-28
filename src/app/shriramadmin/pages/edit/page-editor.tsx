@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { createClient } from '@/lib/supabase/client';
+import Image from 'next/image';
 
 type PageEditorProps = {
     initialPageData: any;
@@ -49,12 +50,12 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         setSections(newSections);
     };
     
-    const handleRepeaterChange = (sectionIndex: number, fieldKey: string, itemIndex: number, itemFieldKey: string, value: any) => {
+    const handleRepeaterChange = (sectionIndex: number, repeaterKey: string, itemIndex: number, itemFieldKey: string, value: any) => {
         const newSections = [...sections];
-        newSections[sectionIndex].content[fieldKey][itemIndex][itemFieldKey] = value;
+        newSections[sectionIndex].content[repeaterKey][itemIndex][itemFieldKey] = value;
         setSections(newSections);
-    }
-
+    };
+    
     const handleAddNewRepeaterItem = (sectionIndex: number, fieldKey: string, field: any) => {
         const newSections = [...sections];
         const newItem: { [key: string]: any } = {};
@@ -134,23 +135,23 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         }
     };
     
-    const renderField = (sectionIndex: number, fieldKey: string, field: any, itemIndex?: number, itemValue?: any) => {
+    const renderField = (sectionIndex: number, fieldKey: string, field: any, itemIndex?: number, itemValue?: any, repeaterKey?: string) => {
         const id = `section-${sectionIndex}-field-${fieldKey}` + (itemIndex !== undefined ? `-${itemIndex}` : '');
         const value = itemIndex !== undefined ? itemValue : sections[sectionIndex].content[fieldKey] || '';
         const uploadId = `section-${sectionIndex}-upload-${fieldKey}`+ (itemIndex !== undefined ? `-${itemIndex}` : '');
-        const isRepeaterField = itemIndex !== undefined;
+        const isRepeaterField = itemIndex !== undefined && repeaterKey !== undefined;
 
         switch(field.type) {
             case 'text':
-                return <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, fieldKey, itemIndex!, field.label.toLowerCase(), e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} />;
+                return <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} />;
             case 'textarea':
-                return <Textarea id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, fieldKey, itemIndex!, field.label.toLowerCase(), e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
+                return <Textarea id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
             case 'image':
                 return (
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-4">
-                            {value && <img src={value} alt={field.label} className="w-20 h-20 object-cover rounded-md border" />}
-                            <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, fieldKey, itemIndex!, field.label.toLowerCase(), e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
+                            {value && <Image src={value} alt={field.label} width={80} height={80} className="w-20 h-20 object-cover rounded-md border" />}
+                            <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
                         </div>
                         <div>
                             <Button asChild variant="outline" size="sm">
@@ -166,7 +167,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if(file) handleImageUpload(file, sectionIndex, fieldKey, isRepeaterField ? itemIndex : undefined, isRepeaterField ? field.label.toLowerCase() : undefined);
+                                    if(file) handleImageUpload(file, sectionIndex, repeaterKey || fieldKey, isRepeaterField ? itemIndex : undefined, isRepeaterField ? fieldKey : undefined);
                                 }} 
                                 disabled={isUploading}
                             />
@@ -183,7 +184,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                 {Object.keys(field.fields).map(itemFieldKey => (
                                      <div key={itemFieldKey} className="space-y-2">
                                         <Label htmlFor={`${id}-${itemIndex}-${itemFieldKey}`}>{field.fields[itemFieldKey].label}</Label>
-                                        {renderField(sectionIndex, fieldKey, field.fields[itemFieldKey], itemIndex, item[itemFieldKey])}
+                                        {renderField(sectionIndex, itemFieldKey, field.fields[itemFieldKey], itemIndex, item[itemFieldKey], fieldKey)}
                                     </div>
                                 ))}
                              </CardContent>
@@ -295,3 +296,5 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         </div>
     );
 }
+
+    
