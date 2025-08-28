@@ -11,7 +11,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useQuoteSidebar } from '@/components/quote-sidebar-provider';
 import { useEffect, useState } from 'react';
 
-
 // Generic Component to render a section based on its type
 const SectionRenderer = ({ section }: { section: any }) => {
     switch (section.type) {
@@ -74,7 +73,7 @@ const HeroSection = ({ content }: { content: any }) => (
 
 
 async function getPageContent(slug: string) {
-    const supabase = createServerClient();
+    const supabase = createBrowserClient(); // Use browser client here for client-side fetching
     const { data: page } = await supabase
         .from('pages')
         .select('*, sections(*)')
@@ -108,20 +107,27 @@ export default function DynamicPage({ params }: { params: { slug: string } }) {
         const excludedSlugs = ['shriramadmin', 'login', 'auth'];
         if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
             notFound();
+            return;
         }
         
         async function loadPageContent() {
             const content = await getPageContent(params.slug);
             if (!content) {
                 notFound();
+            } else {
+                setPageContent(content);
             }
-            setPageContent(content);
         }
         loadPageContent();
 
     }, [params.slug])
 
     if (!pageContent) {
+        // Exclude special routes from showing loading...
+        const excludedSlugs = ['shriramadmin', 'login', 'auth'];
+        if (excludedSlugs.some(excluded => params.slug.startsWith(excluded))) {
+            return null;
+        }
         return <div>Loading...</div>
     }
 

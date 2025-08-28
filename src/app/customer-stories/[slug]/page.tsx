@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
 
-
 async function getStory(slug: string) {
     const supabase = createServerClient();
     const { data: story } = await supabase
