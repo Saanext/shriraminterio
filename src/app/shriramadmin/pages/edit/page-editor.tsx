@@ -54,6 +54,22 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         newSections[sectionIndex].content[fieldKey][itemIndex][itemFieldKey] = value;
         setSections(newSections);
     }
+
+    const handleAddNewRepeaterItem = (sectionIndex: number, fieldKey: string, field: any) => {
+        const newSections = [...sections];
+        const newItem: { [key: string]: any } = {};
+        // Initialize the new item with empty strings for each field defined in the repeater structure
+        Object.keys(field.fields).forEach(itemFieldKey => {
+            newItem[itemFieldKey] = '';
+        });
+        
+        if (!newSections[sectionIndex].content[fieldKey]) {
+            newSections[sectionIndex].content[fieldKey] = [];
+        }
+
+        newSections[sectionIndex].content[fieldKey].push(newItem);
+        setSections(newSections);
+    };
     
     const handleVisibilityChange = (sectionIndex: number, checked: boolean) => {
         const newSections = [...sections];
@@ -173,7 +189,9 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                              </CardContent>
                            </Card>
                         ))}
-                         <Button variant="outline" size="sm" type="button">Add New</Button>
+                         <Button variant="outline" size="sm" type="button" onClick={() => handleAddNewRepeaterItem(sectionIndex, fieldKey, field)}>
+                            Add New
+                        </Button>
                     </div>
                 );
             default:
