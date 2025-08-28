@@ -283,11 +283,11 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               </div>
             </TabsContent>
             <TabsContent value="wardrobes">
-               <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 justify-items-center">
                   {bestSellingWardrobes.map((item: any, index: number) => (
                     <Card key={index} className="overflow-hidden">
-                      <div className="relative aspect-[3/4]">
-                         <Image src={item.image} alt={item.name} layout="fill" objectFit="cover" data-ai-hint={item.hint} />
+                      <div className="relative w-[300px] h-[300px]">
+                         <Image src={item.image} alt={item.name} width={300} height={300} className="object-cover" data-ai-hint={item.hint} />
                       </div>
                       <CardContent className="p-3 sm:p-4">
                          <h3 className="text-sm sm:text-base lg:text-lg font-bold leading-tight">{item.name}</h3>
