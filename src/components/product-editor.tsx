@@ -104,8 +104,8 @@ export function ProductEditor({ initialData }: { initialData: any | null }) {
   const onSubmit = async (data: ProductFormValues) => {
     const result = await saveProduct({
         ...data,
-        features: (data.features || []).map(f => f.value),
-        gallery: (data.gallery || []).map(g => g.value),
+        features: (data.features || []).map(f => f.value).filter(Boolean),
+        gallery: (data.gallery || []).map(g => g.value).filter(Boolean),
     });
     if (result.success) {
       toast({ title: 'Product saved successfully!' });
@@ -124,7 +124,7 @@ export function ProductEditor({ initialData }: { initialData: any | null }) {
     if (name && !form.formState.dirtyFields.slug) {
         form.setValue('slug', name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
     }
-  }, [name, form.setValue, form.formState.dirtyFields.slug]);
+  }, [name, form]);
 
 
   return (
@@ -184,7 +184,22 @@ export function ProductEditor({ initialData }: { initialData: any | null }) {
                   <FormItem>
                     <FormLabel>Main Image</FormLabel>
                     {field.value && <Image src={field.value} alt="Main Product Image" width={120} height={90} className="rounded-md object-cover" />}
-                    <FormControl><Input type="file" accept="image/*" onChange={handleMainImageChange} /></FormControl>
+                    <FormControl>
+                        <div className="relative mt-2">
+                           <Button asChild variant="outline" size="sm" className="w-full">
+                            <label htmlFor="main-image-upload" className="cursor-pointer">
+                                <Upload className="mr-2 h-4 w-4" /> Upload Main Image
+                            </label>
+                           </Button>
+                           <Input 
+                            id="main-image-upload"
+                            type="file" 
+                            className="sr-only" 
+                            accept="image/*"
+                            onChange={handleMainImageChange}
+                           />
+                        </div>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )} />
