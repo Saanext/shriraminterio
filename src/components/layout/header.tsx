@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { Menu, ChevronDown, LucideIcon, Home, Info, BookText, ShoppingCart, GanttChartSquare, Wrench, GalleryHorizontal, Phone, Users } from 'lucide-react';
+import { Menu, ChevronDown, LucideIcon, Home, Info, BookText, ShoppingCart, GanttChartSquare, Wrench, GalleryHorizontal, Phone, Users, CalendarPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,8 @@ const iconMap: { [key: string]: LucideIcon } = {
     'services': Wrench,
     'portfolio': GalleryHorizontal,
     'contact': Phone,
-    'clients': Users
+    'clients': Users,
+    'appointment': CalendarPlus
 };
 
 type NavItem = {
@@ -59,7 +60,7 @@ export function Header() {
         }
         
         let items: NavItem[] = data
-            .filter(item => !item.parent_slug && item.slug !== 'appointment')
+            .filter(item => !item.parent_slug)
             .map(item => ({
                 title: item.title,
                 slug: item.slug === 'home' ? '/' : `/${item.slug}`,
@@ -296,3 +297,5 @@ export function Header() {
     </header>
   );
 }
+
+    
