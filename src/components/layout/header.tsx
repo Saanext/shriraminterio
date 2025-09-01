@@ -59,7 +59,7 @@ export function Header() {
         }
         
         let items: NavItem[] = data
-            .filter(item => !item.parent_slug)
+            .filter(item => !item.parent_slug && item.slug !== 'appointment')
             .map(item => ({
                 title: item.title,
                 slug: item.slug === 'home' ? '/' : `/${item.slug}`,
@@ -182,7 +182,7 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-1 lg:space-x-4 text-sm font-medium">
+    <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-1 text-sm font-medium">
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
@@ -285,6 +285,9 @@ export function Header() {
             renderMobileMenu()
           ) : (
             <div className="flex items-center gap-2">
+              <Button asChild variant="outline">
+                  <Link href="/appointment">Appointment</Link>
+              </Button>
               <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
             </div>
           )}
