@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { createClient } from '@/lib/supabase/server';
 import { format } from 'date-fns';
 import { Trash2 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 
 async function getAppointments() {
     const supabase = createClient();
@@ -41,6 +42,7 @@ export default async function AppointmentsPage() {
                                 <TableHead>Time Slot</TableHead>
                                 <TableHead>Purpose</TableHead>
                                 <TableHead>Floorplan</TableHead>
+                                <TableHead>Services</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -55,6 +57,13 @@ export default async function AppointmentsPage() {
                                     <TableCell>{submission.time_slot}</TableCell>
                                     <TableCell>{submission.purpose}</TableCell>
                                     <TableCell>{submission.floorplan}</TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-wrap gap-1">
+                                            {(submission.services || []).map((service: string) => (
+                                                <Badge key={service} variant="secondary">{service}</Badge>
+                                            ))}
+                                        </div>
+                                    </TableCell>
                                     <TableCell className="text-right">
                                         <Button variant="ghost" size="icon" disabled>
                                             <Trash2 className="h-4 w-4 text-destructive" />

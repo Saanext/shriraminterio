@@ -13,18 +13,18 @@ const appointmentSchema = z.object({
   timeSlot: z.string(),
   floorplan: z.string(),
   purpose: z.string(),
+  services: z.array(z.string()),
   message: z.string().optional(),
 });
 
 export async function saveAppointment(data: z.infer<typeof appointmentSchema>) {
   const supabase = createClient();
   
-  const { appointmentDate, timeSlot, ...rest } = data;
+  const { appointmentDate, ...rest } = data;
   
   const dataToInsert = {
     ...rest,
     appointment_date: appointmentDate.toISOString().split('T')[0], // Format date to YYYY-MM-DD
-    time_slot: timeSlot
   };
 
   try {

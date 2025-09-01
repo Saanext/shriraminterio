@@ -1,10 +1,11 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, User, Mail, Phone, Home, Building, Wrench, ArrowRight, ArrowLeft } from "lucide-react";
+import { CalendarIcon, User, Mail, Phone, Home, Building, Wrench, ArrowRight, ArrowLeft, Tv, Bed, CookingPot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from 'react';
 
@@ -36,6 +37,9 @@ const formSchema = z.object({
   timeSlot: z.string({ required_error: "Please select a time slot." }),
   floorplan: z.string({ required_error: "Please select a floorplan." }),
   purpose: z.string({ required_error: "Please select a purpose." }),
+  services: z.array(z.string()).refine((value) => value.some((item) => item), {
+    message: "You have to select at least one item.",
+  }),
   message: z.string().optional(),
 });
 
@@ -53,6 +57,13 @@ const floorplanOptions = [
     { id: "other", label: "Other" },
 ];
 
+const serviceOptions = [
+    { id: 'kitchen', label: 'Kitchen', icon: <CookingPot className="h-6 w-6 mr-3" /> },
+    { id: 'wardrobe', label: 'Wardrobe', icon: <Home className="h-6 w-6 mr-3" /> },
+    { id: 'tv-unit', label: 'TV Unit', icon: <Tv className="h-6 w-6 mr-3" /> },
+    { id: 'bedroom', label: 'Bedroom', icon: <Bed className="h-6 w-6 mr-3" /> },
+];
+
 const timeSlots = [
     "10:00 AM - 11:00 AM",
     "11:00 AM - 12:00 PM",
@@ -62,7 +73,7 @@ const timeSlots = [
     "04:00 PM - 05:00 PM",
 ]
 
-const totalSteps = 5;
+const totalSteps = 6;
 
 export function AppointmentForm() {
     const { toast } = useToast();
@@ -74,6 +85,7 @@ export function AppointmentForm() {
             name: "",
             email: "",
             phone: "",
+            services: [],
         },
     });
 
@@ -82,8 +94,9 @@ export function AppointmentForm() {
         switch (currentStep) {
             case 1: fieldsToValidate = ['purpose']; break;
             case 2: fieldsToValidate = ['floorplan']; break;
-            case 3: fieldsToValidate = ['name', 'email', 'phone']; break;
-            case 4: fieldsToValidate = ['appointmentDate', 'timeSlot']; break;
+            case 3: fieldsToValidate = ['services']; break;
+            case 4: fieldsToValidate = ['name', 'email', 'phone']; break;
+            case 5: fieldsToValidate = ['appointmentDate', 'timeSlot']; break;
         }
 
         const isValid = await form.trigger(fieldsToValidate);
@@ -182,6 +195,56 @@ export function AppointmentForm() {
                 )}
 
                 {currentStep === 3 && (
+                    <FormField
+                        control={form.control}
+                        name="services"
+                        render={() => (
+                            <FormItem>
+                                <div className="mb-4">
+                                    <FormLabel className="text-xl font-bold">What services are you interested in?</FormLabel>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {serviceOptions.map((item) => (
+                                    <FormField
+                                        key={item.id}
+                                        control={form.control}
+                                        name="services"
+                                        render={({ field }) => {
+                                            return (
+                                                <FormItem
+                                                    key={item.id}
+                                                    className="flex flex-row items-center space-x-3 space-y-0"
+                                                >
+                                                    <FormControl>
+                                                        <Checkbox
+                                                            checked={field.value?.includes(item.id)}
+                                                            onCheckedChange={(checked) => {
+                                                                return checked
+                                                                    ? field.onChange([...(field.value || []), item.id])
+                                                                    : field.onChange(
+                                                                        field.value?.filter(
+                                                                            (value) => value !== item.id
+                                                                        )
+                                                                    )
+                                                            }}
+                                                        />
+                                                    </FormControl>
+                                                    <FormLabel className="font-normal flex items-center text-base">
+                                                        {item.icon} {item.label}
+                                                    </FormLabel>
+                                                </FormItem>
+                                            )
+                                        }}
+                                    />
+                                ))}
+                                </div>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
+
+                {currentStep === 4 && (
                     <div className="space-y-4">
                         <h2 className="text-xl font-bold">Please provide your contact details</h2>
                         <FormField control={form.control} name="name" render={({ field }) => (
@@ -214,7 +277,7 @@ export function AppointmentForm() {
                     </div>
                 )}
                 
-                {currentStep === 4 && (
+                {currentStep === 5 && (
                     <div className="space-y-4">
                         <h2 className="text-xl font-bold">Schedule your consultation</h2>
                         <FormField
@@ -286,7 +349,7 @@ export function AppointmentForm() {
                         />
                     </div>
                 )}
-                 {currentStep === 5 && (
+                 {currentStep === 6 && (
                     <div className="text-center py-12">
                         <h2 className="text-2xl font-bold text-primary mb-4">Thank You!</h2>
                         <p className="text-lg text-muted-foreground">Your appointment request has been submitted successfully.</p>
