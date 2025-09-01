@@ -105,7 +105,7 @@ export function Header() {
   const renderMobileMenu = () => (
     <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="p-2 text-foreground">
+        <Button variant="ghost" className="p-2 text-foreground lg:hidden">
           <Menu className="h-6 w-6" />
           <span className="sr-only">Open Menu</span>
         </Button>
@@ -182,7 +182,7 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <nav className="hidden md:flex absolute left-1/2 transform -translate-x-1/2 items-center space-x-1 text-sm font-medium">
+    <nav className="hidden lg:flex items-center space-x-1 text-sm font-medium">
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
@@ -190,7 +190,7 @@ export function Header() {
            <DropdownMenu key={item.slug}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className={cn(
-                    'relative transition-colors duration-300 group py-2 px-2 lg:px-3 flex items-center gap-1',
+                    'relative transition-colors duration-300 group py-2 px-3 flex items-center gap-1',
                     isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                   )}>
                   {isActive && (
@@ -239,7 +239,7 @@ export function Header() {
             key={item.slug}
             href={item.slug}
             className={cn(
-              'relative transition-colors duration-300 group py-2 px-2 lg:px-3',
+              'relative transition-colors duration-300 group py-2 px-3',
               isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
             )}
           >
@@ -272,25 +272,25 @@ export function Header() {
   
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
-      <div className="flex h-20 items-center relative px-4 sm:px-6 lg:px-8">
+      <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-2">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
         </div>
-        {isMounted && !isMobile && renderDesktopMenu()}
         
-        <div className="ml-auto flex items-center">
-          {isMounted && isMobile ? (
-            renderMobileMenu()
-          ) : (
-            <div className="flex items-center gap-2">
-              <Button asChild variant="outline">
-                  <Link href="/appointment">Appointment</Link>
-              </Button>
-              <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
-            </div>
-          )}
+        <div className="flex-1 flex justify-center">
+           {isMounted && renderDesktopMenu()}
+        </div>
+        
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2">
+            <Button asChild variant="outline">
+                <Link href="/appointment">Appointment</Link>
+            </Button>
+            <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
+          </div>
+          {isMounted && renderMobileMenu()}
         </div>
       </div>
     </header>
