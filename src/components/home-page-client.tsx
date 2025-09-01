@@ -311,27 +311,31 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           </div>
           <Carousel
             opts={{ align: 'start', loop: true }}
-            className="w-full max-w-6xl mx-auto"
+            className="w-full max-w-4xl mx-auto"
           >
-            <CarouselContent className="-ml-2 sm:-ml-4">
+            <CarouselContent className="-ml-4">
               {testimonialsItems.map((testimonial: any, index: number) => (
-                <CarouselItem key={index} className="pl-2 sm:pl-4 basis-full sm:basis-1/2 lg:basis-1/3">
-                   <Card className="overflow-hidden group h-full flex flex-col">
-                        <div className="relative aspect-square">
-                           <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" className="transition-transform duration-500 group-hover:scale-105"/>
-                        </div>
-                        <CardContent className="p-4 sm:p-6 bg-secondary flex-grow flex flex-col text-center">
-                            <p className="text-xs sm:text-sm text-muted-foreground italic leading-relaxed flex-grow">"{testimonial.review}"</p>
-                            <div className="mt-4 sm:mt-6 pt-4 border-t">
-                                <p className="font-bold font-headline text-xs sm:text-sm leading-tight">{testimonial.name}</p>
-                            </div>
-                        </CardContent>
+                <CarouselItem key={index} className="pl-4">
+                   <Card className="overflow-hidden shadow-lg">
+                       <div className="grid grid-cols-1 md:grid-cols-2">
+                           <div className="relative aspect-[4/5] md:aspect-square">
+                               <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" />
+                           </div>
+                           <div className="p-6 sm:p-8 flex flex-col justify-center text-center md:text-left">
+                               <p className="text-lg md:text-xl font-light text-muted-foreground italic leading-relaxed">
+                                   "{testimonial.review}"
+                               </p>
+                               <div className="mt-6 pt-6 border-t">
+                                   <p className="font-bold font-headline text-base sm:text-lg leading-tight">{testimonial.name}</p>
+                               </div>
+                           </div>
+                       </div>
                     </Card>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-2 sm:-left-4" />
-            <CarouselNext className="right-2 sm:-right-4" />
+            <CarouselPrevious className="left-2 sm:-left-12" />
+            <CarouselNext className="right-2 sm:-right-12" />
           </Carousel>
           <div className="text-center mt-8 sm:mt-12">
             <Button asChild size="default" className="text-sm sm:text-base">
