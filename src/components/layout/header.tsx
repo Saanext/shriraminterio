@@ -76,12 +76,12 @@ export function Header() {
             }));
         
         // Reorder items: Products after Clients
-        const productsIndex = topLevelItems.findIndex(item => item.slug === '/products');
-        const clientsIndex = topLevelItems.findIndex(item => item.slug === '/clients');
+        const productsIndex = topLevelItems.findIndex(item => item.title === 'Products');
+        const clientsIndex = topLevelItems.findIndex(item => item.title === 'Clients');
 
         if (productsIndex !== -1 && clientsIndex !== -1 && productsIndex < clientsIndex) {
             const productsItem = topLevelItems.splice(productsIndex, 1)[0];
-            const newClientsIndex = topLevelItems.findIndex(item => item.slug === '/clients');
+            const newClientsIndex = topLevelItems.findIndex(item => item.title === 'Clients');
             topLevelItems.splice(newClientsIndex + 1, 0, productsItem);
         }
         
@@ -161,7 +161,7 @@ export function Header() {
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.title}</span>
-                  {item.title === 'Products' && <ShoppingCart className="h-5 w-5" />}
+                  {item.title === 'Products' && <ShoppingCart className="h-5 w-5 text-primary" />}
                 </Link>
               )
             )}
@@ -194,7 +194,7 @@ export function Header() {
                     )}
                 >
                     <span>{item.title}</span>
-                    <ShoppingCart className="h-4 w-4" />
+                    <ShoppingCart className="h-4 w-4 text-primary transition-transform group-hover:scale-125" />
                 </a>
             );
         }
@@ -311,5 +311,3 @@ export function Header() {
     </header>
   );
 }
-
-    
