@@ -74,7 +74,7 @@ export function Header() {
                     }))
             }));
         
-        setNavItems(items.filter(item => item.slug !== '/appointment'));
+        setNavItems(items);
     };
     fetchNavItems();
   }, []);
@@ -86,7 +86,7 @@ export function Header() {
   const renderMobileMenu = () => (
     <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" className="p-2 text-foreground lg:hidden">
+        <Button variant="ghost" className="p-2 text-foreground xl:hidden">
           <Menu className="h-6 w-6" />
           <span className="sr-only">Open Menu</span>
         </Button>
@@ -151,17 +151,6 @@ export function Header() {
                 </Link>
               )
             )}
-            <Link
-                href="/appointment"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={cn(
-                    'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
-                    pathname === '/appointment' ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
-                )}
-            >
-                <CalendarPlus className="h-5 w-5" />
-                Appointment
-            </Link>
           </nav>
           <div className="p-4 mt-auto border-t space-y-2">
              <Button className="w-full" onClick={() => { setIsOpen(true); setIsMobileMenuOpen(false); }}>
@@ -174,7 +163,7 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <nav className="hidden lg:flex items-center space-x-1 text-sm font-medium">
+    <nav className="hidden xl:flex items-center space-x-1 text-sm font-medium">
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
@@ -270,8 +259,8 @@ export function Header() {
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
         
-          <div className="flex-1 min-w-0 hidden lg:flex justify-center">
-             <div className="flex-shrink-0">
+          <div className="flex-1 min-w-0 flex justify-center">
+             <div className="flex-shrink">
               {isMounted && renderDesktopMenu()}
             </div>
           </div>
