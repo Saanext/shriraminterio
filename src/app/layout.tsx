@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Playfair_Display, Comfortaa } from 'next/font/google';
 import { SiteLayout } from '@/components/site-layout';
 import { QuoteSidebarProvider } from '@/components/quote-sidebar-provider';
+import { Footer } from '@/components/layout/footer';
+import { QuoteSidebar } from '@/components/quote-sidebar';
 
 const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
@@ -35,6 +37,8 @@ export default function RootLayout({
           <SiteLayout>
             {children}
           </SiteLayout>
+          <Footer />
+          <QuoteSidebar />
         </QuoteSidebarProvider>
         <Toaster />
       </body>

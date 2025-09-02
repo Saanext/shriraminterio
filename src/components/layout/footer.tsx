@@ -1,17 +1,27 @@
 
+'use server';
+
 import React from 'react';
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, LucideProps } from 'lucide-react';
 import Link from 'next/link';
-import { NAV_ITEMS } from '@/lib/constants';
+import { createClient } from '@/lib/supabase/server';
 
-const socialLinks = [
-    { href: '#', icon: <Facebook className="h-5 w-5" />, name: 'Facebook' },
-    { href: '#', icon: <Twitter className="h-5 w-5" />, name: 'Twitter' },
-    { href: '#', icon: <Instagram className="h-5 w-5" />, name: 'Instagram' },
-    { href: '#', icon: <Youtube className="h-5 w-5" />, name: 'YouTube' },
-];
+const iconMap: { [key: string]: React.FC<LucideProps> } = {
+    Facebook,
+    Twitter,
+    Instagram,
+    Youtube,
+};
 
-export function Footer() {
+async function getSocialLinks() {
+    const supabase = createClient();
+    const { data } = await supabase.from('social_links').select('*').order('name');
+    return data || [];
+}
+
+export async function Footer() {
+    const socialLinks = await getSocialLinks();
+    
     const quickLinks = [
         { href: '/', label: 'Home' },
         { href: '/contact', label: 'Contact' },
@@ -69,12 +79,15 @@ export function Footer() {
                         <div>
                             <h3 className="text-lg font-bold font-headline mb-4">SOCIAL</h3>
                             <div className="flex space-x-2">
-                                {socialLinks.map((social) => (
-                                     <Link key={social.name} href={social.href} className="bg-white text-primary p-2 rounded-full hover:bg-primary hover:text-white transition-colors">
-                                        {social.icon}
-                                        <span className="sr-only">{social.name}</span>
-                                    </Link>
-                                ))}
+                                {socialLinks.map((social) => {
+                                    const Icon = iconMap[social.icon as string];
+                                    return (
+                                        <Link key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="bg-white text-primary p-2 rounded-full hover:bg-primary hover:text-white transition-colors">
+                                            {Icon && <Icon className="h-5 w-5" />}
+                                            <span className="sr-only">{social.name}</span>
+                                        </Link>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>

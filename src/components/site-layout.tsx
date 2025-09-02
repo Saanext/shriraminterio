@@ -1,11 +1,9 @@
 
 'use client';
 
-import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { PageTransition } from "@/components/page-transition";
 import { usePathname } from "next/navigation";
-import { QuoteSidebar } from '@/components/quote-sidebar';
 
 
 export function SiteLayout({
@@ -28,8 +26,6 @@ export function SiteLayout({
                     {children}
                 </PageTransition>
             </main>
-            <Footer />
-            <QuoteSidebar />
         </div>
     );
 }
