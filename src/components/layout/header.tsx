@@ -74,25 +74,7 @@ export function Header() {
                     }))
             }));
         
-        const finalItems = topLevelItems.map(item => {
-            if (item.slug === '/about') {
-                const customerStoriesItem = topLevelItems.find(i => i.slug === '/customer-stories');
-                const clientsItem = topLevelItems.find(i => i.slug === '/clients');
-                
-                const subItems = item.subItems || [];
-                if (customerStoriesItem) {
-                    subItems.push({ title: customerStoriesItem.title, slug: customerStoriesItem.slug, icon: customerStoriesItem.icon });
-                }
-                if (clientsItem) {
-                    subItems.push({ title: clientsItem.title, slug: clientsItem.slug, icon: clientsItem.icon });
-                }
-                
-                return { ...item, subItems };
-            }
-            return item;
-        }).filter(item => item.slug !== '/customer-stories' && item.slug !== '/clients');
-
-        setNavItems(finalItems);
+        setNavItems(topLevelItems);
     };
     fetchNavItems();
   }, []);
