@@ -36,8 +36,8 @@ export async function savePageContent(pageId: number, pageSlug: string, sections
     // 3. Revalidate paths to show changes
     const revalidationSlug = pageSlug === 'home' ? '/' : `/${pageSlug}`
     revalidatePath(revalidationSlug, 'page')
-    revalidatePath(`/shriramadmin/pages/edit?page=${pageSlug}`, 'page')
-    revalidatePath('/', 'layout'); // Revalidate all pages
+    revalidatePath('/shriramadmin/pages/edit', 'page')
+    revalidatePath('/', 'layout'); // Revalidate all pages that use the layout (e.g. for nav changes)
 
     return { success: true }
   } catch (error: any) {
