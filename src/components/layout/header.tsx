@@ -89,10 +89,13 @@ export function Header() {
             if (clientsItem) {
                 aboutUsItem.subItems.push({ ...clientsItem, title: "Our Clients" });
             }
-
-            // Filter out the items that were moved
-            items = items.filter(item => item.slug !== '/customer-stories' && item.slug !== '/clients');
         }
+        
+        // Filter out the items that were moved or shouldn't be top-level
+        items = items.filter(item => 
+            item.slug !== '/customer-stories' && 
+            item.slug !== '/clients'
+        );
 
         setNavItems(items);
     };
@@ -280,13 +283,15 @@ export function Header() {
           </Link>
         </div>
         
-        <div className="flex-1 flex justify-center">
-           {isMounted && renderDesktopMenu()}
+        <div className="hidden lg:block flex-1">
+            <div className="flex justify-center">
+                {isMounted && renderDesktopMenu()}
+            </div>
         </div>
         
         <div className="flex items-center gap-2">
           <div className="hidden sm:flex items-center gap-2">
-            <Button asChild variant="outline">
+            <Button asChild>
                 <Link href="/appointment">Appointment</Link>
             </Button>
             <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
