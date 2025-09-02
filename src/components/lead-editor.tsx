@@ -140,14 +140,13 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value || ""}>
+                        <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
                         <FormControl>
                             <SelectTrigger>
                             <SelectValue placeholder="Select a sales person" />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value="">Unassigned</SelectItem>
                             {salesPersons.map(person => (
                                 <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
                             ))}
