@@ -39,8 +39,7 @@ export default async function PortfolioPage() {
                     src={item.main_image}
                     alt={item.title}
                     fill
-                    objectFit="cover"
-                    className="transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint="portfolio project"
                   />
                 </div>

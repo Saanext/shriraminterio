@@ -35,12 +35,11 @@ export default async function PortfolioItemPage({ params }: { params: { slug: st
               {galleryImages.map((image: string, index: number) => (
                 <CarouselItem key={index}>
                   <Card className="overflow-hidden">
-                    <CardContent className="flex aspect-video items-center justify-center p-0">
+                    <CardContent className="relative flex aspect-video items-center justify-center p-0">
                       <Image
                         src={image}
                         alt={`${item.title} - image ${index + 1}`}
-                        width={1200}
-                        height={675}
+                        fill
                         className="object-cover w-full h-full"
                         data-ai-hint="portfolio project image"
                       />
