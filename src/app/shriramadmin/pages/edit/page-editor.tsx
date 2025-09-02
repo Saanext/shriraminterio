@@ -269,7 +269,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
                                 <CardTitle>{section.title}</CardTitle>
-                                <CardDescription>{section.type} section</CardDescription>
+                                <CardDescription>{section.type}</CardDescription>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Label htmlFor={`section-${index}-visible`} className="text-sm text-muted-foreground">
@@ -296,5 +296,3 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         </div>
     );
 }
-
-    
