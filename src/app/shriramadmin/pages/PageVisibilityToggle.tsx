@@ -1,19 +1,18 @@
 
 'use client';
 
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useTransition, type ReactNode } from "react";
 import { togglePageVisibility } from "./actions";
 
 type Props = {
     pageId: number;
     isVisible: boolean;
+    children: ReactNode;
 };
 
-export function PageVisibilityToggle({ pageId, isVisible }: Props) {
+export function PageVisibilityToggle({ pageId, isVisible, children }: Props) {
     const { toast } = useToast();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -38,12 +37,8 @@ export function PageVisibilityToggle({ pageId, isVisible }: Props) {
     };
 
     return (
-        <DropdownMenuItem onClick={handleClick} disabled={isPending}>
-            {isVisible ? (
-                <><EyeOff className="mr-2 h-4 w-4" /><span>Hide</span></>
-            ) : (
-                <><Eye className="mr-2 h-4 w-4" /><span>Show</span></>
-            )}
-        </DropdownMenuItem>
+        <div onClick={handleClick} className="w-full h-full">
+            {children}
+        </div>
     );
 }

@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 
 async function getPages() {
     const supabase = createClient();
-    const { data: pages, error } = await supabase.from('pages').select('id, title, slug, visible').order('title');
+    const { data: pages, error } = await supabase.from('pages').select('id, title, slug, visible, parent_slug').order('nav_order');
     if (error) {
         console.error('Error fetching pages:', error);
         return [];
@@ -50,9 +50,9 @@ export default async function PagesManagementPage() {
                         </TableHeader>
                         <TableBody>
                             {pages.map((page) => (
-                                <TableRow key={page.slug}>
+                                <TableRow key={page.id}>
                                     <TableCell className="font-medium">{page.title}</TableCell>
-                                    <TableCell>/{page.slug === 'home' ? '' : page.slug}</TableCell>
+                                    <TableCell>/{page.parent_slug ? `${page.parent_slug}/` : ''}{page.slug === 'home' ? '' : page.slug}</TableCell>
                                     <TableCell>
                                         <Badge variant={page.visible ? 'default' : 'secondary'} className={page.visible ? 'bg-green-500 hover:bg-green-600' : ''}>
                                             {page.visible ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
@@ -73,7 +73,15 @@ export default async function PagesManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <PageVisibilityToggle pageId={page.id} isVisible={page.visible} />
+                                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                                    <PageVisibilityToggle pageId={page.id} isVisible={page.visible}>
+                                                        {page.visible ? (
+                                                            <><EyeOff className="mr-2 h-4 w-4" /><span>Hide</span></>
+                                                        ) : (
+                                                            <><Eye className="mr-2 h-4 w-4" /><span>Show</span></>
+                                                        )}
+                                                    </PageVisibilityToggle>
+                                                </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem className="text-destructive" disabled>
                                                     <Trash2 className="mr-2 h-4 w-4" />
