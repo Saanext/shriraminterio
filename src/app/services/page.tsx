@@ -8,6 +8,8 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 type Service = {
   icon: React.ReactElement<LucideIcon>;
   title: string;
@@ -41,7 +43,7 @@ async function getContent() {
         content[sectionKey] = {
             ...section.content,
             visible: section.visible,
-            title: section.content?.title || section.title, // Use content.title if available
+            title: section.content?.title || section.title,
         };
     }
     

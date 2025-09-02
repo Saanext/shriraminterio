@@ -21,10 +21,12 @@ export async function savePageContent(pageId: number, pageSlug: string, sections
     
     // 2. Update each section
     for (const section of sections) {
-      const { id, page_id, order, title, type, content_structure, ...contentToUpdate } = section;
       const { error } = await supabase
         .from('sections')
-        .update(contentToUpdate)
+        .update({
+            visible: section.visible,
+            content: section.content,
+        })
         .eq('id', section.id)
       
       if (error) {
@@ -34,10 +36,13 @@ export async function savePageContent(pageId: number, pageSlug: string, sections
     }
 
     // 3. Revalidate paths to show changes
-    const revalidationSlug = pageSlug === 'home' ? '/' : `/${pageSlug}`
-    revalidatePath(revalidationSlug, 'page')
-    revalidatePath('/shriramadmin/pages/edit', 'page')
-    revalidatePath('/', 'layout'); // Revalidate all pages that use the layout (e.g. for nav changes)
+    if (pageSlug === 'home') {
+        revalidatePath('/', 'layout');
+    } else {
+        revalidatePath(`/${pageSlug}`, 'page');
+        revalidatePath('/', 'layout');
+    }
+    revalidatePath('/shriramadmin/pages/edit', 'page');
 
     return { success: true }
   } catch (error: any) {

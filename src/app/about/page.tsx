@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 async function getContent() {
     const supabase = createClient();
     const { data: page } = await supabase
@@ -24,7 +26,7 @@ async function getContent() {
         content[sectionKey] = {
             ...section.content,
             visible: section.visible,
-            title: section.content?.title || section.title, // Use content.title if available
+            title: section.content?.title || section.title,
             content: section.content,
         };
     }
