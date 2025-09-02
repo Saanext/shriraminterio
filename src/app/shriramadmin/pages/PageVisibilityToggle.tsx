@@ -5,14 +5,15 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useTransition, type ReactNode } from "react";
 import { togglePageVisibility } from "./actions";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Eye, EyeOff } from "lucide-react";
 
 type Props = {
     pageId: number;
     isVisible: boolean;
-    children: ReactNode;
 };
 
-export function PageVisibilityToggle({ pageId, isVisible, children }: Props) {
+export function PageVisibilityToggle({ pageId, isVisible }: Props) {
     const { toast } = useToast();
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
@@ -37,8 +38,18 @@ export function PageVisibilityToggle({ pageId, isVisible, children }: Props) {
     };
 
     return (
-        <div onClick={handleClick} className="w-full h-full">
-            {children}
-        </div>
+        <DropdownMenuItem 
+            onSelect={(e) => {
+                e.preventDefault();
+                handleClick();
+            }}
+            disabled={isPending}
+        >
+            {isVisible ? (
+                <><EyeOff className="mr-2 h-4 w-4" /><span>Hide</span></>
+            ) : (
+                <><Eye className="mr-2 h-4 w-4" /><span>Show</span></>
+            )}
+        </DropdownMenuItem>
     );
 }

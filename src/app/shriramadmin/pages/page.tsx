@@ -74,15 +74,7 @@ export default async function PagesManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                                    <PageVisibilityToggle pageId={page.id} isVisible={page.visible}>
-                                                        {page.visible ? (
-                                                            <><EyeOff className="mr-2 h-4 w-4" /><span>Hide</span></>
-                                                        ) : (
-                                                            <><Eye className="mr-2 h-4 w-4" /><span>Show</span></>
-                                                        )}
-                                                    </PageVisibilityToggle>
-                                                </DropdownMenuItem>
+                                                <PageVisibilityToggle pageId={page.id} isVisible={page.visible} />
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem className="text-destructive" disabled>
                                                     <Trash2 className="mr-2 h-4 w-4" />
