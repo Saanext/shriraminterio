@@ -209,7 +209,7 @@ export function AppointmentForm() {
                                 <div className="mb-4">
                                     <FormLabel className="text-xl font-bold">What services are you interested in?</FormLabel>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {serviceOptions.map((item) => (
                                     <FormField
                                         key={item.id}
@@ -387,5 +387,7 @@ export function AppointmentForm() {
         </Form>
     );
 }
+
+    
 
     
