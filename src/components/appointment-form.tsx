@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, User, Mail, Phone, Home, Building, Wrench, ArrowRight, ArrowLeft, Tv, Bed, CookingPot } from "lucide-react";
+import { CalendarIcon, User, Mail, Phone, Home, Building, Wrench, ArrowRight, ArrowLeft, Tv, Bed, CookingPot, Sofa, Archive, BookOpen, Lamp, Star, Palmtree, Table } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from 'react';
 
@@ -58,10 +58,16 @@ const floorplanOptions = [
 ];
 
 const serviceOptions = [
-    { id: 'kitchen', label: 'Kitchen', icon: <CookingPot className="h-6 w-6 mr-3" /> },
-    { id: 'wardrobe', label: 'Wardrobe', icon: <Home className="h-6 w-6 mr-3" /> },
     { id: 'tv-unit', label: 'TV Unit', icon: <Tv className="h-6 w-6 mr-3" /> },
-    { id: 'bedroom', label: 'Bedroom', icon: <Bed className="h-6 w-6 mr-3" /> },
+    { id: 'sofa', label: 'Sofa', icon: <Sofa className="h-6 w-6 mr-3" /> },
+    { id: 'kitchen-unit', label: 'Kitchen Unit', icon: <CookingPot className="h-6 w-6 mr-3" /> },
+    { id: 'loft', label: 'Loft', icon: <Archive className="h-6 w-6 mr-3" /> },
+    { id: 'pooja-unit', label: 'Pooja Unit', icon: <Star className="h-6 w-6 mr-3" /> },
+    { id: 'wardrobe', label: 'Wardrobe', icon: <Home className="h-6 w-6 mr-3" /> },
+    { id: 'study-table', label: 'Study Table', icon: <BookOpen className="h-6 w-6 mr-3" /> },
+    { id: 'bed', label: 'Bed', icon: <Bed className="h-6 w-6 mr-3" /> },
+    { id: 'dressing-unit', label: 'Dressing Unit', icon: <Lamp className="h-6 w-6 mr-3" /> },
+    { id: 'pop', label: 'POP', icon: <Palmtree className="h-6 w-6 mr-3" /> },
 ];
 
 const timeSlots = [
@@ -381,3 +387,5 @@ export function AppointmentForm() {
         </Form>
     );
 }
+
+    
