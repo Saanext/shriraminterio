@@ -24,7 +24,7 @@ async function getContent() {
         content[sectionKey] = {
             ...section.content,
             visible: section.visible,
-            title: section.title,
+            title: section.content?.title || section.title, // Use content.title if available
             content: section.content,
         };
     }
@@ -66,24 +66,24 @@ export default async function AboutUsPage() {
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4">{aboutContent.story.heading}</h2>
-                             <p className="text-sm text-muted-foreground mb-2">{aboutContent.story.subheading}</p>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">{aboutContent.story.content.heading}</h2>
+                             <p className="text-sm text-muted-foreground mb-2">{aboutContent.story.content.subheading}</p>
                             <p className="text-muted-foreground mb-4">
-                                {aboutContent.story.paragraph1}
+                                {aboutContent.story.content.paragraph1}
                             </p>
                             <p className="text-muted-foreground mb-4">
-                                {aboutContent.story.paragraph2}
+                                {aboutContent.story.content.paragraph2}
                             </p>
                              <p className="text-muted-foreground mb-4">
-                                {aboutContent.story.paragraph3}
+                                {aboutContent.story.content.paragraph3}
                             </p>
                              <p className="text-muted-foreground">
-                               {aboutContent.story.paragraph4}
+                               {aboutContent.story.content.paragraph4}
                             </p>
                         </div>
                         <div>
                             <Image
-                                src={aboutContent.story.image}
+                                src={aboutContent.story.content.image}
                                 alt="Our design team collaborating"
                                 data-ai-hint="team collaboration"
                                 width={600}
@@ -103,7 +103,7 @@ export default async function AboutUsPage() {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                          <div>
                             <Image
-                                src={aboutContent.journey.image}
+                                src={aboutContent.journey.content.image}
                                 alt="A mood board with design samples"
                                 data-ai-hint="design mood board"
                                 width={600}
@@ -112,18 +112,18 @@ export default async function AboutUsPage() {
                             />
                         </div>
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4">{aboutContent.journey.heading}</h2>
+                            <h2 className="text-3xl md:text-4xl font-bold mb-4">{aboutContent.journey.content.heading}</h2>
                             <p className="text-muted-foreground mb-4">
-                                {aboutContent.journey.paragraph1}
+                                {aboutContent.journey.content.paragraph1}
                             </p>
                             <p className="text-muted-foreground mb-4">
-                                {aboutContent.journey.paragraph2}
+                                {aboutContent.journey.content.paragraph2}
                             </p>
                              <p className="text-muted-foreground mb-4">
-                                {aboutContent.journey.paragraph3}
+                                {aboutContent.journey.content.paragraph3}
                             </p>
                              <p className="text-muted-foreground">
-                                {aboutContent.journey.paragraph4}
+                                {aboutContent.journey.content.paragraph4}
                             </p>
                         </div>
                     </div>
@@ -170,13 +170,13 @@ export default async function AboutUsPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                         <div className="p-6">
                             <Eye className="h-12 w-12 text-primary mx-auto mb-4" />
-                            <h3 className="text-2xl font-bold mb-2">{aboutContent.missionVision.visionTitle}</h3>
-                            <p className="text-muted-foreground">{aboutContent.missionVision.visionText}</p>
+                            <h3 className="text-2xl font-bold mb-2">{aboutContent.missionVision.content.visionTitle}</h3>
+                            <p className="text-muted-foreground">{aboutContent.missionVision.content.visionText}</p>
                         </div>
                         <div className="p-6">
                             <Target className="h-12 w-12 text-primary mx-auto mb-4" />
-                            <h3 className="text-2xl font-bold mb-2">{aboutContent.missionVision.missionTitle}</h3>
-                            <p className="text-muted-foreground">{aboutContent.missionVision.missionText}</p>
+                            <h3 className="text-2xl font-bold mb-2">{aboutContent.missionVision.content.missionTitle}</h3>
+                            <p className="text-muted-foreground">{aboutContent.missionVision.content.missionText}</p>
                         </div>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ async function getContent() {
         content[sectionKey] = {
             ...section.content,
             visible: section.visible,
-            title: section.title,
+            title: section.content?.title || section.title, // Use content.title if available
         };
     }
 
