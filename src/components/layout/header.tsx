@@ -163,7 +163,7 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <nav className="hidden xl:flex items-center space-x-1 text-sm font-medium">
+    <nav className="hidden xl:flex items-center space-x-1 text-xs font-medium">
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
