@@ -51,7 +51,8 @@ export function Header() {
         const supabase = createClient();
         const { data, error } = await supabase
             .from('pages')
-            .select('title, slug, parent_slug')
+            .select('title, slug, parent_slug, visible')
+            .eq('visible', true)
             .order('nav_order');
 
         if (error) {
@@ -260,7 +261,7 @@ export function Header() {
           </Link>
         
           <div className="flex-1 min-w-0 flex justify-center">
-             <div className="flex-shrink">
+             <div className="flex-shrink overflow-hidden">
               {isMounted && renderDesktopMenu()}
             </div>
           </div>

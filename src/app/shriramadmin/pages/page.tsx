@@ -3,13 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { createClient } from '@/lib/supabase/server';
-import { FilePlus, MoreVertical, Pencil, Trash2, EyeOff } from 'lucide-react';
+import { FilePlus, MoreVertical, Pencil, Trash2, Eye, EyeOff } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
+import { PageVisibilityToggle } from './PageVisibilityToggle';
+import { Badge } from '@/components/ui/badge';
 
 async function getPages() {
     const supabase = createClient();
-    const { data: pages, error } = await supabase.from('pages').select('title, slug').order('title');
+    const { data: pages, error } = await supabase.from('pages').select('id, title, slug, visible').order('title');
     if (error) {
         console.error('Error fetching pages:', error);
         return [];
@@ -42,6 +44,7 @@ export default async function PagesManagementPage() {
                             <TableRow>
                                 <TableHead>Page Name</TableHead>
                                 <TableHead>Path</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -50,6 +53,12 @@ export default async function PagesManagementPage() {
                                 <TableRow key={page.slug}>
                                     <TableCell className="font-medium">{page.title}</TableCell>
                                     <TableCell>/{page.slug === 'home' ? '' : page.slug}</TableCell>
+                                    <TableCell>
+                                        <Badge variant={page.visible ? 'default' : 'secondary'} className={page.visible ? 'bg-green-500 hover:bg-green-600' : ''}>
+                                            {page.visible ? <Eye className="mr-2 h-4 w-4" /> : <EyeOff className="mr-2 h-4 w-4" />}
+                                            {page.visible ? 'Visible' : 'Hidden'}
+                                        </Badge>
+                                    </TableCell>
                                     <TableCell className="text-right">
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
@@ -64,10 +73,7 @@ export default async function PagesManagementPage() {
                                                         <span>Edit</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem disabled>
-                                                    <EyeOff className="mr-2 h-4 w-4" />
-                                                    <span>Hide</span>
-                                                </DropdownMenuItem>
+                                                <PageVisibilityToggle pageId={page.id} isVisible={page.visible} />
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem className="text-destructive" disabled>
                                                     <Trash2 className="mr-2 h-4 w-4" />
