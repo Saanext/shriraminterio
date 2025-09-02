@@ -1,6 +1,6 @@
 
 import { ReactNode } from 'react';
-import { LayoutDashboard, Newspaper, Shield, Users, UserPlus, Quote, Palette, BookText, ShoppingCart, CalendarCheck } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Shield, Users, UserPlus, Quote, Palette, BookText, ShoppingCart, CalendarCheck, GalleryHorizontal } from 'lucide-react';
 import Link from 'next/link';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -17,6 +17,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
             <li><Link href="/shriramadmin/pages" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Newspaper className="w-5 h-5" /> Pages</Link></li>
             <li><Link href="/shriramadmin/stories" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><BookText className="w-5 h-5" /> Stories</Link></li>
             <li><Link href="/shriramadmin/products" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><ShoppingCart className="w-5 h-5" /> Products</Link></li>
+            <li><Link href="/shriramadmin/portfolio" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><GalleryHorizontal className="w-5 h-5" /> Portfolio</Link></li>
             <li><Link href="/shriramadmin/leads" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Users className="w-5 h-5" /> Leads</Link></li>
             <li><Link href="/shriramadmin/sales-persons" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><UserPlus className="w-5 h-5" /> Sales Persons</Link></li>
             <li><Link href="/shriramadmin/appointments" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><CalendarCheck className="w-5 h-5" /> Appointments</Link></li>
