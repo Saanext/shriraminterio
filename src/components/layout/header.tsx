@@ -59,7 +59,7 @@ export function Header() {
             return;
         }
         
-        let items: NavItem[] = data
+        const items: NavItem[] = data
             .filter(item => !item.parent_slug)
             .map(item => ({
                 title: item.title,
@@ -74,30 +74,7 @@ export function Header() {
                     }))
             }));
         
-        // Manual restructuring for "About Us" dropdown
-        const aboutUsItem = items.find(item => item.slug === '/about');
-        const customerStoriesItem = items.find(item => item.slug === '/customer-stories');
-        const clientsItem = items.find(item => item.slug === '/clients');
-
-        if (aboutUsItem) {
-            if (!aboutUsItem.subItems) {
-                aboutUsItem.subItems = [];
-            }
-            if (customerStoriesItem) {
-                aboutUsItem.subItems.push({ ...customerStoriesItem, title: "Customer Stories" });
-            }
-            if (clientsItem) {
-                aboutUsItem.subItems.push({ ...clientsItem, title: "Our Clients" });
-            }
-        }
-        
-        // Filter out the items that were moved or shouldn't be top-level
-        items = items.filter(item => 
-            item.slug !== '/customer-stories' && 
-            item.slug !== '/clients'
-        );
-
-        setNavItems(items);
+        setNavItems(items.filter(item => item.slug !== '/appointment'));
     };
     fetchNavItems();
   }, []);
@@ -174,6 +151,17 @@ export function Header() {
                 </Link>
               )
             )}
+            <Link
+                href="/appointment"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                    'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                    pathname === '/appointment' ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
+                )}
+            >
+                <CalendarPlus className="h-5 w-5" />
+                Appointment
+            </Link>
           </nav>
           <div className="p-4 mt-auto border-t space-y-2">
              <Button className="w-full" onClick={() => { setIsOpen(true); setIsMobileMenuOpen(false); }}>
@@ -276,31 +264,29 @@ export function Header() {
   
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
-      <div className="flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center">
-          <Link href="/" className="flex items-center space-x-2">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-20 items-center justify-between gap-4">
+          <Link href="/" className="flex items-center space-x-2 shrink-0">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
-        </div>
         
-        <div className="hidden lg:block flex-1">
-            <div className="flex justify-center">
-                {isMounted && renderDesktopMenu()}
+          <div className="flex-1 min-w-0 hidden lg:flex justify-center">
+             <div className="flex-shrink-0">
+              {isMounted && renderDesktopMenu()}
             </div>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-2">
-            <Button asChild>
-                <Link href="/appointment">Appointment</Link>
-            </Button>
-            <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
           </div>
-          {isMounted && renderMobileMenu()}
+        
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="hidden sm:flex items-center gap-2">
+              <Button asChild>
+                  <Link href="/appointment">Appointment</Link>
+              </Button>
+              <Button onClick={() => setIsOpen(true)}>Get Quote</Button>
+            </div>
+            {isMounted && renderMobileMenu()}
+          </div>
         </div>
       </div>
     </header>
   );
 }
-
-    
