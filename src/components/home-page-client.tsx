@@ -179,7 +179,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
             <CarouselContent className="-ml-2 sm:-ml-4">
               {workGalleryItems.map((item: any, index: number) => (
-                <CarouselItem key={index} className="pl-2 sm:pl-4 basis-4/5 xs:basis-3/5 sm:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={index} className="pl-2 sm:pl-4 md:basis-1/2 lg:basis-1/2">
                   <Card className="overflow-hidden group">
                     <div className="relative aspect-video">
                       <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
