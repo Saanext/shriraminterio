@@ -1,4 +1,5 @@
 
+
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
@@ -9,6 +10,11 @@ const galleryItemSchema = z.object({
   src: z.string().url(),
   alt: z.string(),
   dataAiHint: z.string().optional(),
+});
+
+const videoGalleryItemSchema = z.object({
+  url: z.string().url("A valid video URL is required"),
+  thumbnail: z.string().url("A valid thumbnail URL is required").optional().or(z.literal('')),
 });
 
 const storySchema = z.object({
@@ -29,6 +35,7 @@ const storySchema = z.object({
   quote: z.string().min(1),
   content: z.string().min(1),
   gallery: z.array(galleryItemSchema).optional(),
+  video_gallery: z.array(videoGalleryItemSchema).optional(),
 });
 
 export async function saveStory(data: z.infer<typeof storySchema>) {

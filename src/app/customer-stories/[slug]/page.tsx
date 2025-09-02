@@ -1,9 +1,10 @@
 
+
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { CalendarDays, Tag, User, MapPin, Building, Bed } from 'lucide-react';
+import { CalendarDays, Tag, User, MapPin, Building, Bed, PlayCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
@@ -26,6 +27,12 @@ async function getStory(slug: string) {
 
 export default async function StoryPage({ params }: { params: { slug: string } }) {
   const story = await getStory(params.slug);
+
+  const getYouTubeThumbnail = (url: string) => {
+    if (!url || !url.includes('youtube.com') && !url.includes('youtu.be')) return null;
+    const videoId = url.split('v=')[1]?.split('&')[0] || url.split('/').pop();
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  }
 
   return (
     <div className="bg-background">
@@ -112,9 +119,50 @@ export default async function StoryPage({ params }: { params: { slug: string } }
         </div>
       </section>
 
-      {/* Gallery Section */}
-      {story.gallery && story.gallery.length > 0 && (
+      {/* Video Gallery Section */}
+      {story.video_gallery && story.video_gallery.length > 0 && (
           <section className="py-16 md:py-24 bg-secondary">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold">Video Gallery</h2>
+                <p className="text-lg text-muted-foreground mt-2">See the project in action.</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {(story.video_gallery as any[]).map((video: any, index: number) => {
+                  const thumbnail = video.thumbnail || getYouTubeThumbnail(video.url);
+                  return (
+                  <a href={video.url} target="_blank" rel="noopener noreferrer" key={index} className="group block">
+                    <Card className="overflow-hidden h-full flex flex-col">
+                       <div className="relative aspect-video">
+                        {thumbnail ? (
+                          <Image
+                            src={thumbnail}
+                            alt={`Video thumbnail ${index + 1}`}
+                            fill
+                            objectFit="cover"
+                            className="transition-transform duration-500 group-hover:scale-105"
+                            data-ai-hint="video thumbnail"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-muted flex items-center justify-center">
+                            <PlayCircle className="h-16 w-16 text-muted-foreground" />
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center transition-colors duration-300 group-hover:bg-black/60">
+                          <PlayCircle className="h-16 w-16 text-white/80 transition-transform duration-300 group-hover:scale-110" />
+                        </div>
+                      </div>
+                    </Card>
+                  </a>
+                )})}
+              </div>
+            </div>
+          </section>
+      )}
+
+      {/* Image Gallery Section */}
+      {story.gallery && story.gallery.length > 0 && (
+          <section className="py-16 md:py-24 bg-background">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold">Project Gallery</h2>

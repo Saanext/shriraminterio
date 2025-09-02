@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -23,6 +24,11 @@ const galleryItemSchema = z.object({
   dataAiHint: z.string().optional(),
 });
 
+const videoGalleryItemSchema = z.object({
+  url: z.string().url("A valid video URL is required"),
+  thumbnail: z.string().url("A valid thumbnail URL is required").optional().or(z.literal('')),
+});
+
 const storySchema = z.object({
   id: z.number().optional().nullable(),
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Slug must be lowercase with no spaces"),
@@ -41,6 +47,7 @@ const storySchema = z.object({
   quote: z.string().min(1, "Quote is required"),
   content: z.string().min(1, "Content is required"),
   gallery: z.array(galleryItemSchema).optional().default([]),
+  video_gallery: z.array(videoGalleryItemSchema).optional().default([]),
 });
 
 type StoryFormValues = z.infer<typeof storySchema>;
@@ -56,6 +63,7 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     defaultValues: initialData ? {
       ...initialData,
       gallery: Array.isArray(initialData.gallery) ? initialData.gallery : [],
+      video_gallery: Array.isArray(initialData.video_gallery) ? initialData.video_gallery : [],
     } : {
       slug: '',
       title: '',
@@ -73,12 +81,18 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
       quote: '',
       content: '',
       gallery: [],
+      video_gallery: [],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields: galleryImageFields, append: appendGalleryImage, remove: removeGalleryImage } = useFieldArray({
     control: form.control,
     name: 'gallery',
+  });
+
+  const { fields: videoFields, append: appendVideo, remove: removeVideo } = useFieldArray({
+    control: form.control,
+    name: 'video_gallery',
   });
 
   const handleImageUpload = async (file: File) => {
@@ -116,14 +130,18 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
     if (file) {
       const url = await handleImageUpload(file);
       if (url) {
-        // Find the index of the first gallery item that has no src to replace it.
-        const emptyIndex = form.getValues('gallery').findIndex(item => !item.src);
-        if (emptyIndex !== -1) {
-            form.setValue(`gallery.${emptyIndex}.src`, url, { shouldValidate: true });
-        } else {
-            append({ src: url, alt: '', dataAiHint: '' });
-        }
+        appendGalleryImage({ src: url, alt: '', dataAiHint: '' });
       }
+    }
+  };
+
+  const handleVideoThumbnailUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+        const url = await handleImageUpload(file);
+        if (url) {
+            form.setValue(`video_gallery.${index}.thumbnail`, url, { shouldValidate: true });
+        }
     }
   };
 
@@ -203,14 +221,47 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
                 )} />
               </CardContent>
             </Card>
+            
+            <Card>
+                <CardHeader>
+                    <CardTitle>Video Gallery</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {videoFields.map((field, index) => (
+                            <div key={field.id} className="space-y-2 p-4 border rounded-md">
+                                <FormField control={form.control} name={`video_gallery.${index}.url`} render={({ field }) => (
+                                    <FormItem><FormLabel>Video URL</FormLabel><FormControl><Input placeholder="https://youtube.com/watch?v=..." {...field} /></FormControl><FormMessage /></FormItem>
+                                )} />
+                                 <FormField control={form.control} name={`video_gallery.${index}.thumbnail`} render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Custom Thumbnail (Optional)</FormLabel>
+                                    {field.value && <Image src={field.value} alt={`Thumbnail ${index}`} width={120} height={68} className="rounded-md object-cover" />}
+                                    <FormControl>
+                                      <Input type="file" accept="image/*" onChange={(e) => handleVideoThumbnailUpload(index, e)} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )} />
+                                <Button type="button" variant="destructive" size="sm" className="w-full" onClick={() => removeVideo(index)}>
+                                    <Trash2 className="h-4 w-4 mr-2"/> Remove Video
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                     <Button type="button" variant="outline" size="sm" onClick={() => appendVideo({ url: '', thumbnail: '' })}>
+                         Add Video
+                     </Button>
+                </CardContent>
+            </Card>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>Project Gallery</CardTitle>
+                    <CardTitle>Project Image Gallery</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {fields.map((field, index) => (
+                        {galleryImageFields.map((field, index) => (
                             <div key={field.id} className="space-y-2">
                                 <div className="relative aspect-square">
                                     {field.src && <Image src={field.src} alt={field.alt || `Gallery Image ${index + 1}`} layout="fill" className="rounded-md object-cover" />}
@@ -224,7 +275,7 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
                                 <FormField control={form.control} name={`gallery.${index}.dataAiHint`} render={({ field }) => (
                                     <FormItem className="w-full"><FormControl><Input placeholder="AI Hint" {...field} /></FormControl><FormMessage /></FormItem>
                                 )} />
-                                <Button type="button" variant="destructive" size="sm" className="w-full" onClick={() => remove(index)}>
+                                <Button type="button" variant="destructive" size="sm" className="w-full" onClick={() => removeGalleryImage(index)}>
                                     <Trash2 className="h-4 w-4 mr-2"/> Remove
                                 </Button>
                             </div>
@@ -243,7 +294,7 @@ export function StoryEditor({ initialData }: { initialData: StoryFormValues | nu
                         accept="image/*"
                         onChange={handleGalleryFileChange}
                        />
-                       <Button type="button" variant="outline" size="sm" className="ml-2" onClick={() => append({ src: '', alt: '', dataAiHint: '' })}>
+                       <Button type="button" variant="outline" size="sm" className="ml-2" onClick={() => appendGalleryImage({ src: '', alt: '', dataAiHint: '' })}>
                          Add URL
                        </Button>
                     </div>
