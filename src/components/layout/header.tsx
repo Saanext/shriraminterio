@@ -51,8 +51,7 @@ export function Header() {
         const supabase = createClient();
         const { data, error } = await supabase
             .from('pages')
-            .select('title, slug, parent_slug, visible')
-            .eq('visible', true)
+            .select('title, slug, parent_slug')
             .order('nav_order');
 
         if (error) {
@@ -60,7 +59,7 @@ export function Header() {
             return;
         }
         
-        const items: NavItem[] = data
+        const topLevelItems: NavItem[] = data
             .filter(item => !item.parent_slug)
             .map(item => ({
                 title: item.title,
@@ -75,7 +74,25 @@ export function Header() {
                     }))
             }));
         
-        setNavItems(items);
+        const finalItems = topLevelItems.map(item => {
+            if (item.slug === '/about') {
+                const customerStoriesItem = topLevelItems.find(i => i.slug === '/customer-stories');
+                const clientsItem = topLevelItems.find(i => i.slug === '/clients');
+                
+                const subItems = item.subItems || [];
+                if (customerStoriesItem) {
+                    subItems.push({ title: customerStoriesItem.title, slug: customerStoriesItem.slug, icon: customerStoriesItem.icon });
+                }
+                if (clientsItem) {
+                    subItems.push({ title: clientsItem.title, slug: clientsItem.slug, icon: clientsItem.icon });
+                }
+                
+                return { ...item, subItems };
+            }
+            return item;
+        }).filter(item => item.slug !== '/customer-stories' && item.slug !== '/clients');
+
+        setNavItems(finalItems);
     };
     fetchNavItems();
   }, []);
