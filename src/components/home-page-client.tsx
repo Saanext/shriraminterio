@@ -106,11 +106,6 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
                 {welcome.content.paragraph1}
               </p>
-              {welcome.content.paragraph2 && (
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  {welcome.content.paragraph2}
-                </p>
-              )}
             </div>
              <div className="order-1 lg:order-2">
               <Image
