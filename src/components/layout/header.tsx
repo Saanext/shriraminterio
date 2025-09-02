@@ -61,6 +61,7 @@ export function Header() {
         
         const topLevelItems: NavItem[] = data
             .filter(item => !item.parent_slug)
+             .filter(item => item.slug !== 'appointment') // Exclude the appointment page from nav links
             .map(item => ({
                 title: item.title,
                 slug: item.slug === 'home' ? '/' : `/${item.slug}`,
@@ -171,7 +172,7 @@ export function Header() {
            <DropdownMenu key={item.slug}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className={cn(
-                    'relative transition-colors duration-300 group py-2 px-3 flex items-center gap-1',
+                    'relative transition-colors duration-300 group py-2 px-2 flex items-center gap-1',
                     isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                   )}>
                   {isActive && (
@@ -220,7 +221,7 @@ export function Header() {
             key={item.slug}
             href={item.slug}
             className={cn(
-              'relative transition-colors duration-300 group py-2 px-3',
+              'relative transition-colors duration-300 group py-2 px-2',
               isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
             )}
           >
@@ -254,7 +255,7 @@ export function Header() {
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between gap-2">
+        <div className="flex h-20 items-center justify-between gap-1">
           <Link href="/" className="flex items-center space-x-2 shrink-0">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
