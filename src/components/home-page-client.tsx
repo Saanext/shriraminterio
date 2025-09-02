@@ -308,7 +308,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           </div>
           <Carousel
             opts={{ align: 'start', loop: true }}
-            className="w-full max-w-4xl mx-auto"
+            className="w-full max-w-6xl mx-auto"
           >
             <CarouselContent className="-ml-4">
               {testimonialsItems.map((testimonial: any, index: number) => (
