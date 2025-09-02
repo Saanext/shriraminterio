@@ -101,7 +101,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div className="order-2 lg:order-1">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                Welcome to <span className="font-headline text-shadow-sm">Shriram Interio</span>
+                {welcome.content.title}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
                 {welcome.content.paragraph1}
@@ -126,7 +126,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       {aboutCompany.visible && (
       <section id="about-company" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{aboutCompany.title}</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{aboutCompany.content.title}</h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2">
             <span className="font-headline text-shadow-sm">SHRIRAM INTERIO</span> — {aboutCompany.content.text}
           </p>
@@ -140,7 +140,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="text-center mb-8 sm:mb-12">
                     <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">
-                      {whyUs.title}
+                      {whyUs.content.title}
                     </h2>
                     <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{whyUs.content.subtitle}</p>
                 </div>
@@ -173,7 +173,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.content.subtitle}</p>
           </div>
           <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
@@ -204,7 +204,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       <section id="comfort-design" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6">
            <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-2">{comfortDesign.title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight mb-2">{comfortDesign.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 max-w-3xl mx-auto leading-relaxed px-2">{comfortDesign.content.subtitle}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -236,7 +236,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{whatWeDo.title}</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{whatWeDo.content.title}</h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{whatWeDo.content.subtitle}</p>
           </div>
           <Tabs defaultValue="trending" className="w-full">
@@ -303,7 +303,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       <section id="testimonials" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{testimonials.title}</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{testimonials.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{testimonials.content.subtitle}</p>
           </div>
           <Carousel
@@ -348,7 +348,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">{faq.title}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{faq.content.title}</h2>
             <p className="text-lg text-muted-foreground mt-2">{faq.content.subtitle}</p>
           </div>
           <div className="max-w-3xl mx-auto">
@@ -377,7 +377,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                       <p className="text-sm text-primary font-bold tracking-widest mx-4">{partners.content.subtitle}</p>
                       <div className="border-t border-primary w-12"></div>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-bold">{partners.title}</h2>
+                  <h2 className="text-3xl md:text-4xl font-bold">{partners.content.title}</h2>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 items-center">
                   {partnersItems.map((partner: any) => (
