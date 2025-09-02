@@ -59,7 +59,7 @@ export function Header() {
             return;
         }
         
-        const topLevelItems: NavItem[] = data
+        let topLevelItems: NavItem[] = data
             .filter(item => !item.parent_slug)
              .filter(item => item.slug !== 'appointment') // Exclude the appointment page from nav links
             .map(item => ({
@@ -74,6 +74,16 @@ export function Header() {
                         icon: iconMap[sub.slug] || Home
                     }))
             }));
+        
+        // Reorder items: Products after Clients
+        const productsIndex = topLevelItems.findIndex(item => item.slug === '/products');
+        const clientsIndex = topLevelItems.findIndex(item => item.slug === '/clients');
+
+        if (productsIndex !== -1 && clientsIndex !== -1 && productsIndex < clientsIndex) {
+            const productsItem = topLevelItems.splice(productsIndex, 1)[0];
+            const newClientsIndex = topLevelItems.findIndex(item => item.slug === '/clients');
+            topLevelItems.splice(newClientsIndex + 1, 0, productsItem);
+        }
         
         setNavItems(topLevelItems);
     };
