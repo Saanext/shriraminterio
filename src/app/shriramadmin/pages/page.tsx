@@ -11,7 +11,8 @@ import { Badge } from '@/components/ui/badge';
 
 async function getPages() {
     const supabase = createClient();
-    const { data: pages, error } = await supabase.from('pages').select('id, title, slug, visible, parent_slug').order('nav_order');
+    // Select all columns to ensure all data is fetched, which can help with RLS policies.
+    const { data: pages, error } = await supabase.from('pages').select('*').order('nav_order');
     if (error) {
         console.error('Error fetching pages:', error);
         return [];
