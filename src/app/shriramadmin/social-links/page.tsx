@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/server';
 import { FilePlus, MoreVertical, Pencil, Trash2, Facebook, Instagram, Twitter, Youtube, LucideProps } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
+import { SocialLinkDeleteAction } from '@/components/social-link-delete-action';
 
 const iconMap: { [key: string]: React.FC<LucideProps> } = {
     Facebook,
@@ -31,8 +32,8 @@ export default async function SocialLinksPage() {
         <div>
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold">Social Links</h1>
-                 <Button asChild disabled>
-                    <Link href="#">
+                 <Button asChild>
+                    <Link href="/shriramadmin/social-links/new">
                         <FilePlus className="w-5 h-5 mr-2" />
                         Add New Link
                     </Link>
@@ -71,14 +72,18 @@ export default async function SocialLinksPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem disabled>
-                                                    <Pencil className="mr-2 h-4 w-4" />
-                                                    <span>Edit</span>
+                                                <DropdownMenuItem asChild>
+                                                    <Link href={`/shriramadmin/social-links/edit/${link.id}`}>
+                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                        <span>Edit</span>
+                                                    </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-destructive" disabled>
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    <span>Delete</span>
-                                                </DropdownMenuItem>
+                                                <SocialLinkDeleteAction linkId={link.id}>
+                                                    <div className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-destructive">
+                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </SocialLinkDeleteAction>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
