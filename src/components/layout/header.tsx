@@ -150,7 +150,9 @@ export function Header() {
               ) : (
                 <Link
                   key={item.slug}
-                  href={item.slug}
+                  href={item.title === 'Products' ? 'https://amazon.in' : item.slug}
+                  target={item.title === 'Products' ? '_blank' : '_self'}
+                  rel={item.title === 'Products' ? 'noopener noreferrer' : ''}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
                     'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
@@ -158,7 +160,8 @@ export function Header() {
                   )}
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.title}
+                  <span>{item.title}</span>
+                  {item.title === 'Products' && <ShoppingCart className="h-5 w-5" />}
                 </Link>
               )
             )}
@@ -178,6 +181,24 @@ export function Header() {
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
+        if (item.title === 'Products') {
+            return (
+                <a
+                    key={item.slug}
+                    href="https://amazon.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      'relative transition-colors duration-300 group py-2 px-2 flex items-center gap-1.5',
+                      isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
+                    )}
+                >
+                    <span>{item.title}</span>
+                    <ShoppingCart className="h-4 w-4" />
+                </a>
+            );
+        }
+
         return item.subItems && item.subItems.length > 0 ? (
            <DropdownMenu key={item.slug}>
               <DropdownMenuTrigger asChild>
@@ -290,3 +311,5 @@ export function Header() {
     </header>
   );
 }
+
+    
