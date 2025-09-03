@@ -177,7 +177,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <Select 
                           onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
-                          value={field.value || 'unassigned'}
+                          value={field.value ?? 'unassigned'}
                         >
                           <FormControl>
                               <SelectTrigger>
