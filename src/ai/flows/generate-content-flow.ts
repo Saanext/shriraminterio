@@ -9,6 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
+import {googleAI} from '@genkit-ai/googleai';
 import {z} from 'zod';
 
 const GenerateSectionContentInputSchema = z.object({
@@ -37,6 +38,7 @@ export async function generateSectionContent(input: GenerateSectionContentInput)
 
 const prompt = ai.definePrompt({
   name: 'generateSectionContentPrompt',
+  model: googleAI.model('gemini-1.5-pro-latest'),
   input: {schema: PromptInputSchema},
   output: {schema: GenerateSectionContentOutputSchema},
   prompt: `You are an expert copywriter and content strategist for a web development agency.
