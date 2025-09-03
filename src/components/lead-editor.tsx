@@ -62,7 +62,10 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
 
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(leadSchema),
-    defaultValues: initialData || {
+    defaultValues: initialData ? {
+      ...initialData,
+      assigned_to_id: initialData.assigned_to_id || null,
+    } : {
       name: '',
       email: '',
       mobile: '',
