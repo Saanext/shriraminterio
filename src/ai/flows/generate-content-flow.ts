@@ -44,15 +44,18 @@ const prompt = ai.definePrompt({
   prompt: `You are an expert copywriter and content strategist for a web development agency.
 Your task is to generate compelling content for a specific section of a website based on the user's requirements.
 
+**IMPORTANT RULE:**
+- **Do NOT change existing image URLs.** If a field of type 'image' in the \`currentContent\` already has a URL, you MUST use that exact same URL in your output.
+- Only generate descriptive placeholder text for 'image' fields if they are empty or do not contain a URL.
+
 **Instructions:**
 
 1.  **Analyze the Input:** Carefully review the provided context, current content, content structure, and keywords.
-2.  **Understand the Structure:** The \`contentStructure\` defines the exact JSON format you must produce. Pay close attention to field names and types (text, textarea, repeater, image).
-3.  **Incorporate Keywords:** Naturally weave the user's \`keywords\` into the generated content.
-4.  **Generate Content:** Create new content that is engaging, professional, and tailored to the section's purpose.
-    *   For fields of type 'repeater', generate a reasonable number of items (2-4 unless it's obvious more are needed).
-    *   For fields of type 'image', provide a descriptive placeholder text (e.g., "A modern kitchen with marble countertops") that can be used to find a real image. Do not use URLs.
-5.  **Output JSON:** Return a single JSON object with a "content" key. The value of this key must be a JSON object that exactly matches the structure and field names defined in the \`contentStructure\`.
+2.  **Understand the Structure:** The \`contentStructure\` defines the exact JSON format you must produce.
+3.  **Preserve Images:** For any field with type 'image' (like a background image or a gallery item), check the \`currentContent\`. If an image URL is already present, you must keep it. Do not change it.
+4.  **Incorporate Keywords:** Naturally weave the user's \`keywords\` into the generated text content.
+5.  **Generate Text Content:** Create new content for text-based fields (text, textarea) that is engaging and professional. For fields of type 'repeater', generate a reasonable number of items (2-4 unless it's obvious more are needed).
+6.  **Output JSON:** Return a single JSON object with a "content" key. The value must be a JSON object that exactly matches the \`contentStructure\`.
 
 **Context:**
 {{context}}
@@ -65,7 +68,7 @@ Your task is to generate compelling content for a specific section of a website 
 {{{stringifiedContentStructure}}}
 \`\`\`
 
-**Current Content (for reference):**
+**Current Content (for reference, preserve existing image URLs from here):**
 \`\`\`json
 {{{stringifiedCurrentContent}}}
 \`\`\`
