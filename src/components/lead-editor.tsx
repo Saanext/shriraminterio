@@ -173,23 +173,22 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <div className="flex items-center gap-2">
-                          <Select onValueChange={field.onChange} value={field.value ?? undefined} >
+                          <Select 
+                            onValueChange={(value) => field.onChange(value === "unassigned" ? null : value)} 
+                            value={field.value ?? "unassigned"}
+                          >
                             <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Unassigned" />
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
+                                <SelectItem value="unassigned">Unassigned</SelectItem>
                                 {salesPersons.map(person => (
                                     <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
                                 ))}
                             </SelectContent>
                           </Select>
-                          {field.value && (
-                            <Button type="button" variant="ghost" size="icon" onClick={() => field.onChange(null)}>
-                              <X className="h-4 w-4" />
-                            </Button>
-                          )}
                         </div>
                         <FormMessage />
                     </FormItem>
