@@ -88,7 +88,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
   }, [initialData, form]);
 
   const onSubmit = async (values: LeadFormValues) => {
-    const result = await saveLead(values);
+    const result = await saveLead({ ...values, id: initialData?.id });
     if (result.success) {
       toast({
         title: isNew ? 'Lead Created!' : 'Lead Updated!',
