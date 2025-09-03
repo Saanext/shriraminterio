@@ -108,6 +108,9 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
                 {welcome.content.paragraph1}
               </p>
+               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
+                {welcome.content.paragraph2}
+              </p>
             </div>
              <div className="order-1 lg:order-2">
                {isUrl(welcome.content.image) && (
@@ -125,7 +128,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         </div>
       </section>
        )}
-
+      
       {/* About Company Section */}
       {aboutCompany.visible && (
       <section id="about-company" className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
