@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { createLead } from './lead-actions';
+import { saveLead } from './lead-actions';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Slider } from './ui/slider';
@@ -30,6 +30,7 @@ const serviceOptions = [
 ];
 
 const leadSchema = z.object({
+  id: z.number().optional().nullable(),
   name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address').optional().or(z.literal('')),
   mobile: z.string().min(10, 'Mobile number is required'),
@@ -49,12 +50,19 @@ type SalesPerson = {
 
 const statusOptions = ['in progress', 'qualified', 'not qualified'];
 
-export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
+type LeadEditorProps = {
+    initialData?: LeadFormValues | null;
+    salesPersons: SalesPerson[];
+}
+
+export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const isNew = !initialData;
+
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(leadSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       name: '',
       email: '',
       mobile: '',
@@ -67,11 +75,11 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
   });
 
   const onSubmit = async (values: LeadFormValues) => {
-    const result = await createLead(values);
+    const result = await saveLead(values);
     if (result.success) {
       toast({
-        title: 'Lead Created!',
-        description: `The lead for "${values.name}" has been successfully created.`,
+        title: isNew ? 'Lead Created!' : 'Lead Updated!',
+        description: `The lead for "${values.name}" has been successfully saved.`,
       });
       router.push('/shriramadmin/leads');
       router.refresh();
@@ -89,9 +97,9 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Add New Lead</h1>
+        <h1 className="text-3xl font-bold">{isNew ? 'Add New Lead' : 'Edit Lead'}</h1>
         <Button onClick={form.handleSubmit(onSubmit)} disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Creating...' : 'Create Lead'}
+          {form.formState.isSubmitting ? 'Saving...' : (isNew ? 'Create Lead' : 'Save Changes')}
         </Button>
       </div>
 
@@ -100,7 +108,7 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
           <Card>
             <CardHeader>
               <CardTitle>Lead Details</CardTitle>
-              <CardDescription>Enter the details for the new lead.</CardDescription>
+              <CardDescription>Enter the details for the lead.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -149,7 +157,7 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value || undefined}>
+                        <Select onValueChange={field.onChange} value={field.value || ''}>
                         <FormControl>
                             <SelectTrigger>
                             <SelectValue placeholder="Select a sales person" />
@@ -195,7 +203,7 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
                             <FormLabel>Progress: {progressValue}%</FormLabel>
                             <FormControl>
                                 <Slider
-                                    defaultValue={[field.value]}
+                                    value={[field.value]}
                                     onValueChange={(value) => field.onChange(value[0])}
                                     max={100}
                                     step={1}

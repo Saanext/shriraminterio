@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { LeadStatusBadge } from '@/components/lead-status-badge';
 import { Progress } from '@/components/ui/progress';
+import { LeadDeleteAction } from '@/components/lead-delete-action';
 
 async function getLeads() {
     const supabase = createClient();
@@ -102,14 +103,18 @@ export default async function LeadsPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem disabled>
-                                                    <Pencil className="mr-2 h-4 w-4" />
-                                                    <span>Edit</span>
+                                                <DropdownMenuItem asChild>
+                                                    <Link href={`/shriramadmin/leads/edit/${lead.id}`}>
+                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                        <span>Edit</span>
+                                                    </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-destructive" disabled>
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    <span>Delete</span>
-                                                </DropdownMenuItem>
+                                                <LeadDeleteAction leadId={lead.id}>
+                                                    <div className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-destructive">
+                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                        <span>Delete</span>
+                                                    </div>
+                                                </LeadDeleteAction>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
