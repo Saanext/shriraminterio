@@ -117,7 +117,7 @@ export function Header() {
                   <CollapsibleTrigger className="w-full">
                     <div
                       className={cn(
-                        'flex items-center justify-between text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                        'flex items-center justify-between text-base rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
                         pathname.startsWith(item.slug === '/' ? '/ ' : item.slug) ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                       )}
                     >
@@ -136,7 +136,7 @@ export function Header() {
                           href={subItem.slug}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={cn(
-                            'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                            'flex items-center gap-4 text-base rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
                             pathname === subItem.slug ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                           )}
                         >
@@ -155,7 +155,7 @@ export function Header() {
                   rel={item.title === 'Products' ? 'noopener noreferrer' : ''}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className={cn(
-                    'flex items-center gap-4 text-lg rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
+                    'flex items-center gap-4 text-base rounded-md p-3 transition-colors hover:bg-accent hover:text-accent-foreground',
                     pathname === item.slug ? 'text-primary bg-primary/10 font-semibold' : 'text-foreground/80'
                   )}
                 >
@@ -177,7 +177,7 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <nav className="hidden xl:flex items-center space-x-2 text-base font-medium">
+    <nav className="hidden xl:flex items-center space-x-2 text-xs font-medium">
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
@@ -203,7 +203,7 @@ export function Header() {
            <DropdownMenu key={item.slug}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className={cn(
-                    'relative transition-colors duration-300 group py-2 px-3 flex items-center gap-1 text-base',
+                    'relative transition-colors duration-300 group py-2 px-3 flex items-center gap-1 text-xs',
                     isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                   )}>
                   {isActive && (
@@ -311,5 +311,3 @@ export function Header() {
     </header>
   );
 }
-
-    
