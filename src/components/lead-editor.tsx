@@ -15,6 +15,7 @@ import { saveLead } from './lead-actions';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Slider } from './ui/slider';
+import { useEffect } from 'react';
 
 const serviceOptions = [
     { id: 'tv-unit', label: 'TV Unit' },
@@ -65,6 +66,8 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
     defaultValues: initialData ? {
       ...initialData,
       assigned_to_id: initialData.assigned_to_id || null,
+      progress: initialData.progress || 0,
+      services: initialData.services || [],
     } : {
       name: '',
       email: '',
@@ -76,6 +79,18 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
       progress: 0,
     },
   });
+  
+  // Reset form if initialData changes
+  useEffect(() => {
+    if (initialData) {
+      form.reset({
+        ...initialData,
+        assigned_to_id: initialData.assigned_to_id || null,
+        progress: initialData.progress || 0,
+        services: initialData.services || [],
+      });
+    }
+  }, [initialData, form]);
 
   const onSubmit = async (values: LeadFormValues) => {
     const result = await saveLead(values);
@@ -167,6 +182,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                             <SelectItem value="">Unassigned</SelectItem>
                             {salesPersons.map(person => (
                                 <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
                             ))}
@@ -182,7 +198,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Status</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                             <SelectTrigger>
                             <SelectValue placeholder="Select a status" />

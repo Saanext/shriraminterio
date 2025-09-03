@@ -39,12 +39,14 @@ function EditLeadSkeleton() {
                 <Skeleton className="h-10 w-32" />
             </div>
             <div className="space-y-8">
-                <Skeleton className="h-64 w-full" />
-                <Skeleton className="h-80 w-full" />
+                <Skeleton className="h-[700px] w-full" />
             </div>
         </div>
     );
 }
+
+// Re-export the component with a new name to avoid conflict with the async component
+const LeadEditorClient = LeadEditor;
 
 export default async function EditLeadPage({ params }: { params: { id: string } }) {
     const leadId = params.id;
@@ -62,7 +64,7 @@ export default async function EditLeadPage({ params }: { params: { id: string } 
 
     return (
         <Suspense fallback={<EditLeadSkeleton />}>
-            <LeadEditor initialData={leadData} salesPersons={salesPersons} />
+            <LeadEditorClient initialData={leadData} salesPersons={salesPersons} />
         </Suspense>
     )
 }

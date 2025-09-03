@@ -24,7 +24,8 @@ export async function saveLead(values: z.infer<typeof leadSchema>) {
   
   const dataToUpsert = {
     ...leadData,
-    assigned_to_id: leadData.assigned_to_id || null
+    assigned_to_id: leadData.assigned_to_id || null,
+    progress: Number(leadData.progress),
   };
 
   try {
@@ -42,6 +43,9 @@ export async function saveLead(values: z.infer<typeof leadSchema>) {
     if (error) throw error;
 
     revalidatePath('/shriramadmin/leads');
+    if (id) {
+        revalidatePath(`/shriramadmin/leads/edit/${id}`);
+    }
 
     return { success: true, error: null };
   } catch (error: any) {
