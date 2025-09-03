@@ -177,7 +177,7 @@ export function Header() {
   );
 
   const renderDesktopMenu = () => (
-    <nav className="hidden xl:flex items-center space-x-1 text-xs font-medium">
+    <nav className="hidden xl:flex items-center space-x-2 text-base font-medium">
       {navItems.map((item) => {
         const isActive = pathname === item.slug || (item.slug !== '/' && pathname.startsWith(item.slug));
         
@@ -189,7 +189,7 @@ export function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      'relative transition-colors duration-300 group py-2 px-2 flex items-center gap-1.5',
+                      'relative transition-colors duration-300 group py-2 px-3 flex items-center gap-1.5',
                       isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                     )}
                 >
@@ -203,7 +203,7 @@ export function Header() {
            <DropdownMenu key={item.slug}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className={cn(
-                    'relative transition-colors duration-300 group py-2 px-2 flex items-center gap-1',
+                    'relative transition-colors duration-300 group py-2 px-3 flex items-center gap-1 text-base',
                     isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
                   )}>
                   {isActive && (
@@ -252,7 +252,7 @@ export function Header() {
             key={item.slug}
             href={item.slug}
             className={cn(
-              'relative transition-colors duration-300 group py-2 px-2',
+              'relative transition-colors duration-300 group py-2 px-3',
               isActive ? 'text-primary' : 'text-foreground/80 hover:text-foreground'
             )}
           >
@@ -285,8 +285,8 @@ export function Header() {
   
   return (
     <header className="fixed top-0 z-50 w-full transition-all duration-300 bg-background shadow-md border-b">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between gap-1">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="flex h-20 items-center justify-between gap-4">
           <Link href="/" className="flex items-center space-x-2 shrink-0">
             <Image src="/company.png" alt="Shriram Interio Logo" width={150} height={40} className="object-contain" data-ai-hint="company logo" />
           </Link>
@@ -311,3 +311,5 @@ export function Header() {
     </header>
   );
 }
+
+    
