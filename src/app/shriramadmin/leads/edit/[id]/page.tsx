@@ -45,9 +45,6 @@ function EditLeadSkeleton() {
     );
 }
 
-// Re-export the component with a new name to avoid conflict with the async component
-const LeadEditorClient = LeadEditor;
-
 export default async function EditLeadPage({ params }: { params: { id: string } }) {
     const leadId = params.id;
 
@@ -64,7 +61,7 @@ export default async function EditLeadPage({ params }: { params: { id: string } 
 
     return (
         <Suspense fallback={<EditLeadSkeleton />}>
-            <LeadEditorClient initialData={leadData} salesPersons={salesPersons} />
+            <LeadEditor initialData={leadData} salesPersons={salesPersons} />
         </Suspense>
     )
 }
