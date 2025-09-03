@@ -19,6 +19,12 @@ const GenerateSectionContentInputSchema = z.object({
 });
 export type GenerateSectionContentInput = z.infer<typeof GenerateSectionContentInputSchema>;
 
+// Define a new schema for the prompt's input, including the stringified JSON
+const PromptInputSchema = GenerateSectionContentInputSchema.extend({
+    stringifiedContentStructure: z.string(),
+    stringifiedCurrentContent: z.string(),
+});
+
 const GenerateSectionContentOutputSchema = z.object({
     content: z.any().describe("The newly generated content for the section, matching the provided content structure."),
 });
@@ -31,7 +37,7 @@ export async function generateSectionContent(input: GenerateSectionContentInput)
 
 const prompt = ai.definePrompt({
   name: 'generateSectionContentPrompt',
-  input: {schema: GenerateSectionContentInputSchema},
+  input: {schema: PromptInputSchema},
   output: {schema: GenerateSectionContentOutputSchema},
   prompt: `You are an expert copywriter and content strategist for a web development agency.
 Your task is to generate compelling content for a specific section of a website based on the user's requirements.
@@ -54,12 +60,12 @@ Your task is to generate compelling content for a specific section of a website 
 
 **Content Structure to Follow:**
 \`\`\`json
-{{{jsonStringify contentStructure}}}
+{{{stringifiedContentStructure}}}
 \`\`\`
 
 **Current Content (for reference):**
 \`\`\`json
-{{{jsonStringify currentContent}}}
+{{{stringifiedCurrentContent}}}
 \`\`\`
 
 Produce only the final JSON object.
@@ -73,7 +79,14 @@ const generateSectionContentFlow = ai.defineFlow(
     outputSchema: GenerateSectionContentOutputSchema,
   },
   async (input) => {
-    const {output} = await prompt(input);
+    // Manually stringify the JSON objects before passing them to the prompt.
+    const promptInput = {
+        ...input,
+        stringifiedContentStructure: JSON.stringify(input.contentStructure, null, 2),
+        stringifiedCurrentContent: JSON.stringify(input.currentContent, null, 2),
+    };
+
+    const {output} = await prompt(promptInput);
     return output!;
   }
 );
