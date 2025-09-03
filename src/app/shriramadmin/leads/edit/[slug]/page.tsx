@@ -5,12 +5,12 @@ import { createClient } from '@/lib/supabase/server';
 import { Skeleton } from '@/components/ui/skeleton';
 import { LeadEditor } from '@/components/lead-editor';
 
-async function getLeadData(id: string) {
+async function getLeadData(slug: string) {
     const supabase = createClient();
     const { data, error } = await supabase
         .from('leads')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single();
 
     if (error || !data) {
@@ -45,14 +45,14 @@ function EditLeadSkeleton() {
     );
 }
 
-export default async function EditLeadPage({ params }: { params: { id: string } }) {
-    const leadId = params.id;
+export default async function EditLeadPage({ params }: { params: { slug: string } }) {
+    const leadSlug = params.slug;
 
-    if (!leadId) {
+    if (!leadSlug) {
         notFound();
     }
 
-    const leadData = await getLeadData(leadId);
+    const leadData = await getLeadData(leadSlug);
     const salesPersons = await getSalesPersons();
 
     if (!leadData) {

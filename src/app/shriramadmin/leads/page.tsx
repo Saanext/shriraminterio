@@ -11,7 +11,6 @@ import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { LeadStatusBadge } from '@/components/lead-status-badge';
-import { Progress } from '@/components/ui/progress';
 import { LeadDeleteAction } from '@/components/lead-delete-action';
 
 async function getLeads() {
@@ -98,7 +97,7 @@ export default async function LeadsPage() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
-                                                    <Link href={`/shriramadmin/leads/edit/${lead.id}`}>
+                                                    <Link href={`/shriramadmin/leads/edit/${lead.slug}`}>
                                                         <Pencil className="mr-2 h-4 w-4" />
                                                         <span>Edit</span>
                                                     </Link>

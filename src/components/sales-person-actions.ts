@@ -10,21 +10,49 @@ const salesPersonSchema = z.object({
   name: z.string().min(1),
   contact_number: z.string().min(1),
   profile_image_url: z.string().url(),
+  slug: z.string().optional(),
 });
+
+function generateSlug(name: string) {
+    return name
+        .toLowerCase()
+        .replace(/&/g, 'and')
+        .replace(/[^a-z0-9-]+/g, ' ')
+        .trim()
+        .replace(/\s+/g, '-');
+}
 
 export async function saveSalesPerson(data: z.infer<typeof salesPersonSchema>) {
   const supabase = createClient()
   
   const { id, ...personData } = data;
+
+  let slug = personData.slug || generateSlug(personData.name);
+  if (!id) { // Only check for slug uniqueness on creation
+    let isUnique = false;
+    let counter = 1;
+    const baseSlug = slug;
+    while(!isUnique) {
+      const { data: existing } = await supabase.from('sales_persons').select('id').eq('slug', slug).single();
+      if (!existing) {
+        isUnique = true;
+      } else {
+        slug = `${baseSlug}-${counter}`;
+        counter++;
+      }
+    }
+  }
   
+  const dataToUpsert = { ...personData, slug };
+
   try {
     if (id) {
       // Update existing person
-      const { error } = await supabase.from('sales_persons').update(personData).eq('id', id);
+      const { error } = await supabase.from('sales_persons').update(dataToUpsert).eq('id', id);
       if (error) throw error;
     } else {
       // Create new person
-      const { error } = await supabase.from('sales_persons').insert(personData);
+      const { error } = await supabase.from('sales_persons').insert(dataToUpsert);
       if (error) throw error;
     }
 

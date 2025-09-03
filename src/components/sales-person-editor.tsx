@@ -21,6 +21,7 @@ const salesPersonSchema = z.object({
   name: z.string().min(1, "Name is required"),
   contact_number: z.string().min(10, "A valid contact number is required"),
   profile_image_url: z.string().url("A profile image is required"),
+  slug: z.string().optional(),
 });
 
 type SalesPersonFormValues = z.infer<typeof salesPersonSchema>;
@@ -37,6 +38,7 @@ export function SalesPersonEditor({ initialData }: { initialData: any | null }) 
       name: '',
       contact_number: '',
       profile_image_url: '',
+      slug: '',
     },
   });
 

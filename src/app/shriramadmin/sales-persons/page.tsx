@@ -65,7 +65,7 @@ export default async function SalesPersonsPage() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
-                                                    <Link href={`/shriramadmin/sales-persons/edit/${person.id}`}>
+                                                    <Link href={`/shriramadmin/sales-persons/edit/${person.slug}`}>
                                                         <Pencil className="mr-2 h-4 w-4" />
                                                         <span>Edit</span>
                                                     </Link>

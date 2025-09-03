@@ -39,6 +39,7 @@ const leadSchema = z.object({
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
+  slug: z.string().optional(),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
@@ -71,6 +72,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
       message: '',
       assigned_to_id: undefined,
       status: 'in progress',
+      slug: '',
     },
   });
   

@@ -3,12 +3,12 @@ import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { SalesPersonEditor } from '@/components/sales-person-editor';
 
-async function getSalesPersonData(id: string) {
+async function getSalesPersonData(slug: string) {
     const supabase = createClient();
     const { data, error } = await supabase
         .from('sales_persons')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single();
 
     if (error || !data) {
@@ -19,14 +19,14 @@ async function getSalesPersonData(id: string) {
     return data;
 }
 
-export default async function EditSalesPersonPage({ params }: { params: { id: string } }) {
-    const personId = params.id;
+export default async function EditSalesPersonPage({ params }: { params: { slug: string } }) {
+    const personSlug = params.slug;
 
-    if (!personId) {
+    if (!personSlug) {
         notFound();
     }
 
-    const personData = await getSalesPersonData(personId);
+    const personData = await getSalesPersonData(personSlug);
      if (!personData) {
         notFound();
     }
