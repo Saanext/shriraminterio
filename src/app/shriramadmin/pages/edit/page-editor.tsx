@@ -190,6 +190,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         const value = itemIndex !== undefined ? itemValue : sections[sectionIndex].content[fieldKey] || '';
         const uploadId = `section-${sectionIndex}-upload-${fieldKey}`+ (itemIndex !== undefined ? `-${itemIndex}` : '');
         const isRepeaterField = itemIndex !== undefined && repeaterKey !== undefined;
+        const isUrl = (val: any) => typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'));
 
         switch(field.type) {
             case 'text':
@@ -200,7 +201,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                 return (
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-4">
-                            {value && <Image src={value} alt={field.label} width={80} height={80} className="w-20 h-20 object-cover rounded-md border" />}
+                            {value && isUrl(value) && <Image src={value} alt={field.label} width={80} height={80} className="w-20 h-20 object-cover rounded-md border" />}
                             <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
                         </div>
                         <div>
