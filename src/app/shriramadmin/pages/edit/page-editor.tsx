@@ -51,6 +51,12 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
              setMetaDescription(initialPageData.meta_description || '');
         }
     }, [initialPageData]);
+    
+    const handleTitleChange = (sectionIndex: number, value: string) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].title = value;
+        setSections(newSections);
+    };
 
     const handleFieldChange = (sectionIndex: number, fieldKey: string, value: any) => {
         const newSections = [...sections];
@@ -318,7 +324,11 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                     <Card key={section.id}>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
-                                <CardTitle>{section.title}</CardTitle>
+                                <Input 
+                                    value={section.title}
+                                    onChange={(e) => handleTitleChange(index, e.target.value)}
+                                    className="text-lg font-semibold p-0 border-0 shadow-none focus-visible:ring-0"
+                                />
                                 <CardDescription>{section.type}</CardDescription>
                             </div>
                             <div className="flex items-center gap-4">

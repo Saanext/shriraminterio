@@ -24,6 +24,7 @@ export async function savePageContent(pageId: number, pageSlug: string, sections
       const { error } = await supabase
         .from('sections')
         .update({
+            title: section.title, // Add this line to update the title
             visible: section.visible,
             content: section.content,
         })
