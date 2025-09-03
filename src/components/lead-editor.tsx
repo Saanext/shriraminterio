@@ -47,7 +47,7 @@ type SalesPerson = {
     name: string;
 }
 
-const statusOptions = ['new', 'in progress', 'qualified', 'not qualified'];
+const statusOptions = ['in progress', 'qualified', 'not qualified'];
 
 export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
   const router = useRouter();
@@ -61,7 +61,7 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
       services: [],
       message: '',
       assigned_to_id: null,
-      status: 'new',
+      status: 'in progress',
       progress: 0,
     },
   });
