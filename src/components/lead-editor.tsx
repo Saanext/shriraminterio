@@ -173,7 +173,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <div className="flex items-center gap-2">
-                          <Select onValueChange={(value) => field.onChange(value)} value={field.value ?? undefined} >
+                          <Select onValueChange={field.onChange} value={field.value ?? undefined} >
                             <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Unassigned" />
