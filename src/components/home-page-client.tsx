@@ -39,6 +39,8 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
   const faqItems = faq.content.items;
   const heroSlides = hero.content.slides;
 
+  const isUrl = (url: any) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
+
   return (
     <div>
       {/* Hero Section */}
@@ -108,14 +110,16 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               </p>
             </div>
              <div className="order-1 lg:order-2">
-              <Image
-                src={welcome.content.image}
-                alt="Interior design sketch"
-                data-ai-hint="interior design sketch"
-                width={600}
-                height={450}
-                className="rounded-lg shadow-2xl object-cover w-full h-auto max-h-[300px] sm:max-h-[400px] lg:max-h-[450px]"
-              />
+               {isUrl(welcome.content.image) && (
+                  <Image
+                    src={welcome.content.image}
+                    alt="Interior design sketch"
+                    data-ai-hint="interior design sketch"
+                    width={600}
+                    height={450}
+                    className="rounded-lg shadow-2xl object-cover w-full h-auto max-h-[300px] sm:max-h-[400px] lg:max-h-[450px]"
+                  />
+               )}
             </div>
           </div>
         </div>
@@ -179,7 +183,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
             <CarouselContent className="-ml-2 sm:-ml-4">
               {workGalleryItems.map((item: any, index: number) => (
-                <CarouselItem key={index} className="pl-2 sm:pl-4 md:basis-1/2 lg:basis-1/2">
+                <CarouselItem key={index} className="pl-2 sm:pl-4 md:basis-1/1 lg:basis-1/1">
                   <Card className="overflow-hidden group">
                     <div className="relative aspect-video">
                       <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
