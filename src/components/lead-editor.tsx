@@ -39,7 +39,7 @@ const leadSchema = z.object({
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
-  progress: z.number().min(0).max(100).default(0),
+  progress: z.preprocess((val) => Number(val), z.number().min(0).max(100)),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
@@ -80,7 +80,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
     if (initialData) {
       form.reset({
         ...initialData,
-        assigned_to_id: initialData.assigned_to_id || null,
+        assigned_to_id: initialData.assigned_to_id || undefined,
         progress: initialData.progress || 0,
         services: initialData.services || [],
       });
@@ -170,17 +170,14 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
-                        <Select 
-                          onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
-                          value={field.value || 'unassigned'}
-                        >
+                        <Select onValueChange={field.onChange} value={field.value || undefined}>
                           <FormControl>
                               <SelectTrigger>
-                              <SelectValue placeholder="Select a sales person" />
+                              <SelectValue placeholder="Unassigned" />
                               </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                              <SelectItem value="unassigned">Unassigned</SelectItem>
+                              <SelectItem value="unassigned-value" disabled>Unassigned</SelectItem>
                               {salesPersons.map(person => (
                                   <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
                               ))}
@@ -220,7 +217,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                             <FormLabel>Progress: {progressValue}%</FormLabel>
                             <FormControl>
                                 <Slider
-                                    value={[field.value]}
+                                    value={[field.value || 0]}
                                     onValueChange={(value) => field.onChange(value[0])}
                                     max={100}
                                     step={1}
