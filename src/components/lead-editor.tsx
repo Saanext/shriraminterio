@@ -40,7 +40,6 @@ const leadSchema = z.object({
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
-  progress: z.preprocess((val) => Number(val), z.number().min(0).max(100)),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
@@ -65,14 +64,14 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(leadSchema),
     defaultValues: {
+      id: undefined,
       name: '',
       email: '',
       mobile: '',
       services: [],
       message: '',
-      assigned_to_id: null,
+      assigned_to_id: undefined,
       status: 'in progress',
-      progress: 0,
     },
   });
   
@@ -82,8 +81,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
       form.reset({
         ...initialData,
         id: initialData.id,
-        assigned_to_id: initialData.assigned_to_id || null,
-        progress: initialData.progress || 0,
+        assigned_to_id: initialData.assigned_to_id,
         services: initialData.services || [],
       });
     }
@@ -107,8 +105,6 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
     }
   };
   
-  const progressValue = form.watch('progress');
-
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
@@ -174,8 +170,8 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <div className="flex items-center gap-2">
                           <Select 
-                            onValueChange={(value) => field.onChange(value === "unassigned" ? null : value)} 
-                            value={field.value ?? "unassigned"}
+                            onValueChange={field.onChange} 
+                            value={field.value ?? undefined}
                           >
                             <FormControl>
                                 <SelectTrigger>
@@ -183,12 +179,12 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                                <SelectItem value="unassigned">Unassigned</SelectItem>
                                 {salesPersons.map(person => (
                                     <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
                                 ))}
                             </SelectContent>
                           </Select>
+                           {field.value && <Button variant="ghost" size="icon" onClick={() => field.onChange(undefined)}><X className="h-4 w-4" /></Button>}
                         </div>
                         <FormMessage />
                     </FormItem>
@@ -216,24 +212,6 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     </FormItem>
                     )}
                 />
-                 <FormField
-                    control={form.control}
-                    name="progress"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Progress: {progressValue}%</FormLabel>
-                            <FormControl>
-                                <Slider
-                                    value={[field.value || 0]}
-                                    onValueChange={(value) => field.onChange(value[0])}
-                                    max={100}
-                                    step={1}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                 />
               </div>
 
                <FormField

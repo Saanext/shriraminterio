@@ -1,4 +1,5 @@
 
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -54,7 +55,6 @@ export default async function LeadsPage() {
                                 <TableHead>Name</TableHead>
                                 <TableHead>Contact</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Progress</TableHead>
                                 <TableHead>Assigned To</TableHead>
                                 <TableHead>Services</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
@@ -71,12 +71,6 @@ export default async function LeadsPage() {
                                     </TableCell>
                                     <TableCell>
                                         <LeadStatusBadge status={lead.status} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <div className="flex items-center gap-2">
-                                            <Progress value={lead.progress || 0} className="w-24" />
-                                            <span className="text-muted-foreground text-xs">{lead.progress || 0}%</span>
-                                        </div>
                                     </TableCell>
                                     <TableCell className="flex items-center gap-2">
                                         {lead.sales_persons ? (

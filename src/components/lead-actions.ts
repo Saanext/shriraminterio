@@ -14,7 +14,6 @@ const leadSchema = z.object({
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
-  progress: z.preprocess((val) => Number(val), z.number().min(0).max(100)),
 });
 
 export async function saveLead(values: z.infer<typeof leadSchema>) {
@@ -25,7 +24,6 @@ export async function saveLead(values: z.infer<typeof leadSchema>) {
   const dataToUpsert = {
     ...leadData,
     assigned_to_id: leadData.assigned_to_id || null,
-    progress: leadData.progress,
   };
 
   try {
