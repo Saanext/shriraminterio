@@ -38,7 +38,7 @@ export async function generateSectionContent(input: GenerateSectionContentInput)
 
 const prompt = ai.definePrompt({
   name: 'generateSectionContentPrompt',
-  model: googleAI.model('gemini-1.5-pro-latest'),
+  model: googleAI.model('gemini-1.5-flash-latest'),
   input: {schema: PromptInputSchema},
   output: {schema: GenerateSectionContentOutputSchema},
   prompt: `You are an expert copywriter and content strategist for a web development agency.
