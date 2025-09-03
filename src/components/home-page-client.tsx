@@ -183,25 +183,26 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.content.subtitle}</p>
           </div>
-          <Carousel opts={{ align: 'start', loop: true }} className="w-full max-w-6xl mx-auto">
-            <CarouselContent className="-ml-2 sm:-ml-4">
-              {workGalleryItems.map((item: any, index: number) => (
-                <CarouselItem key={index} className="pl-2 sm:pl-4 md:basis-1/1 lg:basis-1/1">
-                  <Card className="overflow-hidden group">
-                    <div className="relative aspect-video">
-                      <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
-                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                       <CardContent className="p-4 absolute bottom-0 left-0">
-                        <h3 className="text-lg font-bold text-white text-shadow-md">{item.title}</h3>
-                      </CardContent>
-                    </div>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-2 sm:-left-8" />
-            <CarouselNext className="right-2 sm:-right-8" />
-          </Carousel>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {workGalleryItems.slice(0, 4).map((item: any, index: number) => (
+              <Card key={index} className="overflow-hidden group">
+                <div className="relative aspect-video">
+                  <Image 
+                    src={item.image} 
+                    alt={item.title} 
+                    layout="fill" 
+                    objectFit="cover" 
+                    data-ai-hint={item.hint} 
+                    className="transition-transform duration-500 group-hover:scale-105" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <CardContent className="p-4 absolute bottom-0 left-0">
+                    <h3 className="text-lg font-bold text-white text-shadow-md">{item.title}</h3>
+                  </CardContent>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
       )}
@@ -406,3 +407,5 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
     </div>
   );
 }
+
+    
