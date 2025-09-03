@@ -4,6 +4,7 @@
 import { Header } from "@/components/layout/header";
 import { PageTransition } from "@/components/page-transition";
 import { usePathname } from "next/navigation";
+import { WhatsAppButton } from "./whatsapp-button";
 
 
 export function SiteLayout({
@@ -26,6 +27,7 @@ export function SiteLayout({
                     {children}
                 </PageTransition>
             </main>
+            <WhatsAppButton />
         </div>
     );
 }
