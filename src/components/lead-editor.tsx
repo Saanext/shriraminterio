@@ -175,18 +175,21 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value || ''}>
-                        <FormControl>
-                            <SelectTrigger>
-                            <SelectValue placeholder="Select a sales person" />
-                            </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                             <SelectItem value="">Unassigned</SelectItem>
-                            {salesPersons.map(person => (
-                                <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
-                            ))}
-                        </SelectContent>
+                        <Select 
+                          onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
+                          value={field.value || 'unassigned'}
+                        >
+                          <FormControl>
+                              <SelectTrigger>
+                              <SelectValue placeholder="Select a sales person" />
+                              </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                              <SelectItem value="unassigned">Unassigned</SelectItem>
+                              {salesPersons.map(person => (
+                                  <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
+                              ))}
+                          </SelectContent>
                         </Select>
                         <FormMessage />
                     </FormItem>
