@@ -323,14 +323,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                 {sections.map((section, index) => (
                     <Card key={section.id}>
                         <CardHeader className="flex flex-row items-center justify-between">
-                            <div>
-                                <Input 
-                                    value={section.title}
-                                    onChange={(e) => handleTitleChange(index, e.target.value)}
-                                    className="text-lg font-semibold p-0 border-0 shadow-none focus-visible:ring-0"
-                                />
-                                <CardDescription>{section.type}</CardDescription>
-                            </div>
+                             <CardTitle className="text-xl">{section.type}</CardTitle>
                             <div className="flex items-center gap-4">
                                 <Button variant="outline" size="sm" onClick={() => openAiModal(index)}>
                                     <Sparkles className="mr-2 h-4 w-4" />
@@ -347,6 +340,14 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-6">
+                             <div className="space-y-2">
+                                <Label htmlFor={`section-${index}-title`}>Section Title</Label>
+                                <Input 
+                                    id={`section-${index}-title`}
+                                    value={section.title}
+                                    onChange={(e) => handleTitleChange(index, e.target.value)}
+                                />
+                            </div>
                             {Object.entries(section.content_structure || {}).map(([key, field]: [string, any]) => (
                                 <div key={key} className="space-y-2">
                                     <Label htmlFor={`section-${index}-field-${key}`}>{field.label}</Label>
