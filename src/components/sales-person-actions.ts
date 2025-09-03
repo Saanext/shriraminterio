@@ -29,10 +29,39 @@ export async function saveSalesPerson(data: z.infer<typeof salesPersonSchema>) {
     }
 
     revalidatePath('/shriramadmin/sales-persons');
+    revalidatePath('/shriramadmin/leads');
     
     return { success: true, error: null };
   } catch (error: any) {
     console.error('Error saving sales person:', error);
     return { success: false, error: error.message };
   }
+}
+
+export async function deleteSalesPerson(personId: number) {
+    const supabase = createClient();
+    try {
+        // Before deleting a sales person, you might want to handle leads assigned to them.
+        // For simplicity, we'll just delete the person. You could also set assigned_to_id to null for leads.
+        const { error: updateError } = await supabase
+            .from('leads')
+            .update({ assigned_to_id: null })
+            .eq('assigned_to_id', personId);
+
+        if (updateError) {
+             console.error('Error un-assigning leads:', updateError);
+             throw new Error('Failed to update leads before deleting sales person.');
+        }
+
+        const { error } = await supabase.from('sales_persons').delete().eq('id', personId);
+        if (error) throw error;
+
+        revalidatePath('/shriramadmin/sales-persons');
+        revalidatePath('/shriramadmin/leads');
+
+        return { success: true, error: null };
+    } catch (error: any) {
+        console.error('Error deleting sales person:', error);
+        return { success: false, error: 'Failed to delete the sales person.' };
+    }
 }

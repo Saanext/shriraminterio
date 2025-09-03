@@ -87,7 +87,7 @@ export function SalesPersonEditor({ initialData }: { initialData: any | null }) 
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">{isNew ? 'Create New Sales Person' : 'Edit Sales Person'}</h1>
           <Button type="submit" disabled={form.formState.isSubmitting || isUploading}>
-            {form.formState.isSubmitting ? 'Saving...' : 'Save Sales Person'}
+            {form.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
         

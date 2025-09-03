@@ -7,6 +7,7 @@ import { FilePlus, MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SalesPersonDeleteAction } from '@/components/sales-person-delete-action';
 
 async function getSalesPersons() {
     const supabase = createClient();
@@ -63,14 +64,18 @@ export default async function SalesPersonsPage() {
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
-                                                <DropdownMenuItem disabled>
-                                                    <Pencil className="mr-2 h-4 w-4" />
-                                                    <span>Edit</span>
+                                                <DropdownMenuItem asChild>
+                                                    <Link href={`/shriramadmin/sales-persons/edit/${person.id}`}>
+                                                        <Pencil className="mr-2 h-4 w-4" />
+                                                        <span>Edit</span>
+                                                    </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-destructive" disabled>
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    <span>Delete</span>
-                                                </DropdownMenuItem>
+                                                <SalesPersonDeleteAction personId={person.id}>
+                                                    <div className="relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-destructive">
+                                                         <Trash2 className="mr-2 h-4 w-4" />
+                                                         <span>Delete</span>
+                                                    </div>
+                                                </SalesPersonDeleteAction>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
