@@ -103,7 +103,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div className="order-2 lg:order-1">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight">
-                {welcome.content.title}
+                {welcome.title}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground mb-4 leading-relaxed">
                 {welcome.content.paragraph1}
