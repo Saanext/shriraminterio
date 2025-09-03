@@ -15,7 +15,7 @@ import { saveLead } from './lead-actions';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Slider } from './ui/slider';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { X } from 'lucide-react';
 
 const serviceOptions = [
@@ -173,7 +173,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <div className="flex items-center gap-2">
-                          <Select onValueChange={(value) => field.onChange(value || null)} value={field.value ?? undefined} >
+                          <Select onValueChange={(value) => field.onChange(value)} value={field.value ?? undefined} >
                             <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Unassigned" />
