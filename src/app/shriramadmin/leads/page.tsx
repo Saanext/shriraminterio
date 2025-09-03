@@ -9,6 +9,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
+import { LeadStatusBadge } from '@/components/lead-status-badge';
+import { Progress } from '@/components/ui/progress';
 
 async function getLeads() {
     const supabase = createClient();
@@ -51,6 +53,7 @@ export default async function LeadsPage() {
                                 <TableHead>Name</TableHead>
                                 <TableHead>Contact</TableHead>
                                 <TableHead>Status</TableHead>
+                                <TableHead>Progress</TableHead>
                                 <TableHead>Assigned To</TableHead>
                                 <TableHead>Services</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
@@ -66,7 +69,13 @@ export default async function LeadsPage() {
                                         <div>{lead.mobile}</div>
                                     </TableCell>
                                     <TableCell>
-                                        <Badge variant={lead.status === 'new' ? 'default' : 'secondary'}>{lead.status}</Badge>
+                                        <LeadStatusBadge status={lead.status} />
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Progress value={lead.progress || 0} className="w-24" />
+                                            <span className="text-muted-foreground text-xs">{lead.progress || 0}%</span>
+                                        </div>
                                     </TableCell>
                                     <TableCell className="flex items-center gap-2">
                                         {lead.sales_persons ? (

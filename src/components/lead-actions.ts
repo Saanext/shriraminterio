@@ -12,6 +12,8 @@ const leadSchema = z.object({
   services: z.array(z.string()).optional(),
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
+  status: z.string().min(1, 'Status is required'),
+  progress: z.number().min(0).max(100),
 });
 
 export async function createLead(values: z.infer<typeof leadSchema>) {

@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import { createLead } from './lead-actions';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
+import { Slider } from './ui/slider';
 
 const serviceOptions = [
     { id: 'tv-unit', label: 'TV Unit' },
@@ -35,6 +36,8 @@ const leadSchema = z.object({
   services: z.array(z.string()).optional(),
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
+  status: z.string().min(1, 'Status is required'),
+  progress: z.number().min(0).max(100).default(0),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
@@ -43,6 +46,8 @@ type SalesPerson = {
     id: string;
     name: string;
 }
+
+const statusOptions = ['new', 'in progress', 'qualified', 'not qualified'];
 
 export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
   const router = useRouter();
@@ -56,6 +61,8 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
       services: [],
       message: '',
       assigned_to_id: null,
+      status: 'new',
+      progress: 0,
     },
   });
 
@@ -76,6 +83,8 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
       });
     }
   };
+  
+  const progressValue = form.watch('progress');
 
   return (
     <div>
@@ -156,6 +165,46 @@ export function LeadEditor({ salesPersons }: { salesPersons: SalesPerson[] }) {
                     </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <FormControl>
+                            <SelectTrigger>
+                            <SelectValue placeholder="Select a status" />
+                            </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                            {statusOptions.map(status => (
+                                <SelectItem key={status} value={status}>{status}</SelectItem>
+                            ))}
+                        </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="progress"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Progress: {progressValue}%</FormLabel>
+                            <FormControl>
+                                <Slider
+                                    defaultValue={[field.value]}
+                                    onValueChange={(value) => field.onChange(value[0])}
+                                    max={100}
+                                    step={1}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                 />
               </div>
 
                <FormField
