@@ -135,7 +135,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
         <div className="container mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">{aboutCompany.content.title}</h2>
           <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2">
-            <span className="font-headline text-shadow-sm">SHRIRAM INTERIO</span> — {aboutCompany.content.text}
+            <span className="font-headline text-shadow-sm font-bold">SHRIRAM INTERIO</span> — {aboutCompany.content.text}
           </p>
         </div>
       </section>
