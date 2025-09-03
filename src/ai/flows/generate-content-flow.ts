@@ -9,7 +9,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit/zod';
+import {z} from 'zod';
 
 const GenerateSectionContentInputSchema = z.object({
   context: z.string().describe('The context of the section (e.g., "Hero section of a homepage for an interior design company").'),
