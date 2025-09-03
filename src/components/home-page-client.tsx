@@ -183,7 +183,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.content.subtitle}</p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {workGalleryItems.slice(0, 4).map((item: any, index: number) => (
               <Card key={index} className="overflow-hidden group">
                 <div className="relative aspect-video">
