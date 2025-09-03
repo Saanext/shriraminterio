@@ -351,30 +351,6 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       </section>
       )}
 
-      {/* FAQ Section */}
-      {faq.visible && (
-      <section className="py-16 md:py-24 bg-secondary">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold">{faq.content.title}</h2>
-            <p className="text-lg text-muted-foreground mt-2">{faq.content.subtitle}</p>
-          </div>
-          <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="w-full">
-              {faqItems.map((item: any, index: number) => (
-                <AccordionItem key={index} value={`item-${index + 1}`}>
-                  <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        </div>
-      </section>
-      )}
-
       {/* Partners Section */}
       {partners.visible && (
       <section className="py-16 md:py-24 bg-background">
@@ -402,6 +378,30 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                   ))}
               </div>
           </div>
+      </section>
+      )}
+
+      {/* FAQ Section */}
+      {faq.visible && (
+      <section className="py-16 md:py-24 bg-secondary">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold">{faq.content.title}</h2>
+            <p className="text-lg text-muted-foreground mt-2">{faq.content.subtitle}</p>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="w-full">
+              {faqItems.map((item: any, index: number) => (
+                <AccordionItem key={index} value={`item-${index + 1}`}>
+                  <AccordionTrigger className="text-lg font-semibold text-left">{item.question}</AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
       </section>
       )}
     </div>
