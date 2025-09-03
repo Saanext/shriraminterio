@@ -14,7 +14,6 @@ import { useToast } from '@/hooks/use-toast';
 import { saveLead } from './lead-actions';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
-import { Slider } from './ui/slider';
 import { useEffect } from 'react';
 import { X } from 'lucide-react';
 
@@ -52,7 +51,7 @@ type SalesPerson = {
 const statusOptions = ['in progress', 'qualified', 'not qualified'];
 
 type LeadEditorProps = {
-    initialData?: any; // Using any to handle the initial structure from Supabase
+    initialData?: any;
     salesPersons: SalesPerson[];
 }
 
@@ -75,13 +74,12 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
     },
   });
   
-  // Reset form if initialData changes
   useEffect(() => {
     if (initialData) {
       form.reset({
         ...initialData,
         id: initialData.id,
-        assigned_to_id: initialData.assigned_to_id,
+        assigned_to_id: initialData.assigned_to_id || undefined,
         services: initialData.services || [],
       });
     }
@@ -170,8 +168,8 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <div className="flex items-center gap-2">
                           <Select 
-                            onValueChange={field.onChange} 
-                            value={field.value ?? undefined}
+                            onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
+                            value={field.value ?? 'unassigned'}
                           >
                             <FormControl>
                                 <SelectTrigger>
@@ -179,12 +177,13 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
+                                <SelectItem value="unassigned">Unassigned</SelectItem>
                                 {salesPersons.map(person => (
                                     <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
                                 ))}
                             </SelectContent>
                           </Select>
-                           {field.value && <Button variant="ghost" size="icon" onClick={() => field.onChange(undefined)}><X className="h-4 w-4" /></Button>}
+                           {field.value && <Button variant="ghost" size="icon" onClick={() => field.onChange(null)}><X className="h-4 w-4" /></Button>}
                         </div>
                         <FormMessage />
                     </FormItem>
