@@ -97,7 +97,7 @@ export default async function LeadsPage() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
-                                                    <Link href={`/shriramadmin/leads/edit/${lead.slug}`}>
+                                                    <Link href={`/shriramadmin/leads/edit/${lead.id}`}>
                                                         <Pencil className="mr-2 h-4 w-4" />
                                                         <span>Edit</span>
                                                     </Link>

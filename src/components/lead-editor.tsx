@@ -39,7 +39,6 @@ const leadSchema = z.object({
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
-  slug: z.string().optional(),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
@@ -72,7 +71,6 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
       message: '',
       assigned_to_id: undefined,
       status: 'in progress',
-      slug: '',
     },
   });
   
@@ -171,7 +169,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                         <div className="flex items-center gap-2">
                           <Select 
                             onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
-                            value={field.value ?? 'unassigned'}
+                            value={field.value ?? undefined}
                           >
                             <FormControl>
                                 <SelectTrigger>
@@ -185,7 +183,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                                 ))}
                             </SelectContent>
                           </Select>
-                           {field.value && <Button variant="ghost" size="icon" onClick={() => field.onChange(null)}><X className="h-4 w-4" /></Button>}
+                           {field.value && <Button type="button" variant="ghost" size="icon" onClick={() => field.onChange(null)}><X className="h-4 w-4" /></Button>}
                         </div>
                         <FormMessage />
                     </FormItem>
