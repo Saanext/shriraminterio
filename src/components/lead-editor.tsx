@@ -15,7 +15,8 @@ import { saveLead } from './lead-actions';
 import { Textarea } from './ui/textarea';
 import { Checkbox } from './ui/checkbox';
 import { Slider } from './ui/slider';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 
 const serviceOptions = [
     { id: 'tv-unit', label: 'TV Unit' },
@@ -80,7 +81,8 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
     if (initialData) {
       form.reset({
         ...initialData,
-        assigned_to_id: initialData.assigned_to_id || undefined,
+        id: initialData.id,
+        assigned_to_id: initialData.assigned_to_id || null,
         progress: initialData.progress || 0,
         services: initialData.services || [],
       });
@@ -170,19 +172,25 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                     render={({ field }) => (
                     <FormItem>
                         <FormLabel>Assign to Sales Person</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value || undefined}>
-                          <FormControl>
-                              <SelectTrigger>
-                              <SelectValue placeholder="Unassigned" />
-                              </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                              <SelectItem value="unassigned-value" disabled>Unassigned</SelectItem>
-                              {salesPersons.map(person => (
-                                  <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
+                        <div className="flex items-center gap-2">
+                          <Select onValueChange={field.onChange} value={field.value || ''} >
+                            <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Unassigned" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                {salesPersons.map(person => (
+                                    <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                          {field.value && (
+                            <Button variant="ghost" size="icon" onClick={() => field.onChange(null)}>
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
                         <FormMessage />
                     </FormItem>
                     )}
