@@ -51,7 +51,7 @@ type SalesPerson = {
 const statusOptions = ['in progress', 'qualified', 'not qualified'];
 
 type LeadEditorProps = {
-    initialData?: LeadFormValues | null;
+    initialData?: any; // Using any to handle the initial structure from Supabase
     salesPersons: SalesPerson[];
 }
 
