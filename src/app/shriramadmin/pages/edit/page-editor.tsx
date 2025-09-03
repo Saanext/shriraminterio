@@ -8,13 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
-import { Eye, EyeOff, ShieldAlert, Upload } from 'lucide-react';
+import { Eye, EyeOff, ShieldAlert, Upload, Sparkles, Loader2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { generateSectionContent } from '@/ai/flows/generate-content-flow';
+
 
 type PageEditorProps = {
     initialPageData: any;
@@ -31,6 +34,11 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
     const [metaTitle, setMetaTitle] = useState(initialPageData?.meta_title || '');
     const [metaDescription, setMetaDescription] = useState(initialPageData?.meta_description || '');
     const [isUploading, setIsUploading] = useState(false);
+
+    const [isAiDialogOpen, setIsAiDialogOpen] = useState(false);
+    const [currentSectionForAI, setCurrentSectionForAI] = useState<number | null>(null);
+    const [aiKeywords, setAiKeywords] = useState('');
+    const [isGenerating, setIsGenerating] = useState(false);
 
 
     useEffect(() => {
@@ -132,6 +140,48 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                 description: result.error || "There was an error saving the content.",
                 variant: 'destructive'
             });
+        }
+    };
+
+    const openAiModal = (sectionIndex: number) => {
+        setCurrentSectionForAI(sectionIndex);
+        setIsAiDialogOpen(true);
+    };
+
+    const handleGenerateContent = async () => {
+        if (currentSectionForAI === null) return;
+        
+        setIsGenerating(true);
+        const section = sections[currentSectionForAI];
+        
+        try {
+            const result = await generateSectionContent({
+                context: `Section is '${section.title}' of type '${section.type}' on the '${pageData.title}' page.`,
+                currentContent: section.content,
+                contentStructure: section.content_structure,
+                keywords: aiKeywords,
+            });
+
+            if (result.content) {
+                const newSections = [...sections];
+                newSections[currentSectionForAI].content = result.content;
+                setSections(newSections);
+                toast({
+                    title: "Content Generated!",
+                    description: "AI-generated content has been populated in the section.",
+                });
+            }
+            setIsAiDialogOpen(false);
+            setAiKeywords('');
+        } catch (e: any) {
+            console.error(e);
+            toast({
+                title: "AI Generation Failed",
+                description: e.message || "An unknown error occurred.",
+                variant: 'destructive'
+            });
+        } finally {
+            setIsGenerating(false);
         }
     };
     
@@ -263,7 +313,6 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                         </div>
                     </CardContent>
                 </Card>
-
                 {sections.map((section, index) => (
                     <Card key={section.id}>
                         <CardHeader className="flex flex-row items-center justify-between">
@@ -271,7 +320,11 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                 <CardTitle>{section.title}</CardTitle>
                                 <CardDescription>{section.type}</CardDescription>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-4">
+                                <Button variant="outline" size="sm" onClick={() => openAiModal(index)}>
+                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    AI Generate
+                                </Button>
                                 <Label htmlFor={`section-${index}-visible`} className="text-sm text-muted-foreground">
                                     {section.visible ? <Eye className="h-5 w-5" /> : <EyeOff className="h-5 w-5" />}
                                 </Label>
@@ -293,6 +346,41 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                     </Card>
                 ))}
             </div>
+            <Dialog open={isAiDialogOpen} onOpenChange={setIsAiDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Generate Content with AI</DialogTitle>
+                        <DialogDescription>
+                            Enter some keywords or ideas, and the AI will generate content for this section.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                        <Label htmlFor="ai-keywords">Keywords</Label>
+                        <Input 
+                            id="ai-keywords"
+                            value={aiKeywords}
+                            onChange={(e) => setAiKeywords(e.target.value)}
+                            placeholder="e.g., modern, minimalist, luxury"
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button variant="ghost" onClick={() => setIsAiDialogOpen(false)} disabled={isGenerating}>Cancel</Button>
+                        <Button onClick={handleGenerateContent} disabled={isGenerating}>
+                            {isGenerating ? (
+                                <>
+                                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    Generating...
+                                </>
+                            ) : (
+                                <>
+                                    <Sparkles className="mr-2 h-4 w-4" />
+                                    Generate
+                                </>
+                            )}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
