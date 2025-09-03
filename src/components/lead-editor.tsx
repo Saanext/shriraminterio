@@ -63,12 +63,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
 
   const form = useForm<LeadFormValues>({
     resolver: zodResolver(leadSchema),
-    defaultValues: initialData ? {
-      ...initialData,
-      assigned_to_id: initialData.assigned_to_id || null,
-      progress: initialData.progress || 0,
-      services: initialData.services || [],
-    } : {
+    defaultValues: {
       name: '',
       email: '',
       mobile: '',
@@ -177,7 +172,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <Select 
                           onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
-                          value={field.value ?? 'unassigned'}
+                          value={field.value || 'unassigned'}
                         >
                           <FormControl>
                               <SelectTrigger>
