@@ -178,7 +178,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       {/* Work Gallery Section */}
       {workGallery.visible && (
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
-        <div className="container mx-auto px-4 sm:px-6">
+        <div className="px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.content.subtitle}</p>
