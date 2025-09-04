@@ -12,7 +12,7 @@ const leadSchema = z.object({
   mobile: z.string().min(10, 'Mobile number is required'),
   services: z.array(z.string()).optional(),
   message: z.string().optional(),
-  assigned_to_id: z.string().uuid().optional().nullable(),
+  assigned_to_id: z.number().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
 });
 

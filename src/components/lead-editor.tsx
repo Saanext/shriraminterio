@@ -37,14 +37,14 @@ const leadSchema = z.object({
   mobile: z.string().min(10, 'Mobile number is required'),
   services: z.array(z.string()).optional(),
   message: z.string().optional(),
-  assigned_to_id: z.string().uuid().optional().nullable(),
+  assigned_to_id: z.number().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
 });
 
 type LeadFormValues = z.infer<typeof leadSchema>;
 
 type SalesPerson = {
-    id: string;
+    id: number;
     name: string;
 }
 
@@ -168,8 +168,8 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                         <FormLabel>Assign to Sales Person</FormLabel>
                         <div className="flex items-center gap-2">
                           <Select 
-                            onValueChange={(value) => field.onChange(value === 'unassigned' ? null : value)} 
-                            value={field.value ?? undefined}
+                            onValueChange={(value) => field.onChange(value === 'unassigned' ? null : parseInt(value, 10))} 
+                            value={field.value?.toString() ?? undefined}
                           >
                             <FormControl>
                                 <SelectTrigger>
@@ -179,7 +179,7 @@ export function LeadEditor({ initialData, salesPersons }: LeadEditorProps) {
                             <SelectContent>
                                 <SelectItem value="unassigned">Unassigned</SelectItem>
                                 {salesPersons.map(person => (
-                                    <SelectItem key={person.id} value={person.id}>{person.name}</SelectItem>
+                                    <SelectItem key={person.id} value={person.id.toString()}>{person.name}</SelectItem>
                                 ))}
                             </SelectContent>
                           </Select>
