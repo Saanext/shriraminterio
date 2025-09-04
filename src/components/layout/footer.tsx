@@ -68,7 +68,7 @@ export async function Footer() {
                                 </li>
                                 <li className="flex items-center">
                                     <Mail className="h-4 w-4 mr-3 text-primary" />
-                                    <a href="mailto:support@shriraminterio.com" className="hover:text-primary transition-colors">support@shriraminterio.com</a>
+                                    <a href="mailto:sales@shriraminterio.com" className="hover:text-primary transition-colors">sales@shriraminterio.com</a>
                                 </li>
                                 <li className="flex items-center">
                                     <Phone className="h-4 w-4 mr-3 text-primary" />

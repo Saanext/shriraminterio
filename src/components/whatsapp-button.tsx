@@ -18,7 +18,7 @@ const WhatsAppIcon = () => (
 );
 
 export function WhatsAppButton() {
-    const phoneNumber = "+918767951981"; // Your WhatsApp number
+    const phoneNumber = "918767951981"; // Your WhatsApp number
     const message = "Hello! I'm interested in your services."; // Pre-filled message
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
