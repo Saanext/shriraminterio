@@ -178,22 +178,22 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
       {/* Work Gallery Section */}
       {workGallery.visible && (
       <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-secondary">
-        <div className="px-4 sm:px-6">
-          <div className="text-center mb-8 sm:mb-12">
+        <div className="w-full">
+          <div className="text-center mb-8 sm:mb-12 container mx-auto px-4 sm:px-6">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{workGallery.content.title}</h2>
             <p className="text-sm sm:text-base md:text-lg text-muted-foreground mt-2 px-2">{workGallery.content.subtitle}</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {workGalleryItems.map((item: any, index: number) => (
-                <Card key={index} className="overflow-hidden group">
-                  <div className="relative aspect-video">
+                <div key={index} className="overflow-hidden group relative">
+                  <div className="aspect-square">
                     <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                     <CardContent className="p-4 absolute bottom-0 left-0">
+                     <div className="p-4 absolute bottom-0 left-0">
                       <h3 className="text-lg font-bold text-white text-shadow-md">{item.title}</h3>
-                    </CardContent>
+                    </div>
                   </div>
-                </Card>
+                </div>
               ))}
           </div>
         </div>
@@ -400,5 +400,3 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
     </div>
   );
 }
-
-    
