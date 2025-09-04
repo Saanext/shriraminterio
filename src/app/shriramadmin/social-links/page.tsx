@@ -73,7 +73,7 @@ export default async function SocialLinksPage() {
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent align="end">
                                                 <DropdownMenuItem asChild>
-                                                    <Link href={`/shriramadmin/social-links/edit/${link.id}`}>
+                                                    <Link href={`/shriramadmin/social-links/edit/${link.slug}`}>
                                                         <Pencil className="mr-2 h-4 w-4" />
                                                         <span>Edit</span>
                                                     </Link>

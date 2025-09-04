@@ -13,12 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from '@/hooks/use-toast';
 import { saveSocialLink } from './social-link-actions';
 import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import { useEffect } from 'react';
 
 const socialLinkSchema = z.object({
   id: z.number().optional().nullable(),
   name: z.string().min(1, "Name is required"),
   url: z.string().url("A valid URL is required"),
   icon: z.string().min(1, "An icon is required"),
+  slug: z.string().optional(),
 });
 
 type SocialLinkFormValues = z.infer<typeof socialLinkSchema>;
@@ -40,8 +42,17 @@ export function SocialLinkEditor({ initialData }: { initialData: any | null }) {
       name: '',
       url: '',
       icon: '',
+      slug: '',
     },
   });
+  
+  const name = form.watch('name');
+  useEffect(() => {
+    if (name && !form.formState.dirtyFields.slug) {
+        form.setValue('slug', name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+    }
+  }, [name, form]);
+
 
   const onSubmit = async (data: SocialLinkFormValues) => {
     const result = await saveSocialLink(data);
@@ -78,6 +89,13 @@ export function SocialLinkEditor({ initialData }: { initialData: any | null }) {
                         <FormControl><Input {...field} placeholder="e.g., Facebook" /></FormControl>
                         <FormMessage />
                     </FormItem>
+                )} />
+                <FormField control={form.control} name="slug" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Slug</FormLabel>
+                    <FormControl><Input {...field} placeholder="e.g., facebook" /></FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )} />
                 <FormField control={form.control} name="url" render={({ field }) => (
                     <FormItem>

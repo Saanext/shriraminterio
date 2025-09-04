@@ -3,12 +3,12 @@ import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { SocialLinkEditor } from '@/components/social-link-editor';
 
-async function getLinkData(id: string) {
+async function getLinkData(slug: string) {
     const supabase = createClient();
     const { data, error } = await supabase
         .from('social_links')
         .select('*')
-        .eq('id', id)
+        .eq('slug', slug)
         .single();
 
     if (error || !data) {
@@ -19,14 +19,14 @@ async function getLinkData(id: string) {
     return data;
 }
 
-export default async function EditSocialLinkPage({ params }: { params: { id: string } }) {
-    const linkId = params.id;
+export default async function EditSocialLinkPage({ params }: { params: { slug: string } }) {
+    const linkSlug = params.slug;
 
-    if (!linkId) {
+    if (!linkSlug) {
         notFound();
     }
 
-    const linkData = await getLinkData(linkId);
+    const linkData = await getLinkData(linkSlug);
      if (!linkData) {
         notFound();
     }
