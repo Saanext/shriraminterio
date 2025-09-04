@@ -19,8 +19,7 @@ async function getLeadData(id: string) {
         .single();
 
     if (error || !data) {
-        console.error('Error fetching lead data:', error);
-        return null;
+        notFound();
     }
     
     return data;
@@ -59,10 +58,6 @@ export default async function EditLeadPage({ params }: { params: { id: string } 
 
     const leadData = await getLeadData(leadId);
     const salesPersons = await getSalesPersons();
-
-    if (!leadData) {
-        notFound();
-    }
 
     return (
         <Suspense fallback={<EditLeadSkeleton />}>
