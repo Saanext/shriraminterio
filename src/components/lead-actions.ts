@@ -14,42 +14,15 @@ const leadSchema = z.object({
   message: z.string().optional(),
   assigned_to_id: z.string().uuid().optional().nullable(),
   status: z.string().min(1, 'Status is required'),
-  slug: z.string().optional(),
 });
-
-function generateSlug(name: string) {
-    return name
-        .toLowerCase()
-        .replace(/&/g, 'and')
-        .replace(/[^a-z0-9-]+/g, ' ')
-        .trim()
-        .replace(/\s+/g, '-');
-}
 
 export async function saveLead(values: z.infer<typeof leadSchema>) {
   const supabase = createClient();
   
   const { id, ...leadData } = values;
 
-  let slug = leadData.slug || generateSlug(leadData.name);
-  if (!id) { // Only check for slug uniqueness on creation
-    let isUnique = false;
-    let counter = 1;
-    const baseSlug = slug;
-    while(!isUnique) {
-      const { data: existing } = await supabase.from('leads').select('id').eq('slug', slug).single();
-      if (!existing) {
-        isUnique = true;
-      } else {
-        slug = `${baseSlug}-${counter}`;
-        counter++;
-      }
-    }
-  }
-
   const dataToUpsert = {
     ...leadData,
-    slug,
     assigned_to_id: leadData.assigned_to_id || null,
   };
 
@@ -67,7 +40,7 @@ export async function saveLead(values: z.infer<typeof leadSchema>) {
 
     revalidatePath('/shriramadmin/leads');
     if (id) {
-        revalidatePath(`/shriramadmin/leads/edit/${slug}`);
+        revalidatePath(`/shriramadmin/leads/edit/${id}`);
     }
 
     return { success: true, error: null };

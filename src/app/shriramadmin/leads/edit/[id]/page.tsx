@@ -50,13 +50,7 @@ function EditLeadSkeleton() {
 }
 
 export default async function EditLeadPage({ params }: { params: { id: string } }) {
-    const leadId = params.id;
-
-    if (!leadId) {
-        notFound();
-    }
-
-    const leadData = await getLeadData(leadId);
+    const leadData = await getLeadData(params.id);
     const salesPersons = await getSalesPersons();
 
     return (
