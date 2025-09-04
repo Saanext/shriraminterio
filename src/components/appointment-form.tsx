@@ -58,16 +58,16 @@ const floorplanOptions = [
 ];
 
 const serviceOptions = [
-    { id: 'tv-unit', label: 'TV Unit', icon: <Tv className="h-6 w-6 mr-3" /> },
-    { id: 'sofa', label: 'Sofa', icon: <Sofa className="h-6 w-6 mr-3" /> },
-    { id: 'kitchen-unit', label: 'Kitchen Unit', icon: <CookingPot className="h-6 w-6 mr-3" /> },
-    { id: 'loft', label: 'Loft', icon: <Archive className="h-6 w-6 mr-3" /> },
-    { id: 'pooja-unit', label: 'Pooja Unit', icon: <Star className="h-6 w-6 mr-3" /> },
-    { id: 'wardrobe', label: 'Wardrobe', icon: <Home className="h-6 w-6 mr-3" /> },
-    { id: 'study-table', label: 'Study Table', icon: <BookOpen className="h-6 w-6 mr-3" /> },
-    { id: 'bed', label: 'Bed', icon: <Bed className="h-6 w-6 mr-3" /> },
-    { id: 'dressing-unit', label: 'Dressing Unit', icon: <Lamp className="h-6 w-6 mr-3" /> },
-    { id: 'pop', label: 'POP', icon: <Palmtree className="h-6 w-6 mr-3" /> },
+    { id: 'tv-unit', label: 'TV Unit' },
+    { id: 'sofa', label: 'Sofa' },
+    { id: 'kitchen-unit', label: 'Kitchen Unit' },
+    { id: 'loft', label: 'Loft' },
+    { id: 'pooja-unit', label: 'Pooja Unit' },
+    { id: 'wardrobe', label: 'Wardrobe' },
+    { id: 'study-table', label: 'Study Table' },
+    { id: 'bed', label: 'Bed' },
+    { id: 'dressing-unit', label: 'Dressing Unit' },
+    { id: 'pop', label: 'POP' },
 ];
 
 const timeSlots = [
@@ -236,7 +236,7 @@ export function AppointmentForm() {
                                                         />
                                                     </FormControl>
                                                     <FormLabel className="font-normal flex items-center text-base">
-                                                        {item.icon} {item.label}
+                                                        {item.label}
                                                     </FormLabel>
                                                 </FormItem>
                                             )
