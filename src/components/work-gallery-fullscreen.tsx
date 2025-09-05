@@ -34,9 +34,9 @@ export function WorkGalleryFullscreen({ items, onClose }: WorkGalleryFullscreenP
           <X className="w-8 h-8" />
           <span className="sr-only">Close</span>
         </button>
-        <div className="w-full h-full flex items-center justify-center">
-            <Carousel className="w-full max-w-7xl h-full flex items-center">
-              <CarouselContent className="h-[85vh]">
+        <div className="w-full h-full flex items-center justify-center p-12">
+            <Carousel className="w-full h-full">
+              <CarouselContent className="h-full">
                 {items.map((item, index) => (
                   <CarouselItem key={index} className="flex flex-col items-center justify-center">
                     <div className="relative w-full h-full">
