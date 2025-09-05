@@ -46,7 +46,10 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
   const isUrl = (url: any) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
 
   const openFullscreenGallery = (item: any) => {
+    // Start with the main image
     const mainImage = { image: item.image, title: item.title };
+    
+    // Get gallery images, which are in an array of objects like [{ image: 'url' }, ...]
     const gallery = (item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }));
     
     // Combine main image and gallery images, and filter out any that don't have a valid URL
@@ -54,10 +57,9 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
     
     if (imagesToShow.length > 0) {
         setFullscreenGallery({ open: true, images: imagesToShow });
-    } else {
-        console.warn("No valid images to show for this gallery item.", item);
     }
   };
+
 
   return (
     <div>
