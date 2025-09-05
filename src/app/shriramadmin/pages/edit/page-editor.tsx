@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
-import { Eye, EyeOff, ShieldAlert, Upload, Sparkles, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, ShieldAlert, Upload, Sparkles, Loader2, Trash2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 import { savePageContent } from './actions';
@@ -69,13 +69,23 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         newSections[sectionIndex].content[repeaterKey][itemIndex][itemFieldKey] = value;
         setSections(newSections);
     };
+
+    const handleNestedRepeaterChange = (sectionIndex: number, repeaterKey: string, itemIndex: number, nestedRepeaterKey: string, nestedItemIndex: number, nestedItemFieldKey: string, value: any) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].content[repeaterKey][itemIndex][nestedRepeaterKey][nestedItemIndex][nestedItemFieldKey] = value;
+        setSections(newSections);
+    };
     
     const handleAddNewRepeaterItem = (sectionIndex: number, fieldKey: string, field: any) => {
         const newSections = [...sections];
         const newItem: { [key: string]: any } = {};
-        // Initialize the new item with empty strings for each field defined in the repeater structure
         Object.keys(field.fields).forEach(itemFieldKey => {
-            newItem[itemFieldKey] = '';
+            const itemField = field.fields[itemFieldKey];
+            if (itemField.type === 'repeater') {
+                newItem[itemFieldKey] = []; // Initialize nested repeater as empty array
+            } else {
+                newItem[itemFieldKey] = '';
+            }
         });
         
         if (!newSections[sectionIndex].content[fieldKey]) {
@@ -85,14 +95,41 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         newSections[sectionIndex].content[fieldKey].push(newItem);
         setSections(newSections);
     };
+
+    const handleAddNewNestedRepeaterItem = (sectionIndex: number, repeaterKey: string, itemIndex: number, nestedRepeaterKey: string, field: any) => {
+        const newSections = [...sections];
+        const newItem: { [key: string]: any } = {};
+        Object.keys(field.fields).forEach(itemFieldKey => {
+            newItem[itemFieldKey] = '';
+        });
+
+        if (!newSections[sectionIndex].content[repeaterKey][itemIndex][nestedRepeaterKey]) {
+            newSections[sectionIndex].content[repeaterKey][itemIndex][nestedRepeaterKey] = [];
+        }
+
+        newSections[sectionIndex].content[repeaterKey][itemIndex][nestedRepeaterKey].push(newItem);
+        setSections(newSections);
+    };
     
+    const handleRemoveRepeaterItem = (sectionIndex: number, repeaterKey: string, itemIndex: number) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].content[repeaterKey].splice(itemIndex, 1);
+        setSections(newSections);
+    };
+
+    const handleRemoveNestedRepeaterItem = (sectionIndex: number, repeaterKey: string, itemIndex: number, nestedRepeaterKey: string, nestedItemIndex: number) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].content[repeaterKey][itemIndex][nestedRepeaterKey].splice(nestedItemIndex, 1);
+        setSections(newSections);
+    };
+
     const handleVisibilityChange = (sectionIndex: number, checked: boolean) => {
         const newSections = [...sections];
         newSections[sectionIndex].visible = checked;
         setSections(newSections);
     };
 
-    const handleImageUpload = async (file: File, sectionIndex: number, fieldKey: string, itemIndex?: number, itemFieldKey?: string) => {
+    const handleImageUpload = async (file: File, onUpload: (url: string) => void) => {
         if (!file) return;
 
         setIsUploading(true);
@@ -117,11 +154,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
 
         const { data: { publicUrl } } = supabase.storage.from('public').getPublicUrl(fileName);
         
-        if (itemIndex !== undefined && itemFieldKey) {
-            handleRepeaterChange(sectionIndex, fieldKey, itemIndex, itemFieldKey, publicUrl);
-        } else {
-            handleFieldChange(sectionIndex, fieldKey, publicUrl);
-        }
+        onUpload(publicUrl);
 
         update({
             id,
@@ -191,40 +224,66 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         }
     };
     
-    const renderField = (sectionIndex: number, fieldKey: string, field: any, itemIndex?: number, itemValue?: any, repeaterKey?: string) => {
-        const id = `section-${sectionIndex}-field-${fieldKey}` + (itemIndex !== undefined ? `-${itemIndex}` : '');
-        const value = itemIndex !== undefined ? itemValue : sections[sectionIndex].content[fieldKey] || '';
-        const uploadId = `section-${sectionIndex}-upload-${fieldKey}`+ (itemIndex !== undefined ? `-${itemIndex}` : '');
-        const isRepeaterField = itemIndex !== undefined && repeaterKey !== undefined;
+    const renderField = (
+        sectionIndex: number, 
+        fieldKey: string, 
+        field: any, 
+        itemIndex?: number, 
+        itemValue?: any, 
+        repeaterKey?: string,
+        nestedItemIndex?: number,
+        nestedRepeaterKey?: string
+    ) => {
+        const id = `section-${sectionIndex}-${repeaterKey || ''}-${itemIndex || ''}-${fieldKey}-${nestedItemIndex || ''}`;
+        
+        let value = itemValue;
+        if (itemIndex === undefined && nestedItemIndex === undefined) {
+            value = sections[sectionIndex].content[fieldKey] || '';
+        }
+
         const isUrl = (val: any) => typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'));
+
+        const onValueChange = (newValue: any) => {
+            if (nestedRepeaterKey && repeaterKey && itemIndex !== undefined && nestedItemIndex !== undefined) {
+                handleNestedRepeaterChange(sectionIndex, repeaterKey, itemIndex, nestedRepeaterKey, nestedItemIndex, fieldKey, newValue);
+            } else if (repeaterKey && itemIndex !== undefined) {
+                handleRepeaterChange(sectionIndex, repeaterKey, itemIndex, fieldKey, newValue);
+            } else {
+                handleFieldChange(sectionIndex, fieldKey, newValue);
+            }
+        };
+
+        const onFileUpload = (file: File) => {
+            handleImageUpload(file, (url) => onValueChange(url));
+        };
 
         switch(field.type) {
             case 'text':
-                return <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} />;
+                return <Input id={id} value={value} onChange={(e) => onValueChange(e.target.value)} />;
             case 'textarea':
-                return <Textarea id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} rows={5}/>;
+                return <Textarea id={id} value={value} onChange={(e) => onValueChange(e.target.value)} rows={5}/>;
             case 'image':
                 return (
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-4">
                             {value && isUrl(value) && <Image src={value} alt={field.label} width={80} height={80} className="w-20 h-20 object-cover rounded-md border" />}
-                            <Input id={id} value={value} onChange={(e) => isRepeaterField ? handleRepeaterChange(sectionIndex, repeaterKey, itemIndex!, fieldKey, e.target.value) : handleFieldChange(sectionIndex, fieldKey, e.target.value)} className="flex-grow" />
+                            <Input id={id} value={value} onChange={(e) => onValueChange(e.target.value)} className="flex-grow" />
                         </div>
                         <div>
                             <Button asChild variant="outline" size="sm">
-                                <Label htmlFor={uploadId} className="cursor-pointer">
+                                <Label htmlFor={id + '-upload'} className="cursor-pointer">
                                     <Upload className="mr-2 h-4 w-4" />
                                     Upload Image
                                 </Label>
                             </Button>
                             <Input 
-                                id={uploadId} 
+                                id={id + '-upload'}
                                 type="file" 
                                 className="sr-only" 
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if(file) handleImageUpload(file, sectionIndex, repeaterKey || fieldKey, isRepeaterField ? itemIndex : undefined, isRepeaterField ? fieldKey : undefined);
+                                    if(file) onFileUpload(file);
                                 }} 
                                 disabled={isUploading}
                             />
@@ -232,22 +291,57 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                     </div>
                 );
             case 'repeater':
+                const items = (repeaterKey && itemIndex !== undefined) 
+                    ? (sections[sectionIndex].content[repeaterKey][itemIndex][fieldKey] || [])
+                    : (sections[sectionIndex].content[fieldKey] || []);
+
                 return (
-                     <div className="space-y-4 p-4 border rounded-md">
-                        {(sections[sectionIndex].content[fieldKey] || []).map((item: any, itemIndex: number) => (
-                           <Card key={itemIndex} className="p-4 bg-muted/50">
-                             <CardHeader><CardTitle>Item {itemIndex + 1}</CardTitle></CardHeader>
-                             <CardContent className="space-y-4 p-0 pt-4">
+                     <div className="space-y-4 p-4 border rounded-md bg-muted/20">
+                        {items.map((item: any, currentItemIndex: number) => (
+                           <Card key={currentItemIndex} className="p-4 bg-background">
+                             <CardHeader className="flex flex-row justify-between items-center p-0 pb-4">
+                                <CardTitle>Item {currentItemIndex + 1}</CardTitle>
+                                <Button 
+                                    type="button" 
+                                    variant="destructive" 
+                                    size="icon" 
+                                    onClick={() => {
+                                        if (repeaterKey && itemIndex !== undefined) {
+                                            handleRemoveNestedRepeaterItem(sectionIndex, repeaterKey, itemIndex, fieldKey, currentItemIndex);
+                                        } else {
+                                            handleRemoveRepeaterItem(sectionIndex, fieldKey, currentItemIndex);
+                                        }
+                                    }}
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                             </CardHeader>
+                             <CardContent className="space-y-4 p-0">
                                 {Object.keys(field.fields).map(itemFieldKey => (
                                      <div key={itemFieldKey} className="space-y-2">
-                                        <Label htmlFor={`${id}-${itemIndex}-${itemFieldKey}`}>{field.fields[itemFieldKey].label}</Label>
-                                        {renderField(sectionIndex, itemFieldKey, field.fields[itemFieldKey], itemIndex, item[itemFieldKey], fieldKey)}
+                                        <Label htmlFor={`${id}-${currentItemIndex}-${itemFieldKey}`}>{field.fields[itemFieldKey].label}</Label>
+                                        {renderField(
+                                            sectionIndex, 
+                                            itemFieldKey, 
+                                            field.fields[itemFieldKey], 
+                                            repeaterKey ? itemIndex : currentItemIndex, 
+                                            item[itemFieldKey],
+                                            repeaterKey || fieldKey,
+                                            repeaterKey ? currentItemIndex : undefined,
+                                            repeaterKey ? fieldKey : undefined
+                                        )}
                                     </div>
                                 ))}
                              </CardContent>
                            </Card>
                         ))}
-                         <Button variant="outline" size="sm" type="button" onClick={() => handleAddNewRepeaterItem(sectionIndex, fieldKey, field)}>
+                         <Button variant="outline" size="sm" type="button" onClick={() => {
+                             if (repeaterKey && itemIndex !== undefined) {
+                                handleAddNewNestedRepeaterItem(sectionIndex, repeaterKey, itemIndex, fieldKey, field);
+                             } else {
+                                handleAddNewRepeaterItem(sectionIndex, fieldKey, field);
+                             }
+                         }}>
                             Add New
                         </Button>
                     </div>

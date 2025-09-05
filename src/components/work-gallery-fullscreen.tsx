@@ -6,25 +6,14 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/compone
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Image from 'next/image';
 import { X } from 'lucide-react';
-import type { CarouselApi } from "@/components/ui/carousel"
 
 type WorkGalleryFullscreenProps = {
-  images: { image: string; title: string; hint?: string }[];
-  startIndex: number;
+  items: { image: string; title: string }[];
   onClose: () => void;
 };
 
-export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalleryFullscreenProps) {
+export function WorkGalleryFullscreen({ items, onClose }: WorkGalleryFullscreenProps) {
   const [open, setOpen] = useState(true);
-  const [api, setApi] = useState<CarouselApi>()
- 
-  useEffect(() => {
-    if (!api) {
-      return
-    }
-    api.scrollTo(startIndex, true)
-  }, [api, startIndex])
-
 
   const handleClose = () => {
     setOpen(false);
@@ -46,9 +35,9 @@ export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalle
           <span className="sr-only">Close</span>
         </button>
         <div className="w-full h-full flex items-center justify-center">
-            <Carousel setApi={setApi} className="w-full max-w-7xl h-full flex items-center">
+            <Carousel className="w-full max-w-7xl h-full flex items-center">
               <CarouselContent className="h-[85vh]">
-                {images.map((item, index) => (
+                {items.map((item, index) => (
                   <CarouselItem key={index} className="flex flex-col items-center justify-center">
                     <div className="relative w-full h-full">
                         <Image
@@ -56,7 +45,7 @@ export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalle
                             alt={item.title}
                             layout="fill"
                             objectFit="contain"
-                            data-ai-hint={item.hint}
+                            data-ai-hint="project image"
                         />
                     </div>
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 p-2 rounded-md bg-black/50 text-white text-center">

@@ -17,7 +17,7 @@ type HomePageClientProps = {
 };
 
 export function HomePageClient({ pageContent }: HomePageClientProps) {
-  const [fullscreenGallery, setFullscreenGallery] = useState<{ open: boolean, startIndex: number }>({ open: false, startIndex: 0 });
+  const [fullscreenGallery, setFullscreenGallery] = useState<{ open: boolean, images: {image: string, title: string}[] }>({ open: false, images: [] });
 
   const { 
     hero, 
@@ -45,8 +45,13 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
 
   const isUrl = (url: any) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
 
-  const openFullscreenGallery = (index: number) => {
-    setFullscreenGallery({ open: true, startIndex: index });
+  const openFullscreenGallery = (item: any) => {
+    // Use the main image as the first image, followed by the gallery images
+    const imagesToShow = [
+      { image: item.image, title: item.title }, 
+      ...(item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }))
+    ];
+    setFullscreenGallery({ open: true, images: imagesToShow });
   };
 
   return (
@@ -193,7 +198,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {workGalleryItems.map((item: any, index: number) => (
-                <div key={index} className="overflow-hidden group relative cursor-pointer" onClick={() => openFullscreenGallery(index)}>
+                <div key={index} className="overflow-hidden group relative cursor-pointer" onClick={() => openFullscreenGallery(item)}>
                   <div className="aspect-square">
                     <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
@@ -408,9 +413,8 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
 
       {fullscreenGallery.open && (
         <WorkGalleryFullscreen
-          images={workGalleryItems}
-          startIndex={fullscreenGallery.startIndex}
-          onClose={() => setFullscreenGallery({ open: false, startIndex: 0 })}
+          items={fullscreenGallery.images}
+          onClose={() => setFullscreenGallery({ open: false, images: [] })}
         />
       )}
     </div>
