@@ -10,15 +10,17 @@ async function getSchemeImage() {
     const supabase = createClient();
     const { data: page } = await supabase
         .from('pages')
-        .select('sections(content)')
+        .select(`
+            sections ( content )
+        `)
         .eq('slug', 'home')
         .single();
-    
-    if (!page) {
+
+    if (!page || !page.sections) {
         return null;
     }
 
-    const heroSection = page.sections.find((s: any) => s.type === 'hero');
+    const heroSection = (page.sections as any[]).find((s: any) => s.content && s.content.videoUrl);
     return heroSection?.content?.scheme_image || null;
 }
 
