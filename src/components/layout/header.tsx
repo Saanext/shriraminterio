@@ -61,7 +61,7 @@ export function Header() {
         
         let topLevelItems: NavItem[] = data
             .filter(item => !item.parent_slug)
-             .filter(item => item.slug !== 'appointment') // Exclude the appointment page from nav links
+             .filter(item => item.slug !== 'appointment' && item.slug !== 'contact') // Exclude appointment & contact from nav links
             .map(item => ({
                 title: item.title,
                 slug: item.slug === 'home' ? '/' : `/${item.slug}`,
@@ -75,16 +75,30 @@ export function Header() {
                     }))
             }));
         
-        // Reorder items: Products after Clients
-        const productsIndex = topLevelItems.findIndex(item => item.title === 'Products');
-        const clientsIndex = topLevelItems.findIndex(item => item.title === 'Clients');
+        // Define the desired order of navigation items
+        const desiredOrder = [
+            'Home',
+            'About Us',
+            'How It Works',
+            'Clients',
+            'Services',
+            'Portfolio',
+            'Customer Stories',
+            'Products',
+        ];
 
-        if (productsIndex !== -1 && clientsIndex !== -1 && productsIndex < clientsIndex) {
-            const productsItem = topLevelItems.splice(productsIndex, 1)[0];
-            const newClientsIndex = topLevelItems.findIndex(item => item.title === 'Clients');
-            topLevelItems.splice(newClientsIndex + 1, 0, productsItem);
-        }
-        
+        // Sort the topLevelItems array based on the desiredOrder
+        topLevelItems.sort((a, b) => {
+            const aIndex = desiredOrder.indexOf(a.title);
+            const bIndex = desiredOrder.indexOf(b.title);
+            
+            // If an item is not in the desiredOrder array, push it to the end.
+            if (aIndex === -1) return 1;
+            if (bIndex === -1) return -1;
+            
+            return aIndex - bIndex;
+        });
+
         setNavItems(topLevelItems);
     };
     fetchNavItems();
