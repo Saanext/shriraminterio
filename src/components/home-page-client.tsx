@@ -9,16 +9,12 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Video, Smartphone, IndianRupee, Tv, Users, Layers, CalendarCheck, ShieldCheck } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { useState } from 'react';
-import { WorkGalleryFullscreen } from './work-gallery-fullscreen';
 
 type HomePageClientProps = {
     pageContent: any;
 };
 
 export function HomePageClient({ pageContent }: HomePageClientProps) {
-  const [fullscreenGallery, setFullscreenGallery] = useState<{ open: boolean, images: {image: string, title: string}[] }>({ open: false, images: [] });
-
   const { 
     hero, 
     welcome, 
@@ -44,22 +40,6 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
   const heroSlides = hero.content.slides;
 
   const isUrl = (url: any) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
-
-  const openFullscreenGallery = (item: any) => {
-    // Start with the main image
-    const mainImage = { image: item.image, title: item.title };
-    
-    // Get gallery images, which are in an array of objects like [{ image: 'url' }, ...]
-    const gallery = (item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }));
-    
-    // Combine main image and gallery images, and filter out any that don't have a valid URL
-    const imagesToShow = [mainImage, ...gallery].filter(img => isUrl(img.image));
-    
-    if (imagesToShow.length > 0) {
-        setFullscreenGallery({ open: true, images: imagesToShow });
-    }
-  };
-
 
   return (
     <div>
@@ -205,7 +185,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {workGalleryItems.map((item: any, index: number) => (
-                <div key={index} className="overflow-hidden group relative cursor-pointer" onClick={() => openFullscreenGallery(item)}>
+                <div key={index} className="overflow-hidden group relative">
                   <div className="aspect-square">
                     <Image src={item.image} alt={item.title} layout="fill" objectFit="cover" data-ai-hint={item.hint} className="transition-transform duration-500 group-hover:scale-105" />
                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
@@ -336,7 +316,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                 <CarouselItem key={index} className="pl-4">
                    <Card className="overflow-hidden shadow-lg">
                        <div className="grid grid-cols-1 md:grid-cols-2">
-                           <div className="relative aspect-[4/3] md:aspect-auto">
+                           <div className="relative aspect-[4/5] md:aspect-square">
                                <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" />
                            </div>
                            <div className="p-6 sm:p-8 flex flex-col justify-center text-center md:text-left">
@@ -416,13 +396,6 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           </div>
         </div>
       </section>
-      )}
-
-      {fullscreenGallery.open && (
-        <WorkGalleryFullscreen
-          items={fullscreenGallery.images}
-          onClose={() => setFullscreenGallery({ open: false, images: [] })}
-        />
       )}
     </div>
   );
