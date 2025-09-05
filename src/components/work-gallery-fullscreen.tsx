@@ -46,11 +46,11 @@ export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalle
           <span className="sr-only">Close</span>
         </button>
         <div className="w-full h-full flex items-center justify-center">
-            <Carousel setApi={setApi} className="w-full max-w-6xl h-full flex items-center">
-              <CarouselContent>
+            <Carousel setApi={setApi} className="w-full max-w-7xl h-full flex items-center">
+              <CarouselContent className="h-[85vh]">
                 {images.map((item, index) => (
-                  <CarouselItem key={index} className="flex items-center justify-center">
-                    <div className="relative w-full h-[80vh]">
+                  <CarouselItem key={index} className="flex flex-col items-center justify-center">
+                    <div className="relative w-full h-full">
                         <Image
                             src={item.image}
                             alt={item.title}
@@ -58,9 +58,9 @@ export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalle
                             objectFit="contain"
                             data-ai-hint={item.hint}
                         />
-                         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 p-2 rounded-md bg-black/50 text-white text-center">
-                            <h3 className="text-lg font-bold">{item.title}</h3>
-                        </div>
+                    </div>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 p-2 rounded-md bg-black/50 text-white text-center">
+                        <h3 className="text-lg font-bold">{item.title}</h3>
                     </div>
                   </CarouselItem>
                 ))}
