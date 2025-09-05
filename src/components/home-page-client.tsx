@@ -47,10 +47,16 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
 
   const openFullscreenGallery = (item: any) => {
     const mainImage = { image: item.image, title: item.title };
-    // Correctly map the nested gallery images
     const gallery = (item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }));
+    
+    // Combine main image and gallery images, and filter out any that don't have a valid URL
     const imagesToShow = [mainImage, ...gallery].filter(img => isUrl(img.image));
-    setFullscreenGallery({ open: true, images: imagesToShow });
+    
+    if (imagesToShow.length > 0) {
+        setFullscreenGallery({ open: true, images: imagesToShow });
+    } else {
+        console.warn("No valid images to show for this gallery item.", item);
+    }
   };
 
   return (
@@ -419,5 +425,3 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
     </div>
   );
 }
-
-    
