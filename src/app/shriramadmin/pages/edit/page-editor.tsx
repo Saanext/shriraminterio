@@ -228,34 +228,11 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         sectionIndex: number, 
         fieldKey: string, 
         field: any, 
-        itemIndex?: number, 
-        itemValue?: any, 
-        repeaterKey?: string,
-        nestedItemIndex?: number,
-        nestedRepeaterKey?: string
+        value: any,
+        onValueChange: (newValue: any) => void
     ) => {
-        const id = `section-${sectionIndex}-${repeaterKey || ''}-${itemIndex || ''}-${fieldKey}-${nestedItemIndex || ''}`;
-        
-        let value = itemValue;
-        if (itemIndex === undefined && nestedItemIndex === undefined) {
-            value = sections[sectionIndex].content[fieldKey] || '';
-        }
-
+        const id = `field-${sectionIndex}-${fieldKey}-${Math.random()}`;
         const isUrl = (val: any) => typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'));
-
-        const onValueChange = (newValue: any) => {
-            if (nestedRepeaterKey && repeaterKey && itemIndex !== undefined && nestedItemIndex !== undefined) {
-                handleNestedRepeaterChange(sectionIndex, repeaterKey, itemIndex, nestedRepeaterKey, nestedItemIndex, fieldKey, newValue);
-            } else if (repeaterKey && itemIndex !== undefined) {
-                handleRepeaterChange(sectionIndex, repeaterKey, itemIndex, fieldKey, newValue);
-            } else {
-                handleFieldChange(sectionIndex, fieldKey, newValue);
-            }
-        };
-
-        const onFileUpload = (file: File) => {
-            handleImageUpload(file, (url) => onValueChange(url));
-        };
 
         switch(field.type) {
             case 'text':
@@ -283,7 +260,7 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if(file) onFileUpload(file);
+                                    if(file) handleImageUpload(file, onValueChange);
                                 }} 
                                 disabled={isUploading}
                             />
@@ -291,56 +268,55 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                     </div>
                 );
             case 'repeater':
-                const items = (repeaterKey && itemIndex !== undefined) 
-                    ? (sections[sectionIndex].content[repeaterKey][itemIndex][fieldKey] || [])
-                    : (sections[sectionIndex].content[fieldKey] || []);
-
+                const items = value || [];
                 return (
                      <div className="space-y-4 p-4 border rounded-md bg-muted/20">
-                        {items.map((item: any, currentItemIndex: number) => (
-                           <Card key={currentItemIndex} className="p-4 bg-background">
+                        {items.map((item: any, itemIndex: number) => (
+                           <Card key={itemIndex} className="p-4 bg-background">
                              <CardHeader className="flex flex-row justify-between items-center p-0 pb-4">
-                                <CardTitle>Item {currentItemIndex + 1}</CardTitle>
+                                <CardTitle>Item {itemIndex + 1}</CardTitle>
                                 <Button 
                                     type="button" 
                                     variant="destructive" 
                                     size="icon" 
                                     onClick={() => {
-                                        if (repeaterKey && itemIndex !== undefined) {
-                                            handleRemoveNestedRepeaterItem(sectionIndex, repeaterKey, itemIndex, fieldKey, currentItemIndex);
-                                        } else {
-                                            handleRemoveRepeaterItem(sectionIndex, fieldKey, currentItemIndex);
-                                        }
+                                        const newItems = [...items];
+                                        newItems.splice(itemIndex, 1);
+                                        onValueChange(newItems);
                                     }}
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </Button>
                              </CardHeader>
                              <CardContent className="space-y-4 p-0">
-                                {Object.keys(field.fields).map(itemFieldKey => (
+                                {Object.keys(field.fields).map(itemFieldKey => {
+                                    const onRepeaterItemValueChange = (newValue: any) => {
+                                        const newItems = [...items];
+                                        newItems[itemIndex][itemFieldKey] = newValue;
+                                        onValueChange(newItems);
+                                    };
+                                    return (
                                      <div key={itemFieldKey} className="space-y-2">
-                                        <Label htmlFor={`${id}-${currentItemIndex}-${itemFieldKey}`}>{field.fields[itemFieldKey].label}</Label>
+                                        <Label>{field.fields[itemFieldKey].label}</Label>
                                         {renderField(
-                                            sectionIndex, 
-                                            itemFieldKey, 
-                                            field.fields[itemFieldKey], 
-                                            repeaterKey ? itemIndex : currentItemIndex, 
+                                            sectionIndex,
+                                            itemFieldKey,
+                                            field.fields[itemFieldKey],
                                             item[itemFieldKey],
-                                            repeaterKey || fieldKey,
-                                            repeaterKey ? currentItemIndex : undefined,
-                                            repeaterKey ? fieldKey : undefined
+                                            onRepeaterItemValueChange
                                         )}
                                     </div>
-                                ))}
+                                )})}
                              </CardContent>
                            </Card>
                         ))}
                          <Button variant="outline" size="sm" type="button" onClick={() => {
-                             if (repeaterKey && itemIndex !== undefined) {
-                                handleAddNewNestedRepeaterItem(sectionIndex, repeaterKey, itemIndex, fieldKey, field);
-                             } else {
-                                handleAddNewRepeaterItem(sectionIndex, fieldKey, field);
-                             }
+                             const newItem: { [key: string]: any } = {};
+                             Object.keys(field.fields).forEach(itemFieldKey => {
+                                 const itemField = field.fields[itemFieldKey];
+                                 newItem[itemFieldKey] = itemField.type === 'repeater' ? [] : '';
+                             });
+                             onValueChange([...items, newItem]);
                          }}>
                             Add New
                         </Button>
@@ -444,8 +420,14 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                             </div>
                             {Object.entries(section.content_structure || {}).map(([key, field]: [string, any]) => (
                                 <div key={key} className="space-y-2">
-                                    <Label htmlFor={`section-${index}-field-${key}`}>{field.label}</Label>
-                                    {renderField(index, key, field)}
+                                    <Label>{field.label}</Label>
+                                    {renderField(
+                                        index, 
+                                        key, 
+                                        field, 
+                                        section.content[key], 
+                                        (newValue) => handleFieldChange(index, key, newValue)
+                                    )}
                                 </div>
                             ))}
                         </CardContent>
@@ -490,3 +472,5 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         </div>
     );
 }
+
+    
