@@ -46,11 +46,10 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
   const isUrl = (url: any) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
 
   const openFullscreenGallery = (item: any) => {
-    // Use the main image as the first image, followed by the gallery images
     const imagesToShow = [
       { image: item.image, title: item.title }, 
       ...(item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }))
-    ];
+    ].filter(img => isUrl(img.image));
     setFullscreenGallery({ open: true, images: imagesToShow });
   };
 
