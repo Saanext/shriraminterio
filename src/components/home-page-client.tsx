@@ -100,7 +100,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
               {hero.content.subtitle}
             </p>
             <Button asChild size="lg" className="mt-6 sm:mt-8 transition-transform transform hover:scale-105 text-sm sm:text-base">
-              <Link href="/services">{hero.content.buttonText}</Link>
+              <Link href="/scheme" target="_blank">{hero.content.buttonText}</Link>
             </Button>
           </div>
         </div>
