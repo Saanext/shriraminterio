@@ -316,8 +316,8 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
                 <CarouselItem key={index} className="pl-4">
                    <Card className="overflow-hidden shadow-lg">
                        <div className="grid grid-cols-1 md:grid-cols-2">
-                           <div className="relative aspect-video md:aspect-[4/3]">
-                               <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" />
+                           <div className="relative">
+                               <Image src={testimonial.image} alt={testimonial.name} layout="fill" className="object-cover" data-ai-hint="person portrait" />
                            </div>
                            <div className="p-6 sm:p-8 flex flex-col justify-center text-center md:text-left">
                                <p className="text-lg md:text-xl font-light text-muted-foreground italic leading-relaxed">
