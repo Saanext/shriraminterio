@@ -46,10 +46,9 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
   const isUrl = (url: any) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
 
   const openFullscreenGallery = (item: any) => {
-    const imagesToShow = [
-      { image: item.image, title: item.title }, 
-      ...(item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }))
-    ].filter(img => isUrl(img.image));
+    const mainImage = { image: item.image, title: item.title };
+    const gallery = (item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }));
+    const imagesToShow = [mainImage, ...gallery].filter(img => isUrl(img.image));
     setFullscreenGallery({ open: true, images: imagesToShow });
   };
 
