@@ -47,6 +47,7 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
 
   const openFullscreenGallery = (item: any) => {
     const mainImage = { image: item.image, title: item.title };
+    // Correctly map the nested gallery images
     const gallery = (item.gallery_images || []).map((img: any) => ({ image: img.image, title: item.title }));
     const imagesToShow = [mainImage, ...gallery].filter(img => isUrl(img.image));
     setFullscreenGallery({ open: true, images: imagesToShow });
