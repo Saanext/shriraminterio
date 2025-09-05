@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import Image from 'next/image';
 import { X } from 'lucide-react';
@@ -34,6 +34,10 @@ export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalle
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="bg-black/90 border-none p-0 max-w-none w-screen h-screen flex items-center justify-center">
+        <DialogTitle className="sr-only">Work Gallery</DialogTitle>
+        <DialogDescription className="sr-only">
+          A fullscreen carousel of work gallery images. Use the next and previous buttons to navigate.
+        </DialogDescription>
         <button
           onClick={handleClose}
           className="absolute top-4 right-4 z-50 text-white hover:text-primary transition-colors"
@@ -69,4 +73,3 @@ export function WorkGalleryFullscreen({ images, startIndex, onClose }: WorkGalle
     </Dialog>
   );
 }
-
