@@ -229,9 +229,10 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         fieldKey: string, 
         field: any, 
         value: any,
-        onValueChange: (newValue: any) => void
+        onValueChange: (newValue: any) => void,
+        idPrefix: string
     ) => {
-        const id = `field-${sectionIndex}-${fieldKey}-${Math.random()}`;
+        const id = `${idPrefix}-${fieldKey}`;
         const isUrl = (val: any) => typeof val === 'string' && (val.startsWith('http://') || val.startsWith('https://'));
 
         switch(field.type) {
@@ -303,7 +304,8 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                             itemFieldKey,
                                             field.fields[itemFieldKey],
                                             item[itemFieldKey],
-                                            onRepeaterItemValueChange
+                                            onRepeaterItemValueChange,
+                                            `${id}-${itemIndex}`
                                         )}
                                     </div>
                                 )})}
@@ -426,7 +428,8 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                         key, 
                                         field, 
                                         section.content[key], 
-                                        (newValue) => handleFieldChange(index, key, newValue)
+                                        (newValue) => handleFieldChange(index, key, newValue),
+                                        `field-${index}`
                                     )}
                                 </div>
                             ))}
