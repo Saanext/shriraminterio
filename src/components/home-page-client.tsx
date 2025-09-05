@@ -313,19 +313,21 @@ export function HomePageClient({ pageContent }: HomePageClientProps) {
           >
             <CarouselContent className="-ml-4">
               {testimonialsItems.map((testimonial: any, index: number) => (
-                <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                   <Card className="overflow-hidden shadow-lg h-full flex flex-col">
-                        <div className="relative aspect-video">
-                            <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" />
-                        </div>
-                        <div className="p-6 flex flex-col flex-grow text-center">
-                            <p className="text-muted-foreground italic flex-grow">
-                                "{testimonial.review}"
-                            </p>
-                            <div className="mt-4 pt-4 border-t">
-                                <p className="font-bold font-headline text-base sm:text-lg leading-tight">{testimonial.name}</p>
-                            </div>
-                        </div>
+                <CarouselItem key={index} className="pl-4">
+                   <Card className="overflow-hidden shadow-lg">
+                       <div className="grid grid-cols-1 md:grid-cols-2">
+                           <div className="relative aspect-video md:aspect-[4/3]">
+                               <Image src={testimonial.image} alt={testimonial.name} layout="fill" objectFit="cover" data-ai-hint="person portrait" />
+                           </div>
+                           <div className="p-6 sm:p-8 flex flex-col justify-center text-center md:text-left">
+                               <p className="text-lg md:text-xl font-light text-muted-foreground italic leading-relaxed">
+                                   "{testimonial.review}"
+                               </p>
+                               <div className="mt-6 pt-6 border-t">
+                                   <p className="font-bold font-headline text-base sm:text-lg leading-tight">{testimonial.name}</p>
+                               </div>
+                           </div>
+                       </div>
                     </Card>
                 </CarouselItem>
               ))}
