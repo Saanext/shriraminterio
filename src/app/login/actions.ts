@@ -2,8 +2,8 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache';
 
 export async function login(formData: FormData) {
   const email = formData.get('email') as string
@@ -35,12 +35,12 @@ export async function login(formData: FormData) {
     };
   }
 
-  // Redirect on success
+  revalidatePath('/', 'layout');
   redirect('/shriramadmin')
 }
 
 export async function logout() {
   const supabase = createClient()
   await supabase.auth.signOut()
-  return redirect('/login')
+  redirect('/login')
 }
