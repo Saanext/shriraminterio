@@ -35,7 +35,8 @@ export async function login(formData: FormData) {
     };
   }
 
-  return redirect('/shriramadmin')
+  // Redirect on success
+  redirect('/shriramadmin')
 }
 
 export async function logout() {
