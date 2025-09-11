@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Suspense } from 'react';
@@ -26,7 +25,6 @@ function LoginFormComponent() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const message = searchParams.get('message');
-  const router = useRouter();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -36,24 +34,6 @@ function LoginFormComponent() {
     },
   });
 
-  const onSubmit = async (values: LoginFormValues) => {
-    const formData = new FormData();
-    formData.append('email', values.email);
-    formData.append('password', values.password);
-
-    try {
-      await login(formData);
-      // The redirect is handled by the server action, but we might want to refresh the router state
-      // to ensure the user is navigated correctly if they somehow stay on the page.
-      router.refresh();
-    } catch (error: any) {
-      // The server action now handles redirects internally.
-      // We only need to show an error if the action itself throws or returns one.
-      // The current implementation returns an object with an error key.
-      const result = error; // This isn't quite right. Let's adjust.
-    }
-  };
-  
   const handleFormSubmit = async (values: LoginFormValues) => {
     const formData = new FormData();
     formData.append('email', values.email);
