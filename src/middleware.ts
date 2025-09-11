@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { updateSession } from './lib/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
-  const { supabase, response } = createClient(request);
+  const supabase = createClient(request);
 
   const {
     data: { user },
