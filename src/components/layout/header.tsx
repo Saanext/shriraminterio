@@ -124,7 +124,7 @@ export function Header() {
             </Link>
             <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
           </SheetHeader>
-          <nav className="flex flex-col space-y-1 p-4">
+          <nav className="flex-grow flex flex-col space-y-1 p-4 overflow-y-auto">
             {navItems.map((item) => 
               item.subItems && item.subItems.length > 0 ? (
                 <Collapsible key={item.slug}>
@@ -181,7 +181,10 @@ export function Header() {
             )}
           </nav>
           <div className="p-4 mt-auto border-t space-y-2">
-             <Button className="w-full" onClick={() => { setIsOpen(true); setIsMobileMenuOpen(false); }}>
+             <Button asChild className="w-full">
+                <Link href="/appointment">Appointment</Link>
+             </Button>
+             <Button className="w-full" variant="outline" onClick={() => { setIsOpen(true); setIsMobileMenuOpen(false); }}>
                 Get Quote
             </Button>
           </div>
