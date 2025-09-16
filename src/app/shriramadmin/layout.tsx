@@ -1,6 +1,6 @@
 
 import { ReactNode } from 'react';
-import { LayoutDashboard, Newspaper, Shield, Users, UserPlus, Quote, Palette, BookText, ShoppingCart, CalendarCheck, GalleryHorizontal, Share2, LogOut } from 'lucide-react';
+import { LayoutDashboard, Newspaper, Shield, Users, UserPlus, Quote, Palette, BookText, ShoppingCart, CalendarCheck, GalleryHorizontal, Share2, LogOut, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { logout } from '@/app/login/actions';
@@ -38,6 +38,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 <li><Link href="/shriramadmin/quotes" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Quote className="w-5 h-5" /> Quotes</Link></li>
                 <li><Link href="/shriramadmin/appearance" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Palette className="w-5 h-5" /> Appearance</Link></li>
                 <li><Link href="/shriramadmin/social-links" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Share2 className="w-5 h-5" /> Social</Link></li>
+                <li><Link href="/shriramadmin/contact" className="flex items-center gap-2 py-2 px-4 rounded hover:bg-muted"><Phone className="w-5 h-5" /> Contact</Link></li>
             </ul>
             </nav>
              <div className="mt-auto">

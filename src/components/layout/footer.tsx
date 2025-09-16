@@ -13,14 +13,28 @@ const iconMap: { [key: string]: React.FC<LucideProps> } = {
     Youtube,
 };
 
+const contactIconMap: { [key: string]: React.FC<LucideProps> } = {
+    MapPin,
+    Mail,
+    Phone,
+};
+
+
 async function getSocialLinks() {
     const supabase = createClient();
     const { data } = await supabase.from('social_links').select('*').order('name');
     return data || [];
 }
 
+async function getContactDetails() {
+    const supabase = createClient();
+    const { data } = await supabase.from('contact_details').select('*');
+    return data || [];
+}
+
 export async function Footer() {
     const socialLinks = await getSocialLinks();
+    const contactDetails = await getContactDetails();
     
     const quickLinks = [
         { href: '/', label: 'Home' },
@@ -62,18 +76,20 @@ export async function Footer() {
                         <div>
                             <h3 className="text-lg font-bold font-headline mb-4">GET IN TOUCH</h3>
                             <ul className="space-y-3 text-sm text-muted-foreground">
-                                <li className="flex items-start">
-                                    <MapPin className="h-4 w-4 mr-3 mt-1 flex-shrink-0 text-primary" />
-                                    <span>Shop No 2, Shri Hsg Society, Sankalp Nagari, Dehuroad, Pune-412101</span>
-                                </li>
-                                <li className="flex items-center">
-                                    <Mail className="h-4 w-4 mr-3 text-primary" />
-                                    <a href="mailto:sales@shriraminterio.com" className="hover:text-primary transition-colors">sales@shriraminterio.com</a>
-                                </li>
-                                <li className="flex items-center">
-                                    <Phone className="h-4 w-4 mr-3 text-primary" />
-                                    <a href="tel:+918767951981" className="hover:text-primary transition-colors">+91 8767951981</a>
-                                </li>
+                                {contactDetails.map((detail) => {
+                                    const Icon = detail.icon ? contactIconMap[detail.icon] : null;
+                                    const href = detail.url_prefix ? `${detail.url_prefix}${detail.value}` : undefined;
+                                    return (
+                                        <li key={detail.id} className="flex items-start">
+                                            {Icon && <Icon className="h-4 w-4 mr-3 mt-1 flex-shrink-0 text-primary" />}
+                                            {href ? (
+                                                 <a href={href} className="hover:text-primary transition-colors">{detail.value}</a>
+                                            ) : (
+                                                 <span>{detail.value}</span>
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
                         <div>
