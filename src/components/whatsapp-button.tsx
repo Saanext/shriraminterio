@@ -3,19 +3,9 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
-const WhatsAppIcon = () => (
-    <svg
-        role="img"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-8 h-8"
-        fill="currentColor"
-    >
-        <title>WhatsApp</title>
-        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 12c0 1.77.46 3.43 1.29 4.89L2 22l5.29-1.38c1.45.83 3.08 1.32 4.75 1.32h.01c5.46 0 9.91-4.45 9.91-9.92 0-5.46-4.45-9.91-9.92-9.91zM17.51 16c-.28-.14-1.64-.81-1.9-0.9c-.25-.09-.44-.14-.62.14c-.18.28-.71.9-.88 1.08c-.16.18-.32.2-.59.06c-.27-.14-1.14-.42-2.17-1.34c-.81-.72-1.35-1.61-1.57-1.89c-.22-.28-.02-0.43.12-0.57c.13-.13.28-0.34.42-0.5c.14-.17.19-0.28.28-0.47c.09-0.18.04-0.36-0.02-0.5c-.06-.14-.62-1.49-0.85-2.04c-.23-.55-.46-.48-.62-.48c-.16 0-.34 0-.52 0c-.18 0-.47.07-.71.35c-.24.28-.93.9-0.93 2.2c0 1.3.96 2.55 1.1 2.73c.14.18 1.88 2.88 4.56 4.03c2.67 1.15 2.67.77 3.15.71c.48-.06 1.64-0.67 1.87-1.32c.23-0.65.23-1.2.16-1.32c-.07-.12-.25-.2-.52-.34z" />
-    </svg>
-);
+const whatsappIconSrc = `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtcGhlaSI+PHBhdGggZD0iTTIyIDExLjA4VjEyYTggOCAwIDAgMS04IDhINmEzIDMgMCAwIDEtMy0zVjZhMyAzIDAgMCAxIDMtM2g0LjkyIiAvPjxwYXRoIGQ9Ik0yMiA3VjVhMyAzIDAgMCAwLTMtM2gtMSIgLz48cGF0aCBkPSJNMTUgMy4xM1ZNYTE0IDE0IDAgMCAxIDQgMTAuMjUiIC8+PHBhdGggZD0iTTE4IDlhMyAzIDAgMSA xIDAgNnoiIC8+PC9zdmc+`;
 
 export function WhatsAppButton() {
     const phoneNumber = "918767951981"; // Your WhatsApp number
@@ -43,7 +33,7 @@ export function WhatsAppButton() {
                 className="flex items-center justify-center w-16 h-16 bg-green-500 rounded-full shadow-lg text-white hover:bg-green-600 transition-colors duration-300"
                 aria-label="Chat on WhatsApp"
             >
-                <WhatsAppIcon />
+                <Image src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" width={32} height={32} />
             </Link>
         </motion.div>
     );
