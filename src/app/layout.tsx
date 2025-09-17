@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   title: 'Shriram Interio Digital',
   description: 'Pune\'s leading interior design company for modular kitchens, wardrobes, and full home interiors.',
   keywords: ['interior design', 'modular kitchen', 'wardrobe', 'Pune', 'Shriram Interio'],
+  verification: {
+    google: 'ZAT8iIAlTrcoPPhujpwqRJFliyBPchPMyrWTWAFZxT4',
+  },
 };
 
 export default function RootLayout({
