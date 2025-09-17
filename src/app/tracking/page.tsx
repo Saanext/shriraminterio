@@ -3,6 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { LocateFixed } from "lucide-react";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Track Your Project',
+    description: 'Track the status of your interior design project with Shriram Interio Digital. Enter your project ID or phone number for updates.',
+};
+
 
 export default function TrackingPage() {
     return (

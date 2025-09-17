@@ -4,6 +4,11 @@ import { notFound } from 'next/navigation';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
 import { ProductDetailClient } from '@/components/product-detail-client';
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { slug: string }
+}
 
 async function getProduct(slug: string) {
   const supabase = createServerClient();
@@ -18,6 +23,19 @@ async function getProduct(slug: string) {
   }
   return product;
 }
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const product = await getProduct(params.slug);
+ 
+  return {
+    title: product.name,
+    description: product.short_description,
+  }
+}
+
 
 export default async function ProductDetailPage({ params }: { params: { slug: string }}) {
   const product = await getProduct(params.slug);

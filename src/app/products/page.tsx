@@ -5,6 +5,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Our Products',
+    description: 'Explore our collection of interior design products, including modular kitchens, wardrobes, TV units, and more. High-quality craftsmanship for your home.',
+};
+
 
 async function getProducts() {
     const supabase = createClient();

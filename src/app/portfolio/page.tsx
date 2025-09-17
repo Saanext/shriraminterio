@@ -5,6 +5,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Our Portfolio',
+    description: 'Explore our portfolio of completed interior design projects. See the stunning transformations of homes and commercial spaces in Pune.',
+};
+
 
 async function getPortfolioItems() {
     const supabase = createClient();

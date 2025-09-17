@@ -5,6 +5,11 @@ import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { slug: string }
+}
 
 async function getPortfolioItem(slug: string) {
   const supabase = createServerClient();
@@ -18,6 +23,18 @@ async function getPortfolioItem(slug: string) {
     notFound();
   }
   return data;
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const item = await getPortfolioItem(params.slug);
+ 
+  return {
+    title: item.title,
+    description: item.content ? item.content.substring(0, 150) : `View our ${item.title} project.`,
+  }
 }
 
 export default async function PortfolioItemPage({ params }: { params: { slug: string } }) {

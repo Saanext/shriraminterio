@@ -8,6 +8,11 @@ import { CalendarDays, Tag, User, MapPin, Building, Bed, PlayCircle } from 'luci
 import { Badge } from '@/components/ui/badge';
 import { createClient as createServerClient } from '@/lib/supabase/server';
 import { createClient as createBrowserClient } from '@/lib/supabase/client';
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { slug: string }
+}
 
 async function getStory(slug: string) {
     const supabase = createServerClient();
@@ -22,6 +27,18 @@ async function getStory(slug: string) {
     }
     
     return story;
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const story = await getStory(params.slug);
+ 
+  return {
+    title: story.title,
+    description: story.excerpt,
+  }
 }
 
 

@@ -1,5 +1,12 @@
+
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Contact Us',
+    description: 'Get in touch with Shriram Interio Digital. Find our address, phone number, and email for a free interior design consultation in Pune.',
+};
 
 export default function ContactPage() {
   const address = "Shop No 2, Shri Hsg Society, Sankalp Nagari, Dehuroad, Pune-412101";

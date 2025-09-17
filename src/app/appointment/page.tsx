@@ -4,6 +4,13 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { AppointmentForm } from "@/components/appointment-form";
 import { WhyBookSection } from "@/components/why-book-section";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Book an Appointment',
+  description: 'Schedule a free consultation with our expert interior designers in Pune. Book your appointment online today.',
+};
+
 
 export default function AppointmentPage() {
     return (

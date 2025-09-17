@@ -5,6 +5,12 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Design Scheme',
+    description: 'View the design scheme for your interior design project.',
+};
 
 async function getSchemeImage() {
     const supabase = createClient();

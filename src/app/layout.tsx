@@ -20,7 +20,10 @@ const comfortaa = Comfortaa({
 
 
 export const metadata: Metadata = {
-  title: 'Shriram Interio Digital',
+  title: {
+    template: '%s | Shriram Interio Digital',
+    default: 'Shriram Interio Digital | Pune\'s Premier Interior Designers',
+  },
   description: 'Pune\'s leading interior design company for modular kitchens, wardrobes, and full home interiors.',
   keywords: ['interior design', 'modular kitchen', 'wardrobe', 'Pune', 'Shriram Interio'],
   verification: {
