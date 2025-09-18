@@ -38,7 +38,8 @@ export function ContactEditor({ initialData }: { initialData: any | null }) {
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactDetailSchema),
-    defaultValues: initialData || {
+    defaultValues: {
+      id: null,
       name: '',
       slug: '',
       value: '',
@@ -47,6 +48,12 @@ export function ContactEditor({ initialData }: { initialData: any | null }) {
     },
   });
   
+  useEffect(() => {
+    if (initialData) {
+      form.reset(initialData);
+    }
+  }, [initialData, form]);
+
   const name = form.watch('name');
   useEffect(() => {
     if (name && !form.formState.dirtyFields.slug) {
@@ -109,7 +116,7 @@ export function ContactEditor({ initialData }: { initialData: any | null }) {
                  <FormField control={form.control} name="url_prefix" render={({ field }) => (
                     <FormItem>
                         <FormLabel>URL Prefix (Optional)</FormLabel>
-                        <FormControl><Input {...field} placeholder="e.g., mailto: or tel:" /></FormControl>
+                        <FormControl><Input {...field} placeholder="e.g., mailto: or tel:" value={field.value ?? ''} /></FormControl>
                         <FormMessage />
                     </FormItem>
                 )} />
