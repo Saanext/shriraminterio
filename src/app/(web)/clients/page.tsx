@@ -66,7 +66,8 @@ export default async function ClientsPage() {
                                 <Card key={index} className="flex flex-col">
                                     <CardHeader className="flex flex-row items-center gap-4">
                                         <Avatar className="h-12 w-12">
-                                            <AvatarFallback>{testimonial.initials}</AvatarFallback>
+                                            <AvatarImage src={testimonial.image} alt={testimonial.name} data-ai-hint="person portrait" />
+                                            <AvatarFallback>{testimonial.name?.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         <div>
                                             <CardTitle>{testimonial.name}</CardTitle>
