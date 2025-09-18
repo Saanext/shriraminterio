@@ -1,7 +1,6 @@
 
 import { Card, CardContent } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Star, PlayCircle, MapPin, Building, Bed } from 'lucide-react';
+import { PlayCircle, MapPin, Building, Bed } from 'lucide-react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
@@ -37,9 +36,16 @@ async function getContent() {
         .eq('slug', 'clients')
         .single();
 
+    const { data: testimonialsData } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('created_at', { ascending: false });
+
     if (!page) {
         notFound();
     }
+
+    const featuredTestimonial = testimonialsData?.find(t => t.is_featured) || testimonialsData?.[0];
 
     const content: { [key: string]: any } = {};
     for (const section of page.sections) {
@@ -60,13 +66,13 @@ async function getContent() {
         });
     }
 
-    return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
+    return { ...content, meta: { title: page.meta_title, description: page.meta_description }, featuredTestimonial };
 }
 
 export default async function ClientsPage() {
     const pageContent = await getContent();
 
-    if (!pageContent) {
+    if (!pageContent || !pageContent.featuredTestimonial) {
         notFound();
     }
 
@@ -75,14 +81,14 @@ export default async function ClientsPage() {
   return (
     <div className="bg-background">
       {/* Featured Testimonial Section */}
-      {featuredTestimonial.visible && (
+      {featuredTestimonial && (
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
               <Image 
-                src={featuredTestimonial.image} 
-                alt={featuredTestimonial.name} 
+                src={featuredTestimonial.client_image_url} 
+                alt={featuredTestimonial.client_name} 
                 fill
                 objectFit="cover"
                 data-ai-hint="smiling person"
@@ -97,12 +103,12 @@ export default async function ClientsPage() {
                   <span className="text-primary">&bull;</span>
                    <div className="flex items-center gap-2">
                       <Building className="w-4 h-4 text-primary" />
-                      <span>{featuredTestimonial.project}</span>
+                      <span>{featuredTestimonial.project_type}</span>
                   </div>
                    <span className="text-primary">&bull;</span>
                    <div className="flex items-center gap-2">
                       <Bed className="w-4 h-4 text-primary" />
-                      <span>{featuredTestimonial.size}</span>
+                      <span>{featuredTestimonial.project_size}</span>
                   </div>
               </div>
               <h2 className="relative text-2xl md:text-3xl font-bold font-headline mb-6 pl-8">
@@ -110,9 +116,9 @@ export default async function ClientsPage() {
                  {featuredTestimonial.quote}
               </h2>
                <div className="w-16 h-1 bg-primary mb-6"></div>
-              <p className="font-bold text-lg mb-2">{featuredTestimonial.name}</p>
+              <p className="font-bold text-lg mb-2">{featuredTestimonial.client_name}</p>
               <p className="text-muted-foreground">
-                {featuredTestimonial.review}
+                {featuredTestimonial.full_review}
               </p>
             </div>
           </div>
