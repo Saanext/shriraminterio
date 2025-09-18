@@ -61,7 +61,7 @@ export function Header() {
         
         let topLevelItems: NavItem[] = data
             .filter(item => !item.parent_slug)
-             .filter(item => item.slug !== 'appointment' && item.slug !== 'contact' && item.slug !== 'clients')
+             .filter(item => item.slug !== 'appointment' && item.slug !== 'contact')
             .map(item => ({
                 title: item.title,
                 slug: item.slug === 'home' ? '/' : `/${item.slug}`,
@@ -84,6 +84,7 @@ export function Header() {
             'Portfolio',
             'Customer Stories',
             'Products',
+            'Clients',
         ];
 
         // Sort the topLevelItems array based on the desiredOrder
