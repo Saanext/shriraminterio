@@ -69,7 +69,7 @@ export default async function ClientsPage() {
                 alt={featuredTestimonial.name} 
                 fill
                 objectFit="cover"
-                data-ai-hint="smiling man"
+                data-ai-hint="smiling person"
               />
             </div>
             <div>
