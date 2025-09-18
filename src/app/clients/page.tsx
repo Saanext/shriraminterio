@@ -5,6 +5,12 @@ import { Star, PlayCircle, MapPin, Building, Bed } from 'lucide-react';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Our Clients',
+    description: 'See what our happy clients in Pune have to say about their experience with Shriram Interio Digital. Read testimonials and watch video reviews.',
+};
 
 export const dynamic = 'force-dynamic';
 
@@ -48,7 +54,7 @@ export default async function ClientsPage() {
         notFound();
     }
 
-    const { featuredTestimonial, videoTestimonials, textTestimonials } = pageContent;
+    const { featuredTestimonial, videoTestimonials } = pageContent;
 
   return (
     <div className="bg-background">
@@ -134,32 +140,6 @@ export default async function ClientsPage() {
             </div>
         </div>
       </section>
-      )}
-
-      {textTestimonials.visible && (
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold">{textTestimonials.title}</h1>
-          <p className="text-lg text-muted-foreground mt-2">{textTestimonials.subtitle}</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {textTestimonials.testimonials.map((testimonial: any) => (
-            <Card key={testimonial.name} className="flex flex-col p-6">
-              <CardContent className="flex-grow p-0">
-                <StarRating />
-                <p className="mt-4 text-muted-foreground italic">"{testimonial.review}"</p>
-              </CardContent>
-              <div className="mt-6 pt-6 border-t flex items-center">
-                <Avatar>
-                  <AvatarImage src={testimonial.image} alt={testimonial.name} data-ai-hint="person portrait" />
-                  <AvatarFallback>{testimonial.avatar}</AvatarFallback>
-                </Avatar>
-                <p className="ml-4 font-bold font-headline">{testimonial.name}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
       )}
     </div>
   );
