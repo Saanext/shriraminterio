@@ -14,6 +14,21 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
+// Helper function to extract YouTube video ID and create thumbnail URL
+const getYouTubeThumbnail = (url: string) => {
+    if (!url || (!url.includes('youtube.com') && !url.includes('youtu.be'))) return null;
+    let videoId;
+    const urlParams = new URLSearchParams(new URL(url).search);
+    videoId = urlParams.get('v');
+    if (!videoId) {
+        videoId = url.split('/').pop();
+        if (videoId && videoId.includes('?')) {
+            videoId = videoId.split('?')[0];
+        }
+    }
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+}
+
 async function getContent() {
     const supabase = createClient();
     const { data: page } = await supabase
@@ -35,17 +50,18 @@ async function getContent() {
             title: section.content?.title || section.title,
         };
     }
+    
+    // Process video thumbnails
+    if (content.videoTestimonials && content.videoTestimonials.videos) {
+        content.videoTestimonials.videos.forEach((video: any) => {
+            if (video.videoUrl && !video.imageSrc) {
+                video.imageSrc = getYouTubeThumbnail(video.videoUrl);
+            }
+        });
+    }
 
     return { ...content, meta: { title: page.meta_title, description: page.meta_description } };
 }
-
-const StarRating = ({ rating = 5 }: { rating?: number }) => (
-  <div className="flex text-primary">
-    {[...Array(rating)].map((_, i) => (
-      <Star key={i} className="h-5 w-5 fill-current" />
-    ))}
-  </div>
-);
 
 export default async function ClientsPage() {
     const pageContent = await getContent();
@@ -118,7 +134,7 @@ export default async function ClientsPage() {
                     <Card className="overflow-hidden h-full flex flex-col">
                        <div className="relative aspect-video">
                         <Image
-                          src={video.imageSrc}
+                          src={video.imageSrc || `https://img.youtube.com/vi/placeholder/hqdefault.jpg`}
                           alt={video.name}
                           fill
                           objectFit="cover"
