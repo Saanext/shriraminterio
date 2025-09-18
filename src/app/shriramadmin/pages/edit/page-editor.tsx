@@ -129,18 +129,18 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
         setSections(newSections);
     };
 
-    const handleImageUpload = async (file: File, onUpload: (url: string) => void) => {
+    const handleFileUpload = async (file: File, onUpload: (url: string) => void, fileType: 'image' | 'video') => {
         if (!file) return;
-
+    
         setIsUploading(true);
         const { id, update } = toast({
-            title: 'Uploading image...',
-            description: 'Please wait while the image is being uploaded.',
+            title: `Uploading ${fileType}...`,
+            description: `Please wait while the ${fileType} is being uploaded.`,
         });
-
+    
         const fileName = `${Date.now()}-${file.name}`;
         const { data, error } = await supabase.storage.from('public').upload(fileName, file);
-
+    
         setIsUploading(false);
         if (error) {
             update({
@@ -151,15 +151,15 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
             });
             return;
         }
-
+    
         const { data: { publicUrl } } = supabase.storage.from('public').getPublicUrl(fileName);
         
         onUpload(publicUrl);
-
+    
         update({
             id,
             title: 'Upload successful!',
-            description: 'The image has been uploaded and the URL updated.',
+            description: `The ${fileType} has been uploaded and the URL updated.`,
         });
     };
 
@@ -261,8 +261,33 @@ export function PageEditor({ initialPageData, pageSlug }: PageEditorProps) {
                                 accept="image/*"
                                 onChange={(e) => {
                                     const file = e.target.files?.[0];
-                                    if(file) handleImageUpload(file, onValueChange);
+                                    if(file) handleFileUpload(file, onValueChange, 'image');
                                 }} 
+                                disabled={isUploading}
+                            />
+                        </div>
+                    </div>
+                );
+            case 'video':
+                return (
+                    <div className="flex flex-col gap-2">
+                        <Input id={id} value={value} onChange={(e) => onValueChange(e.target.value)} placeholder="YouTube URL or uploaded video URL" />
+                        <div>
+                            <Button asChild variant="outline" size="sm">
+                                <Label htmlFor={id + '-upload'} className="cursor-pointer">
+                                    <Upload className="mr-2 h-4 w-4" />
+                                    Upload Video
+                                </Label>
+                            </Button>
+                            <Input
+                                id={id + '-upload'}
+                                type="file"
+                                className="sr-only"
+                                accept="video/*"
+                                onChange={(e) => {
+                                    const file = e.target.files?.[0];
+                                    if (file) handleFileUpload(file, onValueChange, 'video');
+                                }}
                                 disabled={isUploading}
                             />
                         </div>
