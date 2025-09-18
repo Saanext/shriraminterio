@@ -80,11 +80,11 @@ export function Header() {
             'Home',
             'About Us',
             'How It Works',
+            'Clients',
             'Services',
             'Portfolio',
             'Customer Stories',
             'Products',
-            'Clients',
         ];
 
         // Sort the topLevelItems array based on the desiredOrder
