@@ -84,6 +84,7 @@ export function ContactEditor({ initialData }: { initialData: any | null }) {
                 <CardDescription>Enter the details for the contact item.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+                 {initialData?.id && <input type="hidden" {...form.register('id')} />}
                 <FormField control={form.control} name="name" render={({ field }) => (
                     <FormItem>
                         <FormLabel>Name</FormLabel>
