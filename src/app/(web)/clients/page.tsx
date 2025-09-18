@@ -1,10 +1,9 @@
 
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { createClient } from '@/lib/supabase/server';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import Autoplay from "embla-carousel-autoplay";
+import { TestimonialsCarousel } from '@/components/testimonials-carousel';
 
 export const dynamic = 'force-dynamic';
 
@@ -64,42 +63,7 @@ export default async function ClientsPage() {
                         <div className="text-center mb-12">
                             <h2 className="text-3xl md:text-4xl font-bold">{testimonials.title}</h2>
                         </div>
-                        <Carousel 
-                            className="w-full max-w-4xl mx-auto"
-                            plugins={[
-                                Autoplay({
-                                  delay: 5000,
-                                }),
-                            ]}
-                        >
-                            <CarouselContent>
-                                {(testimonials.items || []).map((testimonial: any, index: number) => (
-                                    <CarouselItem key={index}>
-                                        <Card className="overflow-hidden">
-                                            <div className="grid grid-cols-1 md:grid-cols-2">
-                                                <div className="relative aspect-video md:aspect-[4/3]">
-                                                    <Image 
-                                                        src={testimonial.image} 
-                                                        alt={testimonial.name} 
-                                                        fill 
-                                                        objectFit="cover" 
-                                                        data-ai-hint="happy client family"
-                                                    />
-                                                </div>
-                                                <div className="flex flex-col justify-center p-8">
-                                                    <blockquote className="text-lg text-muted-foreground border-l-4 border-primary pl-4 italic">
-                                                        {testimonial.quote}
-                                                    </blockquote>
-                                                    <p className="mt-4 font-bold text-right">{testimonial.name}</p>
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-                            <CarouselPrevious className="left-[-50px] hidden sm:flex" />
-                            <CarouselNext className="right-[-50px] hidden sm:flex" />
-                        </Carousel>
+                        <TestimonialsCarousel testimonials={testimonials.items || []} />
                     </div>
                 </section>
             )}
