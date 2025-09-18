@@ -61,7 +61,7 @@ export function Header() {
         
         let topLevelItems: NavItem[] = data
             .filter(item => !item.parent_slug)
-             .filter(item => item.slug !== 'appointment' && item.slug !== 'contact') // Exclude appointment & contact from nav links
+             .filter(item => item.slug !== 'appointment' && item.slug !== 'contact' && item.slug !== 'clients')
             .map(item => ({
                 title: item.title,
                 slug: item.slug === 'home' ? '/' : `/${item.slug}`,
@@ -80,7 +80,6 @@ export function Header() {
             'Home',
             'About Us',
             'How It Works',
-            'Clients',
             'Services',
             'Portfolio',
             'Customer Stories',
